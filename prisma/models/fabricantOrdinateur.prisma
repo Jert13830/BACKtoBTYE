@@ -1,0 +1,8 @@
+model FabricantOrdinateur{
+    id_fab_ordinateur Int @id @default(autoincrement())
+    
+    nom String @db.VarChar(255)
+
+    ordinateurs Ordinateur[]
+    photos Photo[]
+}

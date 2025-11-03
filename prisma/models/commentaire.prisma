@@ -1,0 +1,12 @@
+model Commentaire{
+    id_commentaire Int @id @default(autoincrement())
+
+    texte   String
+    date    DateTime
+
+    article  Article   @relation(fields: [id_article], references: [id_article])
+    id_article Int
+
+    utilisateur  Utilisateur   @relation(fields: [id_utilisateur], references: [id_utilisateur])
+    id_utilisateur Int
+}

@@ -1,0 +1,9 @@
+model RoleUtilisateur{
+    id_role_utilisateurteur  Int @id @default(autoincrement())
+
+    role  Role   @relation(fields: [id_role], references: [id_role])
+    id_role   Int
+
+    utilisateur  Utilisateur   @relation(fields: [id_utilisateur], references: [id_utilisateur])
+    id_utilisateur Int
+}

@@ -1,0 +1,12 @@
+model ArticleLike{
+    id_article_like Int @id @default(autoincrement())
+
+    score   Int
+
+    article  Article   @relation(fields: [id_article], references: [id_article])
+    id_article   Int
+
+    utilisateur  Utilisateur   @relation(fields: [id_utilisateur], references: [id_utilisateur])
+    id_utilisateur Int
+
+}

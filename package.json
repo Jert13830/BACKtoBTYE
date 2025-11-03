@@ -1,0 +1,22 @@
+{
+  "name": "backtobtye",
+  "version": "1.0.0",
+  "description": "This is a retro computer website",
+  "license": "ISC",
+  "author": "John Thompson",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "express": "^5.1.0",
+    "prisma": "^6.17.1",
+    "twig": "^1.17.1"
+  },
+  "prisma": {
+    "schema": "./prisma"
+  }
+}

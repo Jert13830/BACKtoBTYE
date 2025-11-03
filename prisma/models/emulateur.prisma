@@ -1,0 +1,16 @@
+model Emulateur {
+    id_emulateur Int @id @default(autoincrement())
+    nom   String  @db.VarChar(255)
+    annee Int
+    lien  String  @db.VarChar(255)
+    details    String // Any special information - tip bit
+    langue String  @db.VarChar(30)
+
+    fabricantEmulateur     FabricantEmulateur   @relation(fields: [id_fab_emulateur], references: [id_fab_emulateur])
+    id_fab_emulateur   Int
+
+    ordinateur  Ordinateur   @relation(fields: [id_ordinateur], references: [id_ordinateur])
+    id_ordinateur   Int
+
+    photos Photo[]
+}

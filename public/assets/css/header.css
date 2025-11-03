@@ -1,0 +1,205 @@
+body {
+  margin: 0;
+  padding:0;
+}
+
+#navbar{
+    display: flex;
+    gap : 20px;
+    background-color: #D3CBCB;
+    top: 0;
+    left: 0;
+    width:100vw;
+    align-items: center;
+}
+
+#navLogo{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color : #ffffff;
+    font-size: 36px;
+    padding :10px;
+    text-shadow: 1px 1px 2px #3C3C43;
+}
+
+/* --- Base Layout --- */
+#navBtns .btnList {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  gap: 0; /* no CSS gap */
+}
+
+/* Remove spacing and overlap the trapezoids */
+#navBtns .btnList li {
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  margin-left: -30px; /* overlap more to close the slanted gap */
+}
+
+#navBtns .btnList li:first-child {
+  margin-left: 0;
+}
+
+/* --- Button Container --- */
+#navBtns .btnList button {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-block;
+  width: 143px;
+  height: 83px;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+/* --- SVG Base --- */
+#navBtns .btnList svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#navBtns .btnList svg path {
+  fill: #d3cbcb;
+  stroke: #dedddd;
+  stroke-width: 2;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+  transition: all 0.2s ease;
+}
+
+/* --- Text Overlay --- */
+#navBtns .btnList button span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: sans-serif;
+  font-size: 18px;
+  color: #3C3C43;
+  z-index: 2;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* --- Hover --- */
+#navBtns .btnList button:hover svg path {
+  fill: #cfc7c7;
+}
+
+/* --- Pressed In --- */
+#navBtns .btnList button:active svg path {
+  fill: #bdb5b5;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,0.3))
+          drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+  transform: translateY(2px);
+}
+
+/* Optional: Pressed text effect */
+#navBtns .btnList button:active span {
+  color: #3c3c3c;
+  transform: translate(-50%, -48%);
+}
+
+#navBtns .btnList svg path {
+  stroke: #dedddd;
+  stroke-width: 2;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+  transition: all 0.2s ease;
+
+  /* 🎨 Gradient fill simulating a convex (bombed) surface */
+  fill: url(#buttonGradient);
+}
+
+/* Hamburger styling */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 20;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Hamburger animation */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
+#hamburgerBtn{
+    display:flex;
+    align-items: center;
+    justify-content: flex-end; /* pushes hamburger to the right */
+    flex: 1; /* expands to fill available space */
+    padding : 10px;
+
+}
+
+/* Responsive (mobile) */
+@media (max-width: 1084px) {
+    .hamburger {
+        display: flex;
+       
+    }
+
+
+    #navDiv {
+        position: fixed; 
+        bottom: 20%;
+        right: -200%; 
+        height: 50%;
+        width: 5%;
+        background: #d9d7d7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.3s ease;
+        border-radius: 8px;
+        z-index: 15;
+    }
+
+  #navDiv ul {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    #navDiv ul li a {
+      color: #4b5563;
+    }
+
+     #navDiv ul li a:hover {
+        color: #2563eb;
+    }
+  #navDiv.active {
+    right: 0; /* slide in */
+  }
+}

@@ -1,0 +1,12 @@
+model Popularite{
+    id_popularité Int @id @default(autoincrement())
+
+    score   Int
+
+    article  Ordinateur   @relation(fields: [id_ordinateur], references: [id_ordinateur])
+    id_ordinateur   Int
+
+    utilisateur  Utilisateur   @relation(fields: [id_utilisateur], references: [id_utilisateur])
+    id_utilisateur Int
+
+}

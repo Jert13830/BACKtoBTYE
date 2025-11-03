@@ -1,0 +1,28 @@
+model Photo {
+    id_photo Int @id @default(autoincrement())
+    path    String @db.VarChar(255)
+    alt String @db.VarChar(255)
+    
+    fabricantOrdinateur     FabricantOrdinateur   @relation(fields: [id_fab_ordinateur], references: [id_fab_ordinateur])
+    id_fab_ordinateur   Int
+    
+    fabricantLogiciel     FabricantLogiciel   @relation(fields: [id_fab_logiciel], references: [id_fab_logiciel])
+    id_fab_logiciel Int
+  
+    logiciel    Logiciel   @relation(fields: [id_logiciel], references: [id_logiciel])
+    id_logiciel Int
+    
+    ordinateur  Ordinateur   @relation(fields: [id_ordinateur], references: [id_ordinateur])
+    id_ordinateur   Int
+
+    fabricantEmulateur    FabricantEmulateur   @relation(fields: [id_fab_emulateur], references: [id_fab_emulateur])
+    id_fab_emulateur    Int
+
+    emulateur   Emulateur   @relation(fields: [id_emulateur], references: [id_emulateur])
+    id_emulateur    Int
+
+    article     Article   @relation(fields: [id_article], references: [id_article])
+    id_article  Int  @unique
+   
+    utilisateur   Utilisateur?
+}
