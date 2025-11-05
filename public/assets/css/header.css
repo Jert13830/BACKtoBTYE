@@ -29,7 +29,7 @@ body {
   padding: 0;
   margin: 0;
   list-style: none;
-  gap: 0; /* no CSS gap */
+  gap: 0;
 }
 
 /* Remove spacing and overlap the trapezoids */
@@ -105,11 +105,11 @@ body {
   transform: translateY(2px);
 }
 
-/* Optional: Pressed text effect */
+/* Pressed text rotate effect
 #navBtns .btnList button:active span {
   color: #3c3c3c;
   transform: translate(-50%, -48%);
-}
+}*/
 
 #navBtns .btnList svg path {
   stroke: #dedddd;
@@ -164,42 +164,137 @@ body {
 
 }
 
+
 /* Responsive (mobile) */
+/* === MOBILE MENU === */
 @media (max-width: 1084px) {
-    .hamburger {
-        display: flex;
-       
-    }
-
-
-    #navDiv {
-        position: fixed; 
-        bottom: 20%;
-        right: -200%; 
-        height: 50%;
-        width: 5%;
-        background: #d9d7d7;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: right 0.3s ease;
-        border-radius: 8px;
-        z-index: 15;
-    }
-
-  #navDiv ul {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    #navDiv ul li a {
-      color: #4b5563;
-    }
-
-     #navDiv ul li a:hover {
-        color: #2563eb;
-    }
-  #navDiv.active {
-    right: 0; /* slide in */
+  .hamburger {
+    display: flex;
   }
+
+  /* === MENU CONTAINER === */
+  #navDiv {
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 260px;
+    height: 100vh;
+    background: #D3CBCB; /* Match desktop navbar */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 90px;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 15;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+  }
+
+  #navDiv.active {
+    right: 0;
+  }
+
+  /* === BUTTON LIST === */
+  #navBtns .btnList {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 4px;
+    margin: 0;
+    width: 100%;
+    align-items: center;
+    background-color: #d3cbcb;
+   
+    border-radius: 10px;
+
+     stroke: #DEDDDD;
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+    transition: fill 0.2s ease;
+
+  }
+
+  #navBtns .btnList li {
+    margin: 0;
+    width: 100%;
+    list-style: none;
+  }
+
+  /* === BUTTON === */
+  #navBtns .btnList button {
+    position: relative;
+    width: 220px;
+    height: 70px;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    overflow: visible;
+    display: block;
+  }
+
+  /* === SVG: Full Fill + No Distortion === */
+  #navBtns .btnList svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  #navBtns .btnList svg path {
+    fill: url(#buttonGradient);
+    stroke: #DEDDDD;
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+    transition: fill 0.2s ease;
+  }
+
+  /* === TEXT === */
+  #navBtns .btnList button span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #3C3C43;
+    z-index: 2;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* Hover & Active */
+  #navBtns .btnList button:hover svg path {
+    fill: #cfc7c7;
+  }
+
+  #navBtns .btnList button:active svg path {
+    fill: #bdb5b5;
+    filter: drop-shadow(0 1px 0 rgba(255,255,255,0.3))
+            drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+  }
+}
+
+/* Small screens */
+@media (max-width: 480px) {
+  #navDiv {
+    width: 220px;
+    right: -220px;
+    padding-top: 80px;
+  }
+  #navBtns .btnList button {
+    width: 190px;
+    height: 62px;
+  }
+  #navBtns .btnList button span {
+    font-size: 15px;
+  }
+
+  
 }

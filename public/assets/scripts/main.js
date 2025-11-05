@@ -1,7 +1,15 @@
-const toggleBtn = document.querySelector("#menu-toggle");
-const nav = document.querySelector("#navDiv");
+const menuToggle = document.getElementById('menu-toggle');
+  const navDiv = document.getElementById('navDiv');
 
-toggleBtn.addEventListener("click", () => {
-    toggleBtn.classList.toggle("active");
-    nav.classList.toggle("active");
+  menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    navDiv.classList.toggle('active');
+  });
+
+  // Optional: close when clicking a link
+  document.querySelectorAll('#navBtns button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      menuToggle.classList.remove('active');
+      navDiv.classList.remove('active');
+    });
   });
