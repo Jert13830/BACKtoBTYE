@@ -1,26 +1,26 @@
 body {
   margin: 0;
-  padding:0;
+  padding: 0;
 }
 
-#navbar{
-    display: flex;
-    gap : 20px;
-    background-color: #D3CBCB;
-    top: 0;
-    left: 0;
-    width:100vw;
-    align-items: center;
+#navbar {
+  display: flex;
+  gap: 20px;
+  background-color: #D3CBCB;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  align-items: center;
 }
 
-#navLogo{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    color : #ffffff;
-    font-size: 36px;
-    padding :10px;
-    text-shadow: 1px 1px 2px #3C3C43;
+#navLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 36px;
+  padding: 10px;
+  text-shadow: 1px 1px 2px #3C3C43;
 }
 
 /* --- Base Layout --- */
@@ -37,7 +37,8 @@ body {
   margin: 0;
   padding: 0;
   line-height: 0;
-  margin-left: -30px; /* overlap more to close the slanted gap */
+  margin-left: -30px;
+  /* overlap more to close the slanted gap */
 }
 
 #navBtns .btnList li:first-child {
@@ -100,8 +101,7 @@ body {
 /* --- Pressed In --- */
 #navBtns .btnList button:active svg path {
   fill: #bdb5b5;
-  filter: drop-shadow(0 1px 0 rgba(255,255,255,0.3))
-          drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
   transform: translateY(2px);
 }
 
@@ -148,19 +148,23 @@ body {
 .hamburger.active span:nth-child(1) {
   transform: translateY(7.5px) rotate(45deg);
 }
+
 .hamburger.active span:nth-child(2) {
   opacity: 0;
 }
+
 .hamburger.active span:nth-child(3) {
   transform: translateY(-7.5px) rotate(-45deg);
 }
 
-#hamburgerBtn{
-    display:flex;
-    align-items: center;
-    justify-content: flex-end; /* pushes hamburger to the right */
-    flex: 1; /* expands to fill available space */
-    padding : 10px;
+#hamburgerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* pushes hamburger to the right */
+  flex: 1;
+  /* expands to fill available space */
+  padding: 10px;
 
 }
 
@@ -174,45 +178,39 @@ body {
 
   /* === MENU CONTAINER === */
   #navDiv {
-  position: fixed;
-  top: 0;
-  right: -260px;
-  width: 260px;
-  height: 100vh;
-  background: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 15;
-  overflow-y: auto;
-  padding: 0;
-}
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 200px;
+    height: 100vh;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 90px;
+    /* keeps spacing under header */
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 15;
+    overflow-y: auto;
 
-/* Active (slide-in) */
-#navDiv.active {
-  right: 0;
-}
+  }
+
+  #navDiv.active {
+    right: 0;
+  }
 
   /* === BUTTON LIST === */
   #navBtns .btnList {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    padding: 4px;
+    gap: 6px;
+    padding: 8px 0;
     margin: 0;
     width: 100%;
     align-items: center;
-    background-color: #d3cbcb;
-   
+    background-color: #D3CBCB;
+    /* same as menu */
     border-radius: 10px;
-
-     stroke: #DEDDDD;
-    stroke-width: 2;
-    vector-effect: non-scaling-stroke;
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
-    transition: fill 0.2s ease;
-
   }
 
   #navBtns .btnList li {
@@ -224,34 +222,20 @@ body {
   /* === BUTTON === */
   #navBtns .btnList button {
     position: relative;
-    width: 220px;
-    height: 70px;
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
+    width: 190px;
+    height: 55px;
+    background: #CFC7C7;
+    /* match desktop buttons */
+    border: 1.5px solid #BDB5B5;
+    /* soft border */
+    color: #3C3C43;
+    /* text */
+
+    letter-spacing: 0.5px;
     cursor: pointer;
-    overflow: visible;
-    display: block;
-  }
-
-  /* === SVG: Full Fill + No Distortion === */
-  #navBtns .btnList svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-
-  #navBtns .btnList svg path {
-    fill: url(#buttonGradient);
-    stroke: #DEDDDD;
-    stroke-width: 2;
-    vector-effect: non-scaling-stroke;
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
-    transition: fill 0.2s ease;
+    border-radius: 6px;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   }
 
   /* === TEXT === */
@@ -260,24 +244,41 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-family: sans-serif;
-    font-size: 16px;
-    font-weight: 600;
     color: #3C3C43;
     z-index: 2;
     pointer-events: none;
     white-space: nowrap;
   }
 
-  /* Hover & Active */
+
+  /* === ACTIVE === */
+
+  /* === SVG SUPPORT (optional if using icons) === */
+  #navBtns .btnList svg path {
+    fill: #CFC7C7;
+    stroke: #DEDDDD;
+    stroke-width: 2;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+    transition: fill 0.2s ease;
+  }
+
   #navBtns .btnList button:hover svg path {
-    fill: #cfc7c7;
+    fill: #c8c2c2;
+    /* Changes Button colour on hover*/
+    border-color: #AFA7A7;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
 
   #navBtns .btnList button:active svg path {
+
     fill: #bdb5b5;
-    filter: drop-shadow(0 1px 0 rgba(255,255,255,0.3))
-            drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+    /*Button pressed*/
+    border-color: #9E9696;
+    box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.3),
+      0 1px 3px rgba(0, 0, 0, 0.2);
+
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+    transform: scale(0.98);
   }
 }
 
@@ -288,13 +289,15 @@ body {
     right: -220px;
     padding-top: 80px;
   }
+
   #navBtns .btnList button {
     width: 190px;
     height: 62px;
   }
+
   #navBtns .btnList button span {
     font-size: 15px;
   }
 
-  
+
 }
