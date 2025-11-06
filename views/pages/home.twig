@@ -14,56 +14,25 @@
 				</div>
 			</section>
 			<section>
-				<div class="newsOutings">
-					<div class="newsDiv column">
-						<div class="windowHeader">
-							<div class="squareBtn">
-								<span class="minus">
-									-
-								</span>
-							</div>
-							<div class="leftLines">
-								<span class="hl"> </span>
-								<span class="hl"> </span>
-								<span class="hl"> </span>
-								<span class="hl"> </span>
-								<span class="hl"> </span>
-								<span class="hl"> </span>
-							</div>
-							<div class="windowTitle">
-								<p class="titleP">News</p>
-							</div>
-							<div class="rightLines">
-								<span class="hl"></span>
-								<span class="hl"></span>
-								<span class="hl"></span>
-								<span class="hl"></span>
-								<span class="hl"></span>
-								<span class="hl"></span>
-							</div>
-						</div>
-						<div class="content">
-							<p>News Information</p>
-						</div>
-					</div>
 
-					<div class="outingsDiv column">
-						<div class="windowHeader">
-							<div class="squareBtn">
-								<span class="minus">
-									-
-								</span>
-							</div>
-							<div class="leftLines"></div>
-							<div class="windowTitle">
-								<p class="titleP">Outings</p>
-							</div>
-							<div class="rightLines"></div>
-						</div>
-						<div class="content">
-							<p>Outings Information</p>
-						</div>
-					</div>
+        {# Lower section windows #}
+				<div class="newsOutings">
+
+          {# News window #}
+					{% include "/partials/window.twig" with {
+              windowType: 'newsDiv column',    
+              title: 'News',
+              content: '<p>News Informations</p>'
+            } 
+          %}
+
+          {# Outing information window #}
+					{% include "/partials/window.twig"  with {
+              windowType: 'outingsDiv column',  
+              title: 'Outings',
+              content: '<p>Outings Informations</p>'
+            } 
+          %}
 
 				</div>
 

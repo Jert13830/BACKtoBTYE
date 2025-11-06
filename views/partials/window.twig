@@ -2,3 +2,34 @@
 	<link rel="stylesheet" href="/assets/css/window.css">
 {% endblock %}
 
+<div class="{{ windowType }}">
+	<div class="windowHeader">
+		<div class="squareBtn">
+			<span class="minus">
+				-
+			</span>
+		</div>
+		<div class="leftLines">
+			<span class="hl"></span>
+			<span class="hl"></span>
+			<span class="hl"></span>
+			<span class="hl"></span>
+			<span class="hl"></span>
+			<span class="hl"></span>
+		</div>
+		<div class="windowTitle">
+			<p class="titleP">{{ title }}</p>
+		</div>
+		<div class="rightLines">
+			<span class="hl"></span>
+			<span class="hl"></span>
+			<span class="hl"></span>
+			<span class="hl"></span>
+			<span class="hl"></span>
+			<span class="hl"></span>
+		</div>
+	</div>
+	<div class="content">
+		<p>{{ content|raw }}</p>
+	</div>
+</div>
