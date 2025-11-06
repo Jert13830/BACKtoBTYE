@@ -174,25 +174,25 @@ body {
 
   /* === MENU CONTAINER === */
   #navDiv {
-    position: fixed;
-    top: 0;
-    right: -260px;
-    width: 260px;
-    height: 100vh;
-    background: #D3CBCB; /* Match desktop navbar */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 90px;
-    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 15;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
-    overflow-y: auto;
-  }
+  position: fixed;
+  top: 0;
+  right: -260px;
+  width: 260px;
+  height: 100vh;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 15;
+  overflow-y: auto;
+  padding: 0;
+}
 
-  #navDiv.active {
-    right: 0;
-  }
+/* Active (slide-in) */
+#navDiv.active {
+  right: 0;
+}
 
   /* === BUTTON LIST === */
   #navBtns .btnList {
