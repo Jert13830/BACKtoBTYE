@@ -15,13 +15,14 @@
 
 .content {
     background-color: #D9D9D9;
-    height: 192px;
+    height: 60vh;
     border-radius: 0px 0px 10px 10px;
     padding: 2%;
 }
 
 .titleP {
-    
+    margin: 0;
+  pointer-events: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,10 +45,25 @@
     margin-left: 10px;
 }
 
-.minus {
+.minus, .plus {
     text-align: center;
     font-size: 1.5rem;
 }
+
+.roundBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #3C3C43;
+    height: 18px;
+    width: 18px;
+    border-radius: 50px;
+    align-self: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
 
 .leftLines, .rightLines{
     display: flex;
@@ -66,3 +82,18 @@
     background: #3C3C43;;
     margin: 1px 0;
 }
+
+.largeWindow{
+    width:calc(100% - 3rem);
+    height: 80vh;
+    margin: 1.5rem;
+    filter: drop-shadow(#b8b8b9 0.4rem 0.4rem 2px);
+    background-color: #D9D9D9;
+    border-radius: 10px;
+}
+
+
+/*.carouselDiv .content{
+
+    height:450px;
+}*/

@@ -11,3 +11,14 @@ exports.displayHome = async (req,res)=>{
     confirmPassword: null
   })
 }
+
+// Show computer list
+exports.displayComputerList = async (req,res)=>{
+    res.render("pages/computerList.twig", {
+    title: "Computer List",
+    error: null,
+    duplicateSiret: null,
+    confirmPassword: null
+  })
+}
+

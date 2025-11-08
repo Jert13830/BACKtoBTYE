@@ -10,8 +10,13 @@
 		<div id="pageContainer">
 			<section>
 				<div id="carousel">
-					<p>Carousel</p>
-				</div>
+            {% include "/partials/window.twig" with {
+                windowType: 'largeWindow',
+                title: 'Home',
+                content: '<p>Carousel Informations</p>',
+                showPlus: 0
+            } %}
+        </div>
 			</section>
 			<section>
 
@@ -22,7 +27,8 @@
 					{% include "/partials/window.twig" with {
               windowType: 'newsDiv column',    
               title: 'News',
-              content: '<p>News Informations</p>'
+              content: '<p>News Informations</p>',
+              showPlus: 0
             } 
           %}
 
@@ -30,7 +36,8 @@
 					{% include "/partials/window.twig"  with {
               windowType: 'outingsDiv column',  
               title: 'Outings',
-              content: '<p>Outings Informations</p>'
+              content: '<p>Outings Informations</p>',
+              showPlus: 0
             } 
           %}
 

@@ -1,0 +1,48 @@
+.formBk1 {
+    width: 100%;
+    height: 75vh;
+    background: linear-gradient(to left,
+            #F8a51c 0%,
+            #f4d03f 20%,
+            #f39c12 50%,
+            #f4d03f 80%,
+            #e67e22 100%);
+    border: 1px solid #000;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formBk2 {
+    width: 97%;
+    height: 95%;
+    background: linear-gradient(to left,
+            #ff7675 0%,
+            #ffcccb 20%,
+            #e74c3c 50%,
+            #ffcccb 80%,
+            #ff7675 100%);
+
+    border-radius: 10px;
+
+}
+
+#computerForm{
+    margin : 1.5rem;
+    
+}
+
+input{
+    border-radius: 5px;
+}
+ 
+.formInputLine{
+    padding-bottom: 1rem;
+}
+
+#addComputer .largeWindow {
+  width: 80vw;      
+  height: 86vh; 
+}

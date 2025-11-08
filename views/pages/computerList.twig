@@ -1,0 +1,38 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>Computer List</title>
+	<link rel="stylesheet" href="/assets/css/home.css">
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section>
+				<div id="computerList">
+					{% include "/partials/window.twig" with {
+						windowType: 'largeWindow',
+						title: 'Computers',
+						content: '<p>Computer List</p>',
+						showPlus: 1,
+						pageId: 'computerList'
+					} %}
+				</div>
+			</section>
+
+		</div>
+	</main>
+	<section id="sectionAdd">
+		<dialog id="addComputer">
+			{% embed '/partials/window.twig' with {
+    windowType: 'largeWindow',
+    title: 'Add Computers',
+    showPlus: 0
+} %}
+				{% block content %}
+					{% include '/partials/computerForm.twig' %}
+				{% endblock %}
+			{% endembed %}
+		</dialog>
+	</section>
+{% endblock %}

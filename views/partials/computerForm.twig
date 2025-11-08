@@ -1,0 +1,60 @@
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/form.css">
+{% endblock %}
+
+
+<div class="formBk1">
+	<div class="formBk2">
+		<div>
+			<form id="computerForm" action="/addComputer" method="post">
+                <div class="formInputLine">
+					<input type="text" name="computer" id="computer" placeholder="Computer"/>
+				</div>
+				<div class="formInputLine">
+					<label for="manufacturer">Manufacturer</label>
+					<input type="text" name="manufacturer" id="manufacturer"/>
+				</div>
+				<div class="formInputLine">
+					<label for="manufacturerYear">Year</label>
+					<input type="number" min="1970" max="2000" step="1" value="1980" id="manufacturerYear" name="manufacturerYear"/>
+				</div>
+				<div class="formInputLine">
+					<label for="cpuType">CPU type</label>
+					<input type="number" min="4" max="16" step="1" value="8" id="cpuType" name="cpuType"/><span>bit</span>
+				</div>
+				<div class="formInputLine">
+					<label for="cpu">CPU</label>
+					<input type="text" name="cpu" id="cpu"/>
+				</div>
+				<div class="formInputLine">
+					<label for="clockSpeed">Clock speed</label>
+					<input type="number" min="1" max="20" step="1" value="4" id="clockSpeed" name="clockSpeed"/><span>MHz</span>
+				</div>
+				<div class="formInputLine">
+					<label for="ram">RAM</label>
+					<input type="number" min="1" max="1024" step="1" value="64" id="ram" name="ram"/><span>K</span>
+				</div>
+				<div class="formInputLine">
+					<label for="ram">ROM</label>
+					<input type="number" min="1" max="1024" step="1" value="64" id="rom" name="rom"/><span>K</span>
+				</div>
+				<div class="formInputLine">
+					<label for="graphics">Graphics</label>
+					<input type="text" name="graphics" id="graphics"/>
+				</div>
+				<div class="formInputLine">
+					<label for="nbColours">N° Colours</label>
+					<input type="number" min="1" max="100000" step="1" value="256" id="nbColours" name="nbColours"/>
+				</div>
+				<div class="formInputLine">
+					<label for="sound">Sound</label>
+					<input type="text" name="sound" id="sound"/>
+				</div>
+				<div class="formInputLine">
+					<label for="successor">Successor</label>
+					<input type="text" name="successor" id="successor"/>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
