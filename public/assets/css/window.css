@@ -30,24 +30,32 @@
     color: #3C3C43;
 }
 
-.squareBtn {
-    align-self: center;
-    margin-left: 10px;
-    
+.squareBtnReduce, .squareBtnClose{
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     border: 2px solid #3C3C43;
     height: 18px;
     width: 18px;
     border-radius: 3px;
     align-self: center;
-    margin-left: 10px;
+}
+.squareBtnReduce {
+ margin-left: 10px;
 }
 
-.minus, .plus {
+.squareBtnClose {
+ margin-right: 10px;
+ cursor: pointer;
+}
+
+
+.minusBtn, .plusBtn, .closeBtn {
     text-align: center;
     font-size: 1.5rem;
+    line-height: 1rem;
+    pointer-events: none;
 }
 
 .roundBtn {
@@ -92,6 +100,9 @@
     border-radius: 10px;
 }
 
+.squareBtnClose{
+    display:none;
+}
 
 /*.carouselDiv .content{
 

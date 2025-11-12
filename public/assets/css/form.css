@@ -39,10 +39,39 @@ input{
 }
  
 .formInputLine{
+    display:flex;
+    gap: 2rem;
     padding-bottom: 1rem;
+   justify-content: space-between;
 }
+
+.formInputLine input{
+    justify-content: flex-end;
+}
+
 
 #addComputer .largeWindow {
   width: 80vw;      
   height: 86vh; 
+}
+
+#addComputer .squareBtnClose{
+    display:block;
+}
+
+#formDiv{
+    display:flex;
+    gap: 5rem;
+}
+
+#formLeft{
+    width:30%;
+}
+
+#formRight{
+    width:50%;
+}
+
+img{
+    border-radius: 5px;
 }

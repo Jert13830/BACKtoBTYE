@@ -39,15 +39,17 @@
   flex-direction: column;
   width: 90vw;
   height: 100vh;
-  max-width: none;
-  max-height: none;
   margin: 0;
-  padding: 0;
   border: none;
   background:none;
   color: #000;
   outline: none;      
   justify-self: center;
+
+
+  top: 5%;
+  left: 50%;
+ 
   
 }
 
