@@ -1,3 +1,5 @@
+
+
 const menuToggle = document.querySelector('#menu-toggle');
 const navDiv = document.querySelector('#navDiv');
 
@@ -53,6 +55,8 @@ async function saveToFolder(blob, filename){
 
 
 /***********************************/
+
+if (computerImage){
 computerImage.addEventListener("change", async () => {
   const files = computerImage.files;
   if (!files.length) return;
@@ -92,7 +96,7 @@ computerImage.addEventListener("change", async () => {
     loadImage();
   }
 });
-
+}
 // Upload to server
 async function loadImage(){
   if (!resizedBlobs?.length) return alert("Please select an image first!");
@@ -154,17 +158,20 @@ document.querySelectorAll('#navBtns button').forEach(btn => {
   });
 });
 
-roundBtn.addEventListener('click', () => {
-  const page = roundBtn.dataset.page; // get which page the button was clicked in
-    
-    if(page === "computerList"){
-        addComputerDialogue.showModal();
-        openedDialog = addComputerDialogue;
-    }
 
-   
+if (roundBtn) {
+    roundBtn.addEventListener('click', () => {
+      const page = roundBtn.dataset.page; // get which page the button was clicked in
+        
+        if(page === "computerList"){
+            addComputerDialogue.showModal();
+            openedDialog = addComputerDialogue;
+        }
 
-});
+      
+
+    });
+  }
 
 function setupModalCloseBehavior() {
     document.querySelectorAll('dialog').forEach(dialog => {
