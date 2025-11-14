@@ -2,6 +2,27 @@
   font-family: "Roboto", sans-serif;
 }
 
+
+/* Small screens first for quick loading */
+@media (max-width: 480px) {
+  #navDiv {
+    width: 220px;
+    right: -220px;
+    padding-top: 80px;
+  }
+
+  #navBtns .btnList button {
+    width: 190px;
+    height: 62px;
+  }
+
+  #navBtns .btnList button span {
+    font-size: 15px;
+  }
+
+
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -292,24 +313,4 @@ body {
     filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
     transform: scale(0.98);
   }
-}
-
-/* Small screens */
-@media (max-width: 480px) {
-  #navDiv {
-    width: 220px;
-    right: -220px;
-    padding-top: 80px;
-  }
-
-  #navBtns .btnList button {
-    width: 190px;
-    height: 62px;
-  }
-
-  #navBtns .btnList button span {
-    font-size: 15px;
-  }
-
-
 }

@@ -61,6 +61,7 @@ input{
 
 #formDiv{
     display:flex;
+    justify-content: space-between;
     gap: 5rem;
 }
 
@@ -74,4 +75,31 @@ input{
 
 img{
     border-radius: 5px;
+}
+
+#computerPhoto{
+    width: 311px;
+    height: 215px;
+}
+
+#manuLogo{
+    width: 128px;
+    height: 63px;
+}
+
+#filePath{
+    border-radius: 5px;
+}
+
+.camera-label svg path{
+    color:#000;
+}
+
+.camera-label{
+    cursor: pointer;
+}
+
+#computer{
+    height: 22px;
+    align-self:center;
 }

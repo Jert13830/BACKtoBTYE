@@ -26,13 +26,22 @@ exports.uploadImage = async (req, res) => {
 
     // Process each file
     for (const file of allFiles) {
-      const outputFilename = `${req.body.filename || Date.now()}-${Math.random()
-        .toString(36)
-        .substring(2, 8)}.webp`;
+
+      /*const outputFilename = `${req.body.filename || Date.now()}-${Math.random()
+       .toString(36)
+       .substring(2, 8)}.webp`;*/
+
+      const outputFilename = `${req.body.filename || Date.now()}.webp`;
       const outputPath = path.join(outputDir, outputFilename);
 
+      //Sharp is used to resize and reformat the image to .webp
       await sharp(file.buffer)
-        .resize(486, 336)
+        .resize({
+          width: parseInt(req.body.photoWidth),
+          height: parseInt(req.body.photoHeight),
+          fit: "contain",
+          background: { r: 0, g: 0, b: 0, alpha: 0 }
+        })
         .toFormat("webp", { quality: 90 })
         .toFile(outputPath);
 

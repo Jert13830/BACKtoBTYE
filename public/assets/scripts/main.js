@@ -9,148 +9,102 @@ const addComputerDialogue = document.querySelector('#addComputer');
 const closeModalBtn = document.querySelector('.squareBtnClose');
 let openedDialog;
 
-const computerProfilePhoto = document.querySelector(".image img");
+
+const computerName = document.querySelector("#computer");
+const manufacturerName = document.querySelector("#manufacturer");
+
+const computerPhoto = document.querySelector("#computerPhoto");
 const computerImage = document.querySelector(".computerImage");
-const computerProfileIamge =  document.querySelector("#computerProfileIamge");
+
+
+const manuLogo = document.querySelector("#manuLogo");
+const manuImage = document.querySelector(".manuImage");
+
+
+let computerPhotoPath = '/assets/images/';
+let statusText = "";
+let fileName = "";
 
 
 
-let computerPhotoPath  = '/assets/images/';
+async function loadImage(files, imageType, fileName, sourcePhoto) {
 
-
-//let file;
-//let img;
-
-/*computerImage.onchange = async function() {
- 
-  computerProfilePhoto.src = URL.createObjectURL(computerImage.files[0]);
-  file = computerImage.files[0];
-  img = await loadImage(file);
-
-  //Resize to 486px * 336px
-  const canvas = document.createElement('canvas');
-  canvas.width  = 486;
-  canvas.height = 336;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img, 0, 0, 486, 336);
-
-// ---- Convert to WebP blob ----
-fileBlob = await new Promise(res => canvas.toBlob(res, 'image/webp', 0.90));
-
-const photofile = document.querySelector('#computer').value + '.webp';
-alert(photofile);
-await saveToFolder(fileBlob, photofile);
-  
-}
-
-
-async function saveToFolder(blob, filename){
-
-    let directoryHandle  ='/assets/images/';
-    const fileHandle = await directoryHandle.getFileHandle(filename, {create:true});
-    const writable = await fileHandle.createWritable();
-    await writable.write(blob);
-    await writable.close();
-}*/
-
-
-/***********************************/
-
-if (computerImage){
-computerImage.addEventListener("change", async () => {
-  const files = computerImage.files;
-  if (!files.length) return;
-
-  // Clear previews and reset state
- computerProfileIamge.innerHTML = "";
-  resizedBlobs = [];
-
-  // Loop through all selected images
-  for (const file of files) {
-    const img = new Image();
-
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = 486;
-      canvas.height = 336;
-      const ctx = canvas.getContext("2d");
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, 486, 336);
-
-      // Convert canvas to Blob
-      canvas.toBlob(
-        (blob) => {
-          resizedBlobs.push({ blob, name: file.name });
-          statusText.textContent = `${resizedBlobs.length} image(s) ready to upload!`;
-        },
-        "image/png",
-        0.9
-      );
-
-      
-    };
-
-    img.src = URL.createObjectURL(file);
-
-    loadImage();
-  }
-});
-}
-// Upload to server
-async function loadImage(){
-  if (!resizedBlobs?.length) return alert("Please select an image first!");
-
-  statusText.textContent = "Uploading...";
+  if (!files?.length) return; // No images
 
   const formData = new FormData();
 
-  // 👇 If one image, use "file", else use "files"
-  if (resizedBlobs.length === 1) {
-    formData.append("file", resizedBlobs[0].blob, resizedBlobs[0].name);
+  // If one image, use "file", else use "files"
+  if (files.length === 1) {
+    formData.append("file", files[0], files[0].name);
   } else {
-    resizedBlobs.forEach((fileData, i) => {
-      formData.append("files", fileData.blob, fileData.name || `image-${i + 1}.png`);
+    files.forEach((file, i) => {
+      // multiple files for future use
+      const fileName = file.name || `image-${i + 1}.png`;
+      formData.append("files", file, fileName);
     });
   }
-
-  // Metadata (optional)
-  formData.append("filename", "amstradcpc464");
-  formData.append("phototype", "computers");
+  // Metadata - this will name the file and put it into an certain folder
+  if (imageType === "Computer") { //Computer Images
+    formData.append("filename", fileName);
+    formData.append("phototype", "computers");
+    //The required size of the photo
+    formData.append("photoWidth", 311);
+    formData.append("photoHeight", 215);
+  }
+  else if (imageType === "Profile") { //User Images
+    formData.append("filename", fileName);
+    formData.append("phototype", "users");
+    //The required size of the photo
+    formData.append("photoWidth", 180);
+    formData.append("photoHeight", 180);
+  }
+  else if (imageType === "Manufactuer") { //User Images
+    formData.append("filename", fileName);
+    formData.append("phototype", "logos");
+    //The required size of the photo
+    formData.append("photoWidth", 128);
+    formData.append("photoHeight", 63);
+  }
 
   try {
     const res = await fetch("/upload", { method: "POST", body: formData });
     const data = await res.json();
 
     if (data.success) {
-      statusText.textContent = "✅ Upload complete!";
-      uploadedPreview.innerHTML = "";
+      //computerProfileIamge.innerHTML = "";  
 
       const urls = data.files || [data.path];
-      urls.forEach((url) => {
-        const img = document.createElement("img");
-        img.src = url;
-        img.style.width = "120px";
-        img.style.margin = "5px";
-        uploadedPreview.appendChild(img);
-      });
+
+
+      //Keep only the latest copy of the computer/user the file with the same computer/user name is crushed
+      for (const url of urls) {   //this replaces urls.forEach((url) as can not use await
+
+        const response = await fetch(url);
+
+        //Creates Binary Large Object (BOLB) to hold new image with the possible same name.
+        //The image does not refresh if the same URL (name+path) is used when replacing images with another.
+        const blob = await response.blob();
+
+        document.querySelector(sourcePhoto).src = URL.createObjectURL(blob);
+
+      }
+
     } else {
-      statusText.textContent = "❌ Upload failed.";
+      console.log("Upload failed.");
     }
   } catch (err) {
     console.error(err);
-    statusText.textContent = "❌ Error uploading images.";
+
   }
 }
 
-/***********************************/
-
+// Toggle the side menu when on mobeil
 menuToggle.addEventListener('click', () => {
   menuToggle.classList.toggle('active');
   navDiv.classList.toggle('active');
 });
 
-// Close when clicking a link
+// Close side menu when link clicked
 document.querySelectorAll('#navBtns button').forEach(btn => {
   btn.addEventListener('click', () => {
     menuToggle.classList.remove('active');
@@ -158,33 +112,33 @@ document.querySelectorAll('#navBtns button').forEach(btn => {
   });
 });
 
-
+//Add button 
 if (roundBtn) {
-    roundBtn.addEventListener('click', () => {
-      const page = roundBtn.dataset.page; // get which page the button was clicked in
-        
-        if(page === "computerList"){
-            addComputerDialogue.showModal();
-            openedDialog = addComputerDialogue;
-        }
+  roundBtn.addEventListener('click', () => {
+    const page = roundBtn.dataset.page; // get which page the button was clicked in
 
-      
+    if (page === "computerList") {
+      addComputerDialogue.showModal();
+      openedDialog = addComputerDialogue;
+    }
 
-    });
-  }
-
-function setupModalCloseBehavior() {
-    document.querySelectorAll('dialog').forEach(dialog => {
-        dialog.addEventListener('click', (e) => {
-            if (e.target.closest('.squareBtnClose') || e.target === dialog) {
-                dialog.close();
-            }
-        });
-    });
+  });
 }
 
- // Each time a dialogue is created
-    setupModalCloseBehavior();
+
+//Close button modal window
+function setupModalCloseBehavior() {
+  document.querySelectorAll('dialog').forEach(dialog => {
+    dialog.addEventListener('click', (e) => {
+      if (e.target.closest('.squareBtnClose') || e.target === dialog) {
+        dialog.close();
+      }
+    });
+  });
+}
+
+// Each time a dialogue is created
+setupModalCloseBehavior();
 
 /*function loadImage(file) {
     return new Promise((resolve, reject) => {
@@ -194,3 +148,34 @@ function setupModalCloseBehavior() {
       img.src = URL.createObjectURL(file);
     });
   }*/
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  if (manuImage) {
+    manuImage.addEventListener("change", () => {
+       const files = Array.from(manuImage.files);
+
+    //No files
+    if (!files.length) return;
+
+    fileName = manufacturerName.value;
+
+    loadImage(files, "Manufactuer", fileName, "#manuLogo");
+    });
+  }
+
+  if (computerImage) {
+    computerImage.addEventListener("change", () => {
+      const files = Array.from(computerImage.files);
+
+
+      //No files
+      if (!files.length) return;
+
+
+      fileName = computerName.value;
+      loadImage(files, "Computer", fileName, "#computerPhoto");
+    });
+  }
+});

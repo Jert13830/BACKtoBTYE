@@ -1,3 +1,41 @@
+
+/*Mobile first to ensure quick loading on phones*/
+/* Mobile: Stack vertically */
+@media (max-width: 768px) {
+    .newsOutings {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* All windows same width and spacing */
+    .newsDiv,
+    .outingsDiv,
+    .carouselDiv {
+        padding:0;
+        margin:0;
+
+        width: calc(100% - 3rem);
+        filter: drop-shadow(#b8b8b9 0.4rem 0.4rem 2px);
+    }
+
+   
+    .carouselDiv {
+        width: 100%;                   
+        max-width: none;
+    }
+
+     .outingsDiv,
+    .carouselDiv {
+        margin: 1.5rem; 
+    }
+
+    .carouselDiv .content {
+        height: 250px;
+    }
+
+}
+
 .newsOutings {
     display: flex;
     gap: 5.4%; /* 2.7% + 2.7% */
@@ -49,45 +87,5 @@
 /*Position modal on screen */
   top: 5vh;
   left: 5vw;
- 
-  
 }
 
-
-
-
-/* Mobile: Stack vertically */
-@media (max-width: 768px) {
-    .newsOutings {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* All windows same width and spacing */
-    .newsDiv,
-    .outingsDiv,
-    .carouselDiv {
-        padding:0;
-        margin:0;
-
-        width: calc(100% - 3rem);
-        filter: drop-shadow(#b8b8b9 0.4rem 0.4rem 2px);
-    }
-
-   
-    .carouselDiv {
-        width: 100%;                   
-        max-width: none;
-    }
-
-     .outingsDiv,
-    .carouselDiv {
-        margin: 1.5rem; 
-    }
-
-    .carouselDiv .content {
-        height: 250px;
-    }
-
-}
