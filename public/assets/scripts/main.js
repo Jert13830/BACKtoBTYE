@@ -21,6 +21,7 @@ const manuLogo = document.querySelector("#manuLogo");
 const manuImage = document.querySelector(".manuImage");
 
 
+
 let computerPhotoPath = '/assets/images/';
 let statusText = "";
 let fileName = "";
@@ -48,8 +49,8 @@ async function loadImage(files, imageType, fileName, sourcePhoto) {
     formData.append("filename", fileName);
     formData.append("phototype", "computers");
     //The required size of the photo
-    formData.append("photoWidth", 311);
-    formData.append("photoHeight", 215);
+    formData.append("photoWidth", 300);
+    formData.append("photoHeight", 200);
   }
   else if (imageType === "Profile") { //User Images
     formData.append("filename", fileName);
@@ -62,8 +63,8 @@ async function loadImage(files, imageType, fileName, sourcePhoto) {
     formData.append("filename", fileName);
     formData.append("phototype", "logos");
     //The required size of the photo
-    formData.append("photoWidth", 128);
-    formData.append("photoHeight", 63);
+    formData.append("photoWidth", 70);
+    formData.append("photoHeight", 47);
   }
 
   try {
@@ -178,4 +179,42 @@ document.addEventListener('DOMContentLoaded', () => {
       loadImage(files, "Computer", fileName, "#computerPhoto");
     });
   }
+});
+
+
+
+//Star rating 
+
+const rarityRating = document.querySelector("#rarityRating");
+
+document.querySelector("#rarity").addEventListener("click", function(e) {
+    const child = e.target;
+    const parent = child.parentNode;
+
+    // Convert HTMLCollection to array and get index
+    const index = [...parent.children].indexOf(child);
+    alert(index);
+
+    rarityRating.value = 2;
+   alert(rarityRating.value); // nth-child (1-based)
+
+   // unselect all stars
+    let i = 0;
+
+    [...parent.children].forEach(child => {
+
+                if (i <= index){
+                  child.classList.add('active');
+                  child.classList.add('selected');
+                }
+                else {
+                  child.classList.remove('selected');
+                  child.classList.remove('active');
+                }  
+
+                i++;
+  
+            });
+
+           
 });
