@@ -1,5 +1,3 @@
-
-
 const menuToggle = document.querySelector('#menu-toggle');
 const navDiv = document.querySelector('#navDiv');
 
@@ -26,8 +24,7 @@ let computerPhotoPath = '/assets/images/';
 let statusText = "";
 let fileName = "";
 
-
-
+//Deal with images use Multer and Sharp to load, resize and reformat images to .webp
 async function loadImage(files, imageType, fileName, sourcePhoto) {
 
   if (!files?.length) return; // No images
@@ -141,14 +138,6 @@ function setupModalCloseBehavior() {
 // Each time a dialogue is created
 setupModalCloseBehavior();
 
-/*function loadImage(file) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error('Failed to load image'));
-      img.src = URL.createObjectURL(file);
-    });
-  }*/
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -185,36 +174,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //Star rating 
 
-const rarityRating = document.querySelector("#rarityRating");
-
 document.querySelector("#rarity").addEventListener("click", function(e) {
-    const child = e.target;
+  const child = e.target;
+  const nList = document.querySelector("#rarityStars");
+  lightStars(child,nList);
+});
+
+document.querySelector("#popularity").addEventListener("click", function(e) {
+  const child = e.target;
+  const nList = document.querySelector("#popularityStars");
+  lightStars(child,nList);
+});
+
+function lightStars(child,nList){
     const parent = child.parentNode;
+    const nEntry = nList.getElementsByTagName("li");
 
     // Convert HTMLCollection to array and get index
     const index = [...parent.children].indexOf(child);
-    alert(index);
+    
+   // 
+    
+   for (let i = 0; i < nEntry.length; i++){
 
-    rarityRating.value = 2;
-   alert(rarityRating.value); // nth-child (1-based)
+      if (i <= index){
+         nEntry[i].classList.remove('star-unselected');
+         nEntry[i].classList.add('star-selected');
+      }
+      else {
+         nEntry[i].classList.remove('star-selected');
+         nEntry[i].classList.add('star-unselected');
+      }
 
-   // unselect all stars
-    let i = 0;
-
-    [...parent.children].forEach(child => {
-
-                if (i <= index){
-                  child.classList.add('active');
-                  child.classList.add('selected');
-                }
-                else {
-                  child.classList.remove('selected');
-                  child.classList.remove('active');
-                }  
-
-                i++;
-  
-            });
-
-           
-});
+   }       
+}

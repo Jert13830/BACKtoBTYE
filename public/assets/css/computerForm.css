@@ -22,6 +22,8 @@
 
     .formInputLine {
         flex-direction: column;
+         align-self: start;
+        width: 65%;
         gap: 0 !important;
     }
 
@@ -41,11 +43,11 @@
         width: 65%;
     }
 
-    #scoringBtn{
+    #scoringBtn {
         flex-direction: column;
-        gap:0 !important;
+        gap: 0 !important;
         align-self: start;
-       
+
     }
 
 }
@@ -126,6 +128,16 @@ input {
     gap: 2rem;
     padding-bottom: 1rem;
     justify-content: space-between;
+
+    align-items: center;
+
+
+}
+
+.formInputLine>div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .formInputLine input {
@@ -219,7 +231,7 @@ img {
     transition: color 200ms,
         text-shadow 200ms;
     transition-delay: 0;
-     cursor: pointer;
+    cursor: pointer;
 }
 
 .stars:hover li {
@@ -243,6 +255,16 @@ img {
     transition-delay: 240ms;
 }
 
+#rarity .star-selected,
+#popularity .star-selected {
+    color: #000;
+}
+
+#rarity .star-unselected,
+#popularity .star-unselected {
+    color: #fff;
+}
+
 .stars:hover li {
     color: #000;
     text-shadow: #000 0 0 2px;
@@ -258,7 +280,7 @@ img {
     list-style: none;
     color: #fff;
     padding: 0;
-    gap:5px;
+    gap: 5px;
 }
 
 #rarity {
@@ -270,4 +292,38 @@ img {
 #popularity {
     display: flex;
     gap: 10px;
+}
+
+#manuName {
+    display: flex;
+    gap: 5px;
+    color: #000;
+}
+
+.plus-label svg path {
+    fill: #000;
+}
+
+.plus-label {
+    cursor: pointer;
+}
+
+.btnForm {
+    border-radius: 6px;
+    background-color: #D3CBCB;
+    color: #3C3C43;
+
+
+    border: 1px #b2afaf solid;
+
+    padding: 5px 5px 10px 5px;
+
+    width: 8rem;
+    font-size: 1rem;
+
+}
+
+.btnForm:hover {
+    background-color: #7c7c7d;
+    color: #fff;
 }
