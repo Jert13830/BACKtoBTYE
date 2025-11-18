@@ -15,6 +15,12 @@
         font-weight: 600;
         text-align: center;
     }
+
+     #addComputerManufacturer .windowTitle .titleP {
+        font-size: large;
+        font-weight: 600;
+        text-align: center;
+    }
 }
 
 
@@ -50,6 +56,14 @@
 
     }
 
+    #formright, #formLeft{
+        display : flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+
 }
 
 
@@ -72,8 +86,8 @@
 }
 
 .formBk2 {
-    width: 97%;
-    height: 95%;
+    width: 74vw;
+    height: 73vh;
     background: linear-gradient(to left,
             #ff7675 0%,
             #ffcccb 20%,
@@ -83,7 +97,9 @@
 
     border-radius: 10px;
     border: 0;
-    overflow: auto;
+
+    overflow-x: hidden;
+    overflow-y: auto;
 
 }
 
@@ -145,14 +161,10 @@ input {
 }
 
 
-#addComputer .largeWindow {
-    width: 80vw;
-    height: 86vh;
-}
 
-#addComputer .squareBtnClose {
+#addComputer .squareBtnClose, #addComputerManufacturer .squareBtnClose {
     display: block;
-}
+} 
 
 #formDiv {
     display: flex;

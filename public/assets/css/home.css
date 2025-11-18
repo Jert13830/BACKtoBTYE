@@ -1,6 +1,7 @@
 
 /*Mobile first to ensure quick loading on phones*/
 /* Mobile: Stack vertically */
+
 @media (max-width: 768px) {
     .newsOutings {
         flex-direction: column;
@@ -34,6 +35,7 @@
         height: 250px;
     }
 
+
 }
 
 .newsOutings {
@@ -53,9 +55,6 @@
 .newsDiv{
     margin-left: 1.5rem;
 }
-
-
-
 .column {
     display: flex;
     flex-direction: column;
@@ -65,11 +64,8 @@
     padding-bottom: 30px;
 }
 
-
 /* Dialogue */
 #addComputer { display: none; }
-
-
 
 /* Show dialog in fullscreen */
 #addComputer:modal {
@@ -85,8 +81,18 @@
   justify-self: center;
 
 /*Position modal on screen */
-  
+  top: 2vh;
   left: 5vw;
 }
 
+#addComputer .largeWindow{
+    height:87vh;
+    width:80vw;
+}
+
+.mediumWindow{
+    width: 50vw;
+    background-color: t;
+
+}
 

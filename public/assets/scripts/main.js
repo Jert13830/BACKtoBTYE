@@ -8,6 +8,7 @@ const closeModalBtn = document.querySelector('.squareBtnClose');
 let openedDialog;
 
 
+
 const computerName = document.querySelector("#computer");
 const manufacturerName = document.querySelector("#manufacturer");
 
@@ -18,7 +19,7 @@ const computerImage = document.querySelector(".computerImage");
 const manuLogo = document.querySelector("#manuLogo");
 const manuImage = document.querySelector(".manuImage");
 
-
+const addComputerManu = document.querySelector("#addComputerManu");
 
 let computerPhotoPath = '/assets/images/';
 let statusText = "";
@@ -124,6 +125,7 @@ if (roundBtn) {
 }
 
 
+
 //Close button modal window
 function setupModalCloseBehavior() {
   document.querySelectorAll('dialog').forEach(dialog => {
@@ -208,3 +210,9 @@ function lightStars(child,nList){
 
    }       
 }
+
+
+addComputerManu.addEventListener("click", function(e) {
+   addComputerManufacturer.showModal();
+    openedDialog = addComputerManufacturer;
+});

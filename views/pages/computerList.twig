@@ -35,4 +35,17 @@
 			{% endembed %}
 		</dialog>
 	</section>
+	<section id="sectionComputerManufacturer">
+		<dialog id="addComputerManufacturer">
+			{% embed '/partials/window.twig' with {
+    windowType: 'mediumWindow',
+    title: 'Computer Manufacturer',
+    showPlus: 0
+} %}
+				{% block content %}
+					{% include '/partials/manufactuterForm.twig' %}
+				{% endblock %}
+			{% endembed %}
+		</dialog>
+	</section>
 {% endblock %}
