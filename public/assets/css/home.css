@@ -64,35 +64,3 @@
     padding-bottom: 30px;
 }
 
-/* Dialogue */
-#addComputer { display: none; }
-
-/* Show dialog in fullscreen */
-#addComputer:modal {
-  display: flex;
-  flex-direction: column;
-  width: 90vw;
-  height: 95vh;
-  margin: 0;
-  border: none;
-  background:none;
-  color: #000;
-  outline: none;      
-  justify-self: center;
-
-/*Position modal on screen */
-  top: 2vh;
-  left: 5vw;
-}
-
-#addComputer .largeWindow{
-    height:87vh;
-    width:80vw;
-}
-
-.mediumWindow{
-    width: 50vw;
-    background-color: t;
-
-}
-

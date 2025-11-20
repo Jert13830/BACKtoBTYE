@@ -1,7 +1,9 @@
 require("dotenv").config();
 const express = require("express");
-const computerRouter = require ("./router/computerRouter");
-const uploadRouter = require ("./router/uploadRouter.js");
+
+const computerRouter = require ("./routers/computerRouter.js");
+const uploadRouter = require ("./routers/uploadRouter.js");
+const computerManufacturerRouter= require ("./routers/computerManufacturerRouter.js");
 
 const app= express();
 
@@ -11,6 +13,8 @@ app.use(express.static("public"));
 // Use routes
 app.use("/", uploadRouter);
 app.use(computerRouter);
+app.use(computerManufacturerRouter);
+
 
 app.listen(process.env.PORT, () =>{
     console.log("Listening on port 3000");

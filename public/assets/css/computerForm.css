@@ -2,36 +2,33 @@
 @media (max-width: 1100px) {
     #formDiv {
         flex-direction: column;
-        gap: 1rem !important;
+    }
+
+    .formInputLine{
+        justify-content: space-evenly !important;
+    
+    }
+
+     #formLeft{
+        text-align: left;
+    }
+
+     #formRight{
+        justify-content:left;
 
     }
 
 }
-
-/*Resize the window title*/
-@media (max-width: 630px) {
-    #addComputer .windowTitle .titleP {
-        font-size: large;
-        font-weight: 600;
-        text-align: center;
-    }
-
-     #addComputerManufacturer .windowTitle .titleP {
-        font-size: large;
-        font-weight: 600;
-        text-align: center;
-    }
-}
-
 
 @media (max-width: 575px) {
 
     .formInputLine {
         flex-direction: column;
-         align-self: start;
-        width: 65%;
+         align-self:self-start;
+       
         gap: 0 !important;
     }
+    
 
     /*Limit the input fields to 30 characters */
     .formInputLine input {
@@ -56,12 +53,19 @@
 
     }
 
-    #formright, #formLeft{
+    #formRight, #formLeft{
         display : flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
 
+    }
+
+    #formDiv{
+        gap:3px !important;
+    }
+    .formBtnDiv{
+        flex-direction: column;
     }
 
 }
@@ -86,8 +90,8 @@
 }
 
 .formBk2 {
-    width: 74vw;
-    height: 73vh;
+    width: 75vw;
+    height: 72vh;
     background: linear-gradient(to left,
             #ff7675 0%,
             #ffcccb 20%,
@@ -328,7 +332,7 @@ img {
 
     border: 1px #b2afaf solid;
 
-    padding: 5px 5px 10px 5px;
+    padding: 5px;
 
     width: 8rem;
     font-size: 1rem;
@@ -338,4 +342,9 @@ img {
 .btnForm:hover {
     background-color: #7c7c7d;
     color: #fff;
+}
+
+.formBtnDiv{
+    display:flex;
+    gap:10px;
 }
