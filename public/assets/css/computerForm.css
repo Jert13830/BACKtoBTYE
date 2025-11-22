@@ -1,79 +1,5 @@
-/* Small screens first for quick loading */
-@media (max-width: 1100px) {
-    #formDiv {
-        flex-direction: column;
-    }
-
-    .formInputLine{
-        justify-content: space-evenly !important;
-    
-    }
-
-     #formLeft{
-        text-align: left;
-    }
-
-     #formRight{
-        justify-content:left;
-
-    }
-
-}
-
-@media (max-width: 575px) {
-
-    .formInputLine {
-        flex-direction: column;
-         align-self:self-start;
-       
-        gap: 0 !important;
-    }
-    
-
-    /*Limit the input fields to 30 characters */
-    .formInputLine input {
-        width: 30ch;
-    }
-
-    /*Limit the input fields of type number to 8 characters */
-    .formInputLine input[type=number] {
-        width: 8ch;
-    }
-
-    #computerProfileIamge,
-    #computerInformation {
-        align-self: start;
-        width: 65%;
-    }
-
-    #scoringBtn {
-        flex-direction: column;
-        gap: 0 !important;
-        align-self: start;
-
-    }
-
-    #formRight, #formLeft{
-        display : flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-    }
-
-    #formDiv{
-        gap:3px !important;
-    }
-    .formBtnDiv{
-        flex-direction: column;
-    }
-
-}
-
-
-
 .formBk1 {
-    width: 100%;
+    width: 77vw;
     height: 75vh;
     background: linear-gradient(to left,
             #F8a51c 0%,
@@ -348,3 +274,100 @@ img {
     display:flex;
     gap:10px;
 }
+
+
+  /*The Add Computer window is slightly bigger than the Home window*/
+#addComputer .largeWindow {
+    height: 85vh;
+    width: 80vw;
+    margin: 10px auto;
+    
+}
+
+
+/******************* MEDAI **********************/
+
+@media (max-width: 1100px) {
+    #formDiv {
+        flex-direction: column;
+    }
+
+    .formInputLine{
+        justify-content: space-evenly;
+    
+    }
+
+     #formLeft{
+        text-align: left;
+    }
+
+     #formRight{
+        justify-content:left;
+
+    }
+
+    .formInputLine {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        justify-items: start;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .formInputLine label {
+        text-align: left;
+        justify-self: start;
+    }
+
+    .formInputLine input {
+        justify-self: start;
+        width: 100%;
+    }
+
+    #manuName {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        justify-items: start;
+        width: 100%;
+        gap: 10px;
+    }
+
+    #manuName > div:first-child {
+        justify-self: start;
+        text-align: left;
+    }
+
+    #manuName > div:last-child {
+        justify-self: start;
+    }
+
+}
+
+
+@media (max-width: 575px) {
+ 
+   #addComputer .largeWindow{
+        width:96vw;
+
+   }
+
+   
+.formBk1{
+    width:92vw;
+   }
+    
+.formBk2{
+    width:88vw;
+   }
+
+#computerForm {
+    margin: 1rem;
+   
+   
+}
+
+ 
+}
+

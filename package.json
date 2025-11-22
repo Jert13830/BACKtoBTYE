@@ -2,6 +2,14 @@
   "name": "backtobtye",
   "version": "1.0.0",
   "description": "This is a retro computer website",
+  "homepage": "https://github.com/Jert13830/BACKtoBTYE#readme",
+  "bugs": {
+    "url": "https://github.com/Jert13830/BACKtoBTYE/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jert13830/BACKtoBTYE.git"
+  },
   "license": "ISC",
   "author": "John Thompson",
   "type": "commonjs",
@@ -11,7 +19,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@prisma/client": "^6.18.0",
+    "@prisma/client": "^6.19.0",
     "express": "^5.1.0",
     "multer": "^2.0.2",
     "prisma": "^6.17.1",

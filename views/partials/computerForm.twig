@@ -2,7 +2,6 @@
 	<link rel="stylesheet" href="/assets/css/computerForm.css">
 {% endblock %}
 
-
 <div class="formBk1">
 	<div class="formBk2">
 		<form id="computerForm" action="/addComputer" method="post">
@@ -17,6 +16,9 @@
 					</div>
 					<div>
 						<input type="text" name="computer" id="computer" placeholder="Computer" required/>
+						{% if errors.computerName %}
+							<p>{{errors.computerName}}</p>
+						{% endif %}
 					</div>
 				</div>
 

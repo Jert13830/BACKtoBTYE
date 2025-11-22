@@ -1,0 +1,28 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>Add Computer</title>
+	
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section id="sectionAdd">
+				<div id="addComputer">
+					{% embed '/partials/window.twig' with {
+   					 	windowType: 'largeWindow',
+    					title: 'Add Computer',
+    					showPlus: 0,
+						showClose : 1,
+						pageId: 'addComputer'
+					} %}
+					{% block content %}
+						{% include '/partials/computerForm.twig' %}
+					{% endblock %}
+					{% endembed %}
+				</div>
+			</section>
+		</div>
+	</main>
+{% endblock %}

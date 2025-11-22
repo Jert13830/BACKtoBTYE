@@ -2,9 +2,10 @@ const menuToggle = document.querySelector('#menu-toggle');
 const navDiv = document.querySelector('#navDiv');
 
 const roundBtn = document.querySelector('.roundBtn');
+
 const addComputerDialogue = document.querySelector('#addComputer');
 
-const closeModalBtn = document.querySelector('.squareBtnClose');
+const squareBtnClose = document.querySelector('.squareBtnClose');
 let openedDialog;
 
 
@@ -117,28 +118,22 @@ if (roundBtn) {
     const page = roundBtn.dataset.page; // get which page the button was clicked in
 
     if (page === "computerList") {
-      addComputerDialogue.showModal();
-      openedDialog = addComputerDialogue;
+      window.open("/addComputer", "_self")
     }
 
   });
 }
 
-
-
-//Close button modal window
-function setupModalCloseBehavior() {
-  document.querySelectorAll('dialog').forEach(dialog => {
-    dialog.addEventListener('click', (e) => {
-      if (e.target.closest('.squareBtnClose') || e.target === dialog) {
-        dialog.close();
-      }
-    });
+//close button
+if (squareBtnClose) {
+  squareBtnClose.addEventListener('click', () => {
+    const page = squareBtnClose.dataset.page;
+    if (page === "addComputer") {
+      window.open("/computerList", "_self");
+    }
   });
 }
 
-// Each time a dialogue is created
-setupModalCloseBehavior();
 
 
 
@@ -146,73 +141,83 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (manuImage) {
     manuImage.addEventListener("change", () => {
-       const files = Array.from(manuImage.files);
+      const files = Array.from(manuImage.files);
+      //No files selected
+      if (!files.length) return;
 
-    //No files
-    if (!files.length) return;
+      fileName = manufacturerName.value;
 
-    fileName = manufacturerName.value;
-
-    loadImage(files, "Manufactuer", fileName, "#manuLogo");
+      loadImage(files, "Manufactuer", fileName, "#manuLogo");
     });
   }
 
+
+
   if (computerImage) {
+
+
+
+
     computerImage.addEventListener("change", () => {
       const files = Array.from(computerImage.files);
 
-
-      //No files
+      //No files selected
       if (!files.length) return;
 
-
-      fileName = computerName.value;
-      loadImage(files, "Computer", fileName, "#computerPhoto");
+      const value = computerName.value?.trim();
+      if (value) { //Test if a computer name has been given
+        fileName = computerName.value;
+        loadImage(files, "Computer", fileName, "#computerPhoto");
+      }
+      else {
+        alert("Fill in name");
+      }
     });
+
+
   }
+
 });
-
-
 
 //Star rating 
 
-document.querySelector("#rarity").addEventListener("click", function(e) {
+document.querySelector("#rarity").addEventListener("click", function (e) {
   const child = e.target;
   const nList = document.querySelector("#rarityStars");
-  lightStars(child,nList);
+  lightStars(child, nList);
 });
 
-document.querySelector("#popularity").addEventListener("click", function(e) {
+document.querySelector("#popularity").addEventListener("click", function (e) {
   const child = e.target;
   const nList = document.querySelector("#popularityStars");
-  lightStars(child,nList);
+  lightStars(child, nList);
 });
 
-function lightStars(child,nList){
-    const parent = child.parentNode;
-    const nEntry = nList.getElementsByTagName("li");
+function lightStars(child, nList) {
+  const parent = child.parentNode;
+  const nEntry = nList.getElementsByTagName("li");
 
-    // Convert HTMLCollection to array and get index
-    const index = [...parent.children].indexOf(child);
-    
-   // 
-    
-   for (let i = 0; i < nEntry.length; i++){
+  // Convert HTMLCollection to array and get index
+  const index = [...parent.children].indexOf(child);
 
-      if (i <= index){
-         nEntry[i].classList.remove('star-unselected');
-         nEntry[i].classList.add('star-selected');
-      }
-      else {
-         nEntry[i].classList.remove('star-selected');
-         nEntry[i].classList.add('star-unselected');
-      }
+  // 
 
-   }       
+  for (let i = 0; i < nEntry.length; i++) {
+
+    if (i <= index) {
+      nEntry[i].classList.remove('star-unselected');
+      nEntry[i].classList.add('star-selected');
+    }
+    else {
+      nEntry[i].classList.remove('star-selected');
+      nEntry[i].classList.add('star-unselected');
+    }
+
+  }
 }
 
 
-addComputerManu.addEventListener("click", function(e) {
-   addComputerManufacturer.showModal();
-    openedDialog = addComputerManufacturer;
+addComputerManu.addEventListener("click", function (e) {
+  addComputerManufacturer.showModal();
+  openedDialog = addComputerManufacturer;
 });

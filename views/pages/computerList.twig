@@ -22,30 +22,4 @@
 
 		</div>
 	</main>
-	<section id="sectionAdd">
-		<dialog id="addComputer">
-			{% embed '/partials/window.twig' with {
-    windowType: 'largeWindow',
-    title: 'Add Computers',
-    showPlus: 0
-} %}
-				{% block content %}
-					{% include '/partials/computerForm.twig' %}
-				{% endblock %}
-			{% endembed %}
-		</dialog>
-	</section>
-	<section id="sectionComputerManufacturer">
-		<dialog id="addComputerManufacturer">
-			{% embed '/partials/window.twig' with {
-    windowType: 'mediumWindow',
-    title: 'Computer Manufacturer',
-    showPlus: 0
-} %}
-				{% block content %}
-					{% include '/partials/manufactuterForm.twig' %}
-				{% endblock %}
-			{% endembed %}
-		</dialog>
-	</section>
 {% endblock %}
