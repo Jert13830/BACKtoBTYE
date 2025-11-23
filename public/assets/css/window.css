@@ -148,3 +148,13 @@
     height:450px;
 }*/
 
+#addComputerManufacturer{
+    background-color: transparent;
+    border:0;
+    
+}
+
+#addComputerManufacturer .content{
+
+    height:40vh;
+}

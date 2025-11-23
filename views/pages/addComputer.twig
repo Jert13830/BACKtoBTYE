@@ -2,7 +2,7 @@
 
 {% block style %}
 	<title>Add Computer</title>
-	
+
 {% endblock %}
 
 {% block main %}
@@ -17,12 +17,27 @@
 						showClose : 1,
 						pageId: 'addComputer'
 					} %}
-					{% block content %}
-						{% include '/partials/computerForm.twig' %}
-					{% endblock %}
+						{% block content %}
+							{% include '/partials/computerForm.twig' %}
+						{% endblock %}
 					{% endembed %}
 				</div>
 			</section>
 		</div>
 	</main>
-{% endblock %}
+	<section id="addComputerManuSection">
+		<dialog id="addComputerManufacturer">
+		{% embed '/partials/window.twig' with {
+   					 	windowType: 'mediumWindow',
+    					title: 'Add Computer Manufacturer',
+    					showPlus: 0,
+						showClose : 1,
+						pageId: 'addComputerManufacturer'
+					} %}
+						{% block content %}
+							{% include '/partials/computerManufacturerForm.twig' %}
+						{% endblock %}
+					{% endembed %}
+			
+	</dialog>
+</section>{% endblock %}

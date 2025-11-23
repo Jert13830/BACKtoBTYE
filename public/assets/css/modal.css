@@ -1,45 +1,7 @@
 
-@media (max-width: 1300px) {
-    #addComputerManufacturer .windowTitle .titleP {
-        font-size: medium;
-        font-weight: 600;
-        text-align: center;
-    }
-}
-
-#addComputer {
-    display: none;
-}
-
-/* Show dialog in fullscreen */
-#addComputer:modal {
-    display: flex;
-    flex-direction: column;
-    width: 90vw;
-    height: 95vh;
-    margin: 0;
-    border: none;
-    background: none;
-    color: #000;
-    outline: none;
-
-    /*Position modal centre screen */
-      margin: auto;
-}
-
-#addComputerManufacturer:modal {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    border: none;
-    background: none;
-    color: #000;
-    outline: none;
-    margin: auto;
-
-}
 
 
+    
   
 
 

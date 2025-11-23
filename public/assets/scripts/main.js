@@ -8,14 +8,11 @@ const addComputerDialogue = document.querySelector('#addComputer');
 const squareBtnClose = document.querySelector('.squareBtnClose');
 let openedDialog;
 
-
-
 const computerName = document.querySelector("#computer");
 const manufacturerName = document.querySelector("#manufacturer");
 
 const computerPhoto = document.querySelector("#computerPhoto");
 const computerImage = document.querySelector(".computerImage");
-
 
 const manuLogo = document.querySelector("#manuLogo");
 const manuImage = document.querySelector(".manuImage");
@@ -135,8 +132,6 @@ if (squareBtnClose) {
 }
 
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
 
   if (manuImage) {
@@ -151,13 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
-
   if (computerImage) {
-
-
-
-
     computerImage.addEventListener("change", () => {
       const files = Array.from(computerImage.files);
 
@@ -173,8 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alert("Fill in name");
       }
     });
-
-
   }
 
 });
@@ -199,8 +186,6 @@ function lightStars(child, nList) {
 
   // Convert HTMLCollection to array and get index
   const index = [...parent.children].indexOf(child);
-
-  // 
 
   for (let i = 0; i < nEntry.length; i++) {
 

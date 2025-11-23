@@ -7,8 +7,19 @@ exports.listComputerManufacturer = async (req,res)=>{
 }
 
 exports.addComputerManufacturer = async (req,res)=>{
-    
+     console.log(req.body);
+    try {
+        const computerManufacturer = await prisma.fabricantOrdinateur.create({
+            data: {
+                nom: "Hello",
+            }
+        })
+        res.redirect("/addComputer")
+    } catch (error) {
+        res.render("pages/home.twig")
+    }
 }
+
 
 exports.removeComputerManufacturer = async (req,res)=>{
     
