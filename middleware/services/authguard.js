@@ -1,6 +1,4 @@
-// On importe PrismaClient depuis le client généré par Prisma
-const { PrismaClient } = require("../../generated/prisma/client")
-// On instancie PrismaClient pour interagir avec la base de données
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient()
 
 /**

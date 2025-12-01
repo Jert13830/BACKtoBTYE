@@ -1,5 +1,7 @@
-const { PrismaClient } = require("../generated/prisma/client");
+//const { Prisma } = require("@prisma/client");
+//const prisma = new PrismaClient();
 
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.listComputerManufacturer = async (req,res)=>{

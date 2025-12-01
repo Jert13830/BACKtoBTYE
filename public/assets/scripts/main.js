@@ -8,16 +8,18 @@ const addComputerDialogue = document.querySelector('#addComputer');
 const squareBtnClose = document.querySelector('.squareBtnClose');
 let openedDialog;
 
-const computerName = document.querySelector("#computer");
-const manufacturerName = document.querySelector("#manufacturer");
+const computerName = document.querySelector('#computer');
+const manufacturerName = document.querySelector('#manufacturer');
 
-const computerPhoto = document.querySelector("#computerPhoto");
-const computerImage = document.querySelector(".computerImage");
+const computerPhoto = document.querySelector('#computerPhoto');
+const computerImage = document.querySelector('.computerImage');
 
-const manuLogo = document.querySelector("#manuLogo");
-const manuImage = document.querySelector(".manuImage");
+const manuLogo = document.querySelector('#manuLogo');
+const manuImage = document.querySelector('.manuImage');
 
-const addComputerManu = document.querySelector("#addComputerManu");
+const addComputerManu = document.querySelector('#addComputerManu');
+
+const computerManuDialog = document.getElementById('#addComputerManufacturer');
 
 let computerPhotoPath = '/assets/images/';
 let statusText = "";
@@ -123,11 +125,21 @@ if (roundBtn) {
 
 //close button
 if (squareBtnClose) {
-  squareBtnClose.addEventListener('click', () => {
-    const page = squareBtnClose.dataset.page;
-    if (page === "addComputer") {
-      window.open("/computerList", "_self");
-    }
+  document.addEventListener('click', (e) => {
+      const closeBtn = e.target.closest('.squareBtnClose');
+      if (!closeBtn) return;
+
+      const page = closeBtn.dataset.page;
+
+      if (page === 'addComputer') {
+        window.location.href = '/computerList';
+      } 
+      
+      // Find if we're inside an open dialog
+      const dialog = closeBtn.closest('dialog');
+      if (dialog && dialog.open) {
+          dialog.close();
+      } 
   });
 }
 
@@ -140,9 +152,19 @@ document.addEventListener('DOMContentLoaded', () => {
       //No files selected
       if (!files.length) return;
 
-      fileName = manufacturerName.value;
 
-      loadImage(files, "Manufactuer", fileName, "#manuLogo");
+      const value = manufacturerName.value?.trim();
+      if (value) { //Test if a manufacturer name has been given
+
+        fileName = manufacturerName.value;
+
+        alert(fileName);
+
+        loadImage(files, "Manufactuer", fileName, "#manuLogo");
+      }
+      else{
+         alert("Fill in name");
+      }
     });
   }
 

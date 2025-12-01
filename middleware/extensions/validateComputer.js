@@ -1,4 +1,5 @@
-const { Prisma } = require('@prisma/client')
+//const { Prisma } = require('@prisma/client')
+const { PrismaClient, Prisma } = require("@prisma/client");
 
 module.exports = Prisma.defineExtension({
     name: "computerValidateExtension",

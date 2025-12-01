@@ -1,0 +1,15 @@
+#computerManufacturerForm{
+    margin:10px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap:40px;
+
+}
+
+.manuLogoHolder{
+    display:flex;
+    flex-direction: column;
+    
+    gap:20px;
+}

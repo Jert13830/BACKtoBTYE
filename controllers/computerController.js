@@ -1,7 +1,10 @@
+//const { PrismaClient } = require("../generated/prisma/client");
+const { PrismaClient } = require("@prisma/client");
 const validateComputer = require("../middleware/extensions/validateComputer");
 
-const { PrismaClient } = require("../generated/prisma/client");
 const prisma = new PrismaClient().$extends(validateComputer);
+
+
 
 // Show homepage
 exports.displayHome = async (req,res)=>{

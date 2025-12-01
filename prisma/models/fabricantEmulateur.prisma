@@ -1,6 +1,6 @@
 model FabricantEmulateur{
     id_fab_emulateur Int @id @default(autoincrement())
-    nom String @db.VarChar(255)
+    nom String @db.VarChar(255) @unique
 
     photos Photo[]
     emulateurs Emulateur[]
