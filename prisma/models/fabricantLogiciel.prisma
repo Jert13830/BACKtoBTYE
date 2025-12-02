@@ -1,7 +1,6 @@
-model FabricantLogiciel{
-    id_fab_logiciel Int @id @default(autoincrement())
-    
-    nom String @db.VarChar(255) @unique
-    photos Photo[]
-    logiciels Logiciel[]
+model FabricantLogiciel {
+  id_fab_logiciel Int        @id @default(autoincrement())
+  nom             String     @unique @db.VarChar(255)
+  logiciels       Logiciel[]
+  photos          Photo[]
 }

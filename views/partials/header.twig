@@ -4,20 +4,14 @@
 
 
 {# Global gradient definitions — that work with Safari #}
-<svg
-  width="0"
-  height="0"
-  style="position:absolute; z-index:-1;"
-  aria-hidden="true"
-  focusable="false"
->
-  <defs>
-    <linearGradient id="buttonGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#e2dbdb" />
-      <stop offset="50%" stop-color="#d3cbcb" />
-      <stop offset="100%" stop-color="#bfb7b7" />
-    </linearGradient>
-  </defs>
+<svg width="0" height="0" style="position:absolute; z-index:-1;" aria-hidden="true" focusable="false">
+	<defs>
+		<linearGradient id="buttonGradient" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0%" stop-color="#e2dbdb"/>
+			<stop offset="50%" stop-color="#d3cbcb"/>
+			<stop offset="100%" stop-color="#bfb7b7"/>
+		</linearGradient>
+	</defs>
 </svg>
 
 <header>
@@ -75,12 +69,12 @@
 					</li>
 
 					<li>
-						<button>
-							<span>About</span>
-							<svg viewbox="0 0 143 83" xmlns="http://www.w3.org/2000/svg" preserveaspectratio="none">
-								<path d="M141.575 1L112.298 82H1.4248L30.7021 1H141.575Z" fill="url(#buttonGradient)" stroke="#DEDDDD" stroke-width="2"/>
-							</svg>
-						</button>
+							<button id="aboutBtn">
+								<span>About</span>
+								<svg viewbox="0 0 143 83" xmlns="http://www.w3.org/2000/svg" preserveaspectratio="none">
+									<path d="M141.575 1L112.298 82H1.4248L30.7021 1H141.575Z" fill="url(#buttonGradient)" stroke="#DEDDDD" stroke-width="2"/>
+								</svg>
+							</button>
 					</li>
 
 					<li>

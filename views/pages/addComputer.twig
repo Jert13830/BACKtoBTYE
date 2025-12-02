@@ -24,20 +24,22 @@
 				</div>
 			</section>
 		</div>
-	</main>
-	<section id="addComputerManuSection">
-		<dialog id="addComputerManufacturer">
-		{% embed '/partials/window.twig' with {
+
+		<section id="addComputerManuSection">
+			<dialog id="addComputerManufacturer">
+				{% embed '/partials/window.twig' with {
    					 	windowType: 'smallWindow',
     					title: 'Computer Manufacturer',
     					showPlus: 0,
 						showClose : 1,
 						pageId: 'addComputerManufacturer'
 					} %}
-						{% block content %}
-							{% include '/partials/computerManufacturerForm.twig' %}
-						{% endblock %}
-					{% endembed %}
-			
-	</dialog>
-</section>{% endblock %}
+					{% block content %}
+						{% include '/partials/computerManufacturerForm.twig' %}
+					{% endblock %}
+				{% endembed %}
+
+			</dialog>
+		</section>
+	</main>
+{% endblock %}

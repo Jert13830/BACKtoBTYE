@@ -19,7 +19,10 @@ const manuImage = document.querySelector('.manuImage');
 
 const addComputerManu = document.querySelector('#addComputerManu');
 
-const computerManuDialog = document.getElementById('#addComputerManufacturer');
+const computerManuDialog = document.querySelector('#addComputerManufacturer');
+
+const aboutBtn = document.querySelector("#aboutBtn");
+const aboutDialog = document.querySelector("#aboutDialog");
 
 let computerPhotoPath = '/assets/images/';
 let statusText = "";
@@ -227,4 +230,10 @@ function lightStars(child, nList) {
 addComputerManu.addEventListener("click", function (e) {
   addComputerManufacturer.showModal();
   openedDialog = addComputerManufacturer;
+});
+
+//Open About dialog
+aboutBtn.addEventListener("click", function (e) {
+ aboutDialog.showModal();
+  openedDialog = aboutDialog;
 });

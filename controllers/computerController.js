@@ -1,11 +1,11 @@
 //const { PrismaClient } = require("../generated/prisma/client");
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("../generated/prisma/index.js");
 const validateComputer = require("../middleware/extensions/validateComputer");
 
 const prisma = new PrismaClient().$extends(validateComputer);
 
 
-
+/*
 // Show homepage
 exports.displayHome = async (req,res)=>{
     res.render("pages/home.twig", {
@@ -14,7 +14,7 @@ exports.displayHome = async (req,res)=>{
     duplicateSiret: null,
     confirmPassword: null
   })
-}
+}*/
 
 // Show computer list 
 exports.displayComputerList = async (req,res)=>{

@@ -1,16 +1,16 @@
 model Emulateur {
-    id_emulateur Int @id @default(autoincrement())
-    nom   String  @db.VarChar(255)
-    annee Int
-    lien  String  @db.VarChar(255)
-    details    String // Any special information - tip bit
-    langue String  @db.VarChar(30)
+  id_emulateur       Int                @id @default(autoincrement())
+  nom                String             @db.VarChar(255)
+  annee              Int
+  lien               String             @db.VarChar(255)
+  details            String
+  langue             String             @db.VarChar(30)
+  id_fab_emulateur   Int
+  id_ordinateur      Int
+  fabricantEmulateur FabricantEmulateur @relation(fields: [id_fab_emulateur], references: [id_fab_emulateur])
+  ordinateur         Ordinateur         @relation(fields: [id_ordinateur], references: [id_ordinateur])
+  photos             Photo[]
 
-    fabricantEmulateur     FabricantEmulateur   @relation(fields: [id_fab_emulateur], references: [id_fab_emulateur])
-    id_fab_emulateur   Int
-
-    ordinateur  Ordinateur   @relation(fields: [id_ordinateur], references: [id_ordinateur])
-    id_ordinateur   Int
-
-    photos Photo[]
+  @@index([id_fab_emulateur], map: "Emulateur_id_fab_emulateur_fkey")
+  @@index([id_ordinateur], map: "Emulateur_id_ordinateur_fkey")
 }

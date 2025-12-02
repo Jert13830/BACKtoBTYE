@@ -1,12 +1,12 @@
-model Commentaire{
-    id_commentaire Int @id @default(autoincrement())
+model Commentaire {
+  id_commentaire Int         @id @default(autoincrement())
+  texte          String
+  date           DateTime
+  id_article     Int
+  id_utilisateur Int
+  article        Article     @relation(fields: [id_article], references: [id_article])
+  utilisateur    Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur])
 
-    texte   String
-    date    DateTime
-
-    article  Article   @relation(fields: [id_article], references: [id_article])
-    id_article Int
-
-    utilisateur  Utilisateur   @relation(fields: [id_utilisateur], references: [id_utilisateur])
-    id_utilisateur Int
+  @@index([id_article], map: "Commentaire_id_article_fkey")
+  @@index([id_utilisateur], map: "Commentaire_id_utilisateur_fkey")
 }
