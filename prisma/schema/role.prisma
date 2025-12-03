@@ -1,0 +1,5 @@
+model Role {
+  id_role          Int               @id @default(autoincrement())
+  role             String            @db.VarChar(255)
+  roleUtilisateurs RoleUtilisateur[]
+}

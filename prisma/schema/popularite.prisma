@@ -1,0 +1,11 @@
+model Popularite {
+  id_popularite Int         @id @default(autoincrement())
+  score          Int
+  id_ordinateur  Int
+  id_utilisateur Int
+  article        Ordinateur  @relation(fields: [id_ordinateur], references: [id_ordinateur])
+  utilisateur    Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur])
+
+  @@index([id_ordinateur], map: "Popularite_id_ordinateur_fkey")
+  @@index([id_utilisateur], map: "Popularite_id_utilisateur_fkey")
+}

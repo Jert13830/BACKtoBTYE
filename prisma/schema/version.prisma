@@ -1,0 +1,10 @@
+model Version {
+  id_version    Int        @id @default(autoincrement())
+  id_logiciel   Int
+  id_ordinateur Int
+  logiciel      Logiciel   @relation(fields: [id_logiciel], references: [id_logiciel])
+  ordinateur    Ordinateur @relation(fields: [id_ordinateur], references: [id_ordinateur])
+
+  @@index([id_logiciel], map: "Version_id_logiciel_fkey")
+  @@index([id_ordinateur], map: "Version_id_ordinateur_fkey")
+}

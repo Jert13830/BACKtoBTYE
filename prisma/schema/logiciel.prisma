@@ -1,0 +1,14 @@
+model Logiciel {
+  id_logiciel       Int               @id @default(autoincrement())
+  nom               String            @db.VarChar(255)
+  annee             Int
+  lien              String            @db.VarChar(255)
+  details           String
+  langue            String            @db.VarChar(30)
+  id_fab_logiciel   Int
+  fabricantLogiciel FabricantLogiciel @relation(fields: [id_fab_logiciel], references: [id_fab_logiciel])
+  photos            Photo[]
+  versions          Version[]
+
+  @@index([id_fab_logiciel], map: "Logiciel_id_fab_logiciel_fkey")
+}

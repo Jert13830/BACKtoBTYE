@@ -1,7 +1,7 @@
 const { Prisma } = require('@prisma/client');
 
 module.exports = Prisma.defineExtension({
-    name: "computerValidateExtension",
+    name: "userValidateExtension",
     query: {
         user: {
             create: async ({ args, query }) => {

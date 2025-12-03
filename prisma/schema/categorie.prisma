@@ -1,0 +1,5 @@
+model Categorie {
+  id_categorie Int       @id @default(autoincrement())
+  categorie    String    @db.VarChar(255)
+  articles     Article[]
+}

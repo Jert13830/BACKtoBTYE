@@ -1,0 +1,19 @@
+model Article {
+  id_article     Int           @id @default(autoincrement())
+  titre          String        @db.VarChar(255)
+  texte          String
+  date           DateTime
+  id_categorie   Int
+  id_ordinateur  Int
+  id_utilisateur Int
+  categorie      Categorie     @relation(fields: [id_categorie], references: [id_categorie])
+  ordinateur     Ordinateur    @relation(fields: [id_ordinateur], references: [id_ordinateur])
+  utilisateur    Utilisateur   @relation(fields: [id_utilisateur], references: [id_utilisateur])
+  articleLikes   ArticleLike[]
+  commentaires   Commentaire[]
+  photo          Photo?
+
+  @@index([id_categorie], map: "Article_id_categorie_fkey")
+  @@index([id_ordinateur], map: "Article_id_ordinateur_fkey")
+  @@index([id_utilisateur], map: "Article_id_utilisateur_fkey")
+}

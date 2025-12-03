@@ -1,0 +1,14 @@
+model Utilisateur {
+  id_utilisateur   Int               @id @default(autoincrement())
+  pseudo           String            @db.VarChar(255)
+  email            String            @unique @db.VarChar(255)
+  motDePasse       String            @db.VarChar(255)
+  id_photo         Int               @unique
+  articles         Article[]
+  articleLikes     ArticleLike[]
+  commentaires     Commentaire[]
+  popularites      Popularite[]
+  raretes          Rarete[]
+  roleUtilisateurs RoleUtilisateur[]
+  photo            Photo             @relation(fields: [id_photo], references: [id_photo])
+}

@@ -19,9 +19,9 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@prisma/adapter-mariadb": "^7.0.1",
-    "@prisma/client": "^7.0.1",
-    "@prisma/extension-accelerate": "^3.0.0",
+    
+    "@prisma/client": "^5.19.1",
+    
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mariadb": "^3.4.5",
@@ -30,6 +30,6 @@
     "twig": "^1.17.1"
   },
   "devDependencies": {
-    "prisma": "^7.0.1"
+    "prisma": "^5.19.1"
   }
 }

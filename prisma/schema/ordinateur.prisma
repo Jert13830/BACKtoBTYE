@@ -1,0 +1,24 @@
+model Ordinateur {
+  id_ordinateur       Int                 @id @default(autoincrement())
+  nom                 String              @db.VarChar(255)
+  annee               Int
+  cpuType             String              @db.VarChar(255)
+  cpu                 String              @db.VarChar(255)
+  vitesseHorloge      Decimal             @db.Decimal(5, 2)
+  ram                 Int
+  rom                 Int
+  graphique           String              @db.VarChar(255)
+  nbCouleurs          Int
+  info                String
+  successeur          Int
+  id_fab_ordinateur   Int
+  articles            Article[]
+  emulateurs          Emulateur[]
+  fabricantOrdinateur FabricantOrdinateur @relation(fields: [id_fab_ordinateur], references: [id_fab_ordinateur])
+  photos              Photo[]
+  popularites         Popularite[]
+  raretes             Rarete[]
+  versions            Version[]
+
+  @@index([id_fab_ordinateur], map: "Ordinateur_id_fab_ordinateur_fkey")
+}

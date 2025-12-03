@@ -1,0 +1,10 @@
+model RoleUtilisateur {
+  id_role_utilisateurteur Int         @id @default(autoincrement())
+  id_role                 Int
+  id_utilisateur          Int
+  role                    Role        @relation(fields: [id_role], references: [id_role])
+  utilisateur             Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur])
+
+  @@index([id_role], map: "RoleUtilisateur_id_role_fkey")
+  @@index([id_utilisateur], map: "RoleUtilisateur_id_utilisateur_fkey")
+}
