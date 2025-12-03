@@ -1,5 +1,5 @@
 //const { PrismaClient } = require("../generated/prisma/client");
-const { PrismaClient } = require("../generated/prisma/index.js");
+const { PrismaClient } = require('@prisma/client');
 const validateComputer = require("../middleware/extensions/validateComputer");
 
 const prisma = new PrismaClient().$extends(validateComputer);
