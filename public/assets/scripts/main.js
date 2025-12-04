@@ -161,9 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fileName = computerManufacturerName.value;
 
-        alert(fileName);
 
         loadImage(files, "Manufactuer", fileName, "#manuLogo");
+
+       document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + fileName + ".webp";
       }
       else{
         document.querySelector("#errorComputerManufacturer").textContent = "Please enter a manfacturer's name";

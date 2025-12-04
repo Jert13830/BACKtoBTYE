@@ -37,19 +37,13 @@ exports.addComputerManufacturer = async (req, res) => {
 
         //Create computer manufacturer logo photo
         await prisma.photo.create({
-            data: {
-                    path: `/assets/images/logos/${manufacturer.nom}.webp`,
+            data: { id_fab_ordinateur: manufacturer.id_fab_ordinateur,
                     alt: `${manufacturer.nom}'s company logo`,
-                    ownerId: manufacturer.id_fab_ordinateur,
-                    ownerType: "computerManufacturer"
-                 }
-});
+                    path: `/assets/images/logos/${manufacturer.nom}.webp`,
 
-        /*console.log("ID:", manufacturer.id_fab_ordinateur);
-         console.log("Path:", "/assets/images/logos/" + manufacturer.nom + ".webp");
-         console.log("ALT:", manufacturer.nom + "'s company logo");*/
-
-
+             },
+        });
+        
         return res.redirect("/addComputer");
 
     } catch (error) {
