@@ -9,7 +9,7 @@ const squareBtnClose = document.querySelector('.squareBtnClose');
 let openedDialog;
 
 const computerName = document.querySelector('#computer');
-const manufacturerName = document.querySelector('#manufacturer');
+const computerManufacturerName = document.querySelector('#computerManufacturerName');
 
 const computerPhoto = document.querySelector('#computerPhoto');
 const computerImage = document.querySelector('.computerImage');
@@ -156,17 +156,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!files.length) return;
 
 
-      const value = manufacturerName.value?.trim();
+      const value = computerManufacturerName.value?.trim();
       if (value) { //Test if a manufacturer name has been given
 
-        fileName = manufacturerName.value;
+        fileName = computerManufacturerName.value;
 
         alert(fileName);
 
         loadImage(files, "Manufactuer", fileName, "#manuLogo");
       }
       else{
-         alert("Fill in name");
+        document.querySelector("#errorComputerManufacturer").textContent = "Please enter a manfacturer's name";
       }
     });
   }
@@ -192,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 //Star rating 
-
 document.querySelector("#rarity").addEventListener("click", function (e) {
   const child = e.target;
   const nList = document.querySelector("#rarityStars");

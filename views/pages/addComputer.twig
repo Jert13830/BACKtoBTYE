@@ -25,6 +25,14 @@
 			</section>
 		</div>
 
+		{% if reopenDialog %}
+			<script>
+				document.addEventListener("DOMContentLoaded", () => {
+					document.querySelector("#addComputerManufacturer").showModal();
+				});
+			</script>
+		{% endif %}
+
 		<section id="addComputerManuSection">
 			<dialog id="addComputerManufacturer">
 				{% embed '/partials/window.twig' with {

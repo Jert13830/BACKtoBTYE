@@ -1,4 +1,3 @@
-//const { PrismaClient } = require("../generated/prisma/client");
 const { PrismaClient } = require('@prisma/client');
 const validateComputer = require("../middleware/extensions/validateComputer");
 
