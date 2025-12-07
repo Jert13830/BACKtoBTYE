@@ -164,10 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         loadImage(files, "Manufactuer", fileName, "#manuLogo");
 
-       document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + fileName + ".webp";
+      // document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + fileName + ".webp";
+
       }
       else{
         document.querySelector("#errorComputerManufacturer").textContent = "Please enter a manfacturer's name";
+        
       }
     });
   }
@@ -185,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadImage(files, "Computer", fileName, "#computerPhoto");
       }
       else {
-        alert("Fill in name");
+        document.querySelector("#computerNameErrors").textContent = "Please enter a computer name";
       }
     });
   }
@@ -237,3 +239,142 @@ aboutBtn.addEventListener("click", function (e) {
  aboutDialog.showModal();
   openedDialog = aboutDialog;
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const dialog = document.getElementById("addComputerManufacturer");
+    const form = document.getElementById("computerManufacturerForm");
+    const errorBox = document.getElementById("errorComputerManufacturer"); // add_elem in form
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault(); //Stops the parent page from being refreshed and loosing data
+
+        const formData = new FormData(form);
+
+        const response = await fetch("/addComputerManufacturer", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+           loadManufacturerList(); //update manufacturer list
+            dialog.close();
+
+
+            return;
+        }
+
+        // Show error
+        errorBox.textContent = data.error;
+       
+    });
+});
+
+
+
+document.addEventListener("DOMContentLoaded", loadManufacturerList);
+document.addEventListener("DOMContentLoaded", loadComputerList);
+
+async function loadManufacturerList() {
+    const errorBox = document.getElementById("manufacturerErrors");
+
+    try {
+        const response = await fetch("/listComputerManufacturer", {
+            method: "GET"
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            errorBox.textContent = data.error;
+            return;
+        }
+
+        updateManufacturerSelect(data.manufacturers);
+
+    } catch (err) {
+        errorBox.textContent = "Failed to load manufacturer list.";
+    }
+}
+
+function updateManufacturerSelect(manufacturers) {
+    const select = document.getElementById("computerManufacturerSelect");
+
+    // Clear existing options
+    select.innerHTML = "";
+
+    // Add placeholder
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Select manufacturer…";
+    select.appendChild(placeholder);
+
+    // Add all manufacturers
+    manufacturers.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.id_fab_ordinateur;
+        opt.textContent = m.nom;
+        select.appendChild(opt);
+    });
+}
+
+async function loadComputerList() {
+    const errorBox = document.getElementById("successorErrors");
+
+    try {
+        const response = await fetch("/listComputer", {
+            method: "GET"
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            errorBox.textContent = data.error;
+            return;
+        }
+
+        updateComputerSelect(data.computers);
+
+    } catch (err) {
+        errorBox.textContent = "Failed to load computer list.";
+    }
+}
+
+function updateComputerSelect(computers) {
+    const select = document.getElementById("successor");
+
+    // Clear existing options
+    select.innerHTML = "";
+
+    // Add placeholder
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Select computer…";
+    select.appendChild(placeholder);
+
+    // Add all computers
+    computers.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.id_ordinateur;
+        opt.textContent = m.nom;
+        select.appendChild(opt);
+    });
+}
+
+function changeLogo(){
+  
+  const select = document.querySelector("#computerManufacturerSelect");
+  const label = select.options[select.selectedIndex].text;
+  if (select.selectedIndex < 1){
+     document.querySelector("#computerManuLogo").src = "/assets/images/logos/defaultLogo.webp";
+  }
+  else
+  {
+       document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + label + ".webp";
+  }
+
+ 
+
+}

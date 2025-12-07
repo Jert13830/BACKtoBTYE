@@ -2,13 +2,14 @@ model Ordinateur {
   id_ordinateur       Int                 @id @default(autoincrement())
   nom                 String              @db.VarChar(255)
   annee               Int
-  cpuType             String              @db.VarChar(255)
+  cpuType             Int              
   cpu                 String              @db.VarChar(255)
   vitesseHorloge      Decimal             @db.Decimal(5, 2)
   ram                 Int
   rom                 Int
   graphique           String              @db.VarChar(255)
   nbCouleurs          Int
+  son                 String              @db.VarChar(255)
   info                String
   successeur          Int
   id_fab_ordinateur   Int

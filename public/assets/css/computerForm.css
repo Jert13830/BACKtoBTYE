@@ -5,11 +5,6 @@
         flex-direction: column;
     }
 
-    .formInputLine {
-        justify-content: space-evenly;
-
-    }
-
     #formLeft {
         text-align: left;
     }
@@ -383,4 +378,18 @@ img {
 
 }
 
+.errNinput{
+    display:flex;
+    flex-direction: column;
+}
 
+.errNinput p{
+    color: #1A1A1A;
+    font-weight: 700;
+    margin:0px 0px 10px 0px;
+}
+
+#successorDiv{
+    display:flex;
+    flex-direction: column;
+}

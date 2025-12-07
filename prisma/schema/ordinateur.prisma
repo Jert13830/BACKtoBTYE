@@ -2,7 +2,7 @@ model Ordinateur {
   id_ordinateur       Int                 @id @default(autoincrement())
   nom                 String              @db.VarChar(255)
   annee               Int
-  cpuType             String              @db.VarChar(255)
+  cpuType             Int           
   cpu                 String              @db.VarChar(255)
   vitesseHorloge      Decimal             @db.Decimal(5, 2)
   ram                 Int
@@ -10,8 +10,9 @@ model Ordinateur {
   graphique           String              @db.VarChar(255)
   nbCouleurs          Int
   info                String
-  successeur          Int
+  successeur          Int?
   id_fab_ordinateur   Int
+  son                 String              @db.VarChar(255)
   articles            Article[]
   emulateurs          Emulateur[]
   fabricantOrdinateur FabricantOrdinateur @relation(fields: [id_fab_ordinateur], references: [id_fab_ordinateur])

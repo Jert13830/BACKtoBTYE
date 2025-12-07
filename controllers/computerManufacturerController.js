@@ -6,31 +6,43 @@ const prisma = new PrismaClient().$extends(validateComputerManufacturer);
 
 const errors = { }
 
+//Get the list of Computer Manufacturers
 exports.listComputerManufacturer = async (req, res) => {
+    try {
+        const manufacturers = await prisma.fabricantOrdinateur.findMany();
 
-}
+        return res.json({
+            success: true,
+            manufacturers
+        });
+
+    } catch (error) {
+        console.error("Error retrieving manufacturers:", error);
+
+        return res.status(500).json({
+            success: false,
+            error: "Unexpected error while retrieving manufacturers."
+        });
+    }
+};
 
 //Add a Computer Manufacturer
 exports.addComputerManufacturer = async (req, res) => {
     const name = req.body.computerManufacturerName.trim();
-    const errors = {};  //
 
     try {
-        //CHECK for an existing Computer Manufacturer with the same name
         const exists = await prisma.fabricantOrdinateur.findFirst({
             where: { nom: name }
         });
 
         if (exists) {
-            errors.computerManufacturerName = "Manufacturer already exists";
-
-            return res.render("pages/addComputer.twig", {
-                errors,
-                reopenDialog: true
+            return res.json({
+                success: false,
+                error: "Manufacturer already exists"
             });
         }
 
-        // Create manufacturer
+        //Create the Computer manufacturer
         const manufacturer = await prisma.fabricantOrdinateur.create({
             data: { nom: name }
         });
@@ -43,35 +55,18 @@ exports.addComputerManufacturer = async (req, res) => {
 
              },
         });
-        
-        return res.redirect("/addComputer");
+
+        return res.json({
+            success: true,
+            id: manufacturer.id ?? manufacturer.code,
+            name
+        });
 
     } catch (error) {
 
-        // If it's our custom validation extension
-        if (error.details) {
-            return res.render("pages/addComputer.twig", {
-                errors: error.details,
-                reopenDialog: true
-            });
-        }
-
-        // Handle Prisma unique constraint errors
-        if (error.code === "P2002") {
-            errors.computerManufacturerName = "Manufacturer already exists";
-            return res.render("pages/addComputer.twig", {
-                errors,
-                reopenDialog: true
-            });
-        }
-
-        // Unknown error
-        errors.computerManufacturerName = "An unexpected error occurred.";
-        console.error(error);
-
-        return res.render("pages/addComputer.twig", {
-            errors,
-            reopenDialog: true
+        return res.json({
+            success: false,
+            error: error.details?.computerManufacturerName || "Unexpected error"
         });
     }
 };

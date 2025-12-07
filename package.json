@@ -19,9 +19,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    
     "@prisma/client": "^5.19.1",
-    
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mariadb": "^3.4.5",

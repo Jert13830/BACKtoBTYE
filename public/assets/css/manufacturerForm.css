@@ -19,4 +19,6 @@
     display:flex;
     flex-direction: column;
     justify-content: center;
+    color: #1A1A1A;
+    font-weight: 700;
 }
