@@ -1,0 +1,76 @@
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/computerList.css">
+{% endblock %}
+
+<div class="computerListGrid">
+	{% for computer in computers %}
+		<div class="computerCardOuter">
+			<div class="computerCardBackground">
+				<div class="computerCardInner">
+					<div class="computerCardTitle">
+						<div>
+						<div class = "roundedWhiteRect"></div>
+
+						<div>{{computer.nom}}</div>
+						<div>{{computer.annee}}</div>
+						</div>
+					</div>
+					<div>
+						{% if computer.photos|length > 0 %}
+							{% set photo = computer.photos|first %}
+							<img src="{{ photo.path }}" alt="{{ photo.alt ?? 'Photo of ' ~ computer.nom }}">
+						{% else %}
+							<img src="/assets/images/computers/defaultComputer.webp" alt="No photo">
+						{% endif %}
+					</div>
+					<div class="innerGrid">
+						<div>RAM :
+							{{computer.ram}}</div>
+						<div>ROM :
+							{{computer.rom}}</div>
+						<div>Rarity :
+						</div>
+						<div>
+							{% set rarity = 0 %}
+			
+							{% for r in computer.rarity %}
+								{% set rarity = rarity + r %}
+							{% endfor %}
+
+							{% set rarity = rarity / computer.rarity|length %}
+
+							{% for i in 0..4 %}
+								{% if i < rarity %}
+									<span class="blackStar">★</span>
+								{% else %}
+									<span class="whiteStar">★</span>
+								{% endif %}
+							{% endfor %}
+						</div>
+
+						<div>Popularity :
+						</div>
+						<div>
+							{% set popularity = 0 %}
+			
+							{% for p in computer.popularity %}
+								{% set popularity= popularity + p %}
+							{% endfor %}
+
+							{% set popularity = popularity / computer.popularity|length %}
+
+							{% for i in 0..4 %}
+								{% if i < popularity %}
+									<span class="blackStar">★</span>
+								{% else %}
+									<span class="whiteStar">★</span>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	{% endfor %}
+</div>

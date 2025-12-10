@@ -1,7 +1,7 @@
 {% extends "/layouts/base.twig" %}
 
 {% block style %}
-	<link rel="stylesheet" href="/assets/css/modal.css">
+	<link rel="stylesheet" href="/assets/css/computerList.css">
 	<title>Computer List</title>
 	
 {% endblock %}
@@ -11,16 +11,29 @@
 		<div id="pageContainer">
 			<section>
 				<div id="computerList">
-					{% include "/partials/window.twig" with {
+					{% embed '/partials/window.twig' with {
 						windowType: 'largeWindow',
 						title: 'Computers',
-						content: '<p>Computer List</p>',
 						showPlus: 1,
 						pageId: 'computerList'
-					} %}
+						} %}
+					{% block content %}
+						{% include '/partials/computerListGrid.twig' %}
+					{% endblock %}
+				{% endembed %}
 				</div>
 			</section>
 
 		</div>
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOMContentLoaded fired!");
+});
+		</script>
 	</main>
 {% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+{% endblock %}
+

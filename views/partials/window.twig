@@ -22,11 +22,11 @@
 		</div>
 
 		{# Only show + button if showPlus == 1 #}
-            {% if showPlus|default(0) == 1 %}
-                <div class="roundBtn" data-page="{{ pageId|default('unknown') }}">
-                    <span class="plusBtn">+</span>
-                </div>
-            {% endif %}
+		{% if showPlus|default(0) == 1 %}
+			<div class="roundBtn" data-page="{{ pageId|default('unknown') }}">
+				<span class="plusBtn">+</span>
+			</div>
+		{% endif %}
 
 		<div class="rightLines">
 			<span class="hl"></span>
@@ -43,8 +43,10 @@
 		{% endif %}
 	</div>
 	<div class="content">
-   		 {% block content %}
-		 
-		 {% endblock %}
+		{% if content is defined %}
+			{{ content|raw }}
+		{% else %}
+			{% block content %}{% endblock %}
+		{% endif %}
 	</div>
 </div>

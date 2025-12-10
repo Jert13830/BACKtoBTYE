@@ -15,15 +15,15 @@ module.exports = Prisma.defineExtension({
                     errors.computerInfo = "Invalide text has been entered"
                 }
 
-                if (!/^[A-Za-z0-9]{1,8}(?:[-\/+][A-Za-z0-9]{0,6})?(?:[A-Z]{0,3})?(?:[0-9]+(?:[A-Za-z]{0,3})?)?$/i.test(args.data.cpu)) {
+                if (!/^[A-Za-z0-9][A-Za-z0-9\s\-.+]*[A-Za-z0-9.+]$|^[A-Za-z0-9]+$/i.test(args.data.cpu)) {
                 errors.cpu = "CPU - Invalide characters have been entered"
                 }
 
-                if (!/^[A-Za-z0-9]{1,8}(?:[-\/+][A-Za-z0-9]{0,6})?(?:[A-Z]{0,3})?(?:[0-9]+(?:[A-Za-z]{0,3})?)?$/i.test(args.data.graphique)) {
+                if (!/^[A-Za-z0-9][A-Za-z0-9\s\-.+*/]*[A-Za-z0-9]$|^[A-Za-z0-9]+$/i.test(args.data.graphique)) {
                 errors.graphics = "Graphics - Invalide characters have been entered"
                 }
 
-                if (!/^[A-Za-z0-9]{1,8}(?:[-\/+][A-Za-z0-9]{0,6})?(?:[A-Z]{0,3})?(?:[0-9]+(?:[A-Za-z]{0,3})?)?$/i.test(args.data.son)) {
+                if (!/^[A-Za-z0-9][A-Za-z0-9\s\-.+*/]*[A-Za-z0-9]$|^[A-Za-z0-9]+$/i.test(args.data.son)) {
                 errors.sound = "Sound - Invalide characters have been entered"
                 }
                 

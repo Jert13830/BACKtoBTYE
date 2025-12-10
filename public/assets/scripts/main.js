@@ -147,7 +147,7 @@ if (squareBtnClose) {
 }
 
 
-document.addEventListener('DOMContentLoaded', () => {
+function treatImages(){
 
   if (manuImage) {
     manuImage.addEventListener("change", () => {
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-});
+}
 
 //Star rating 
 document.querySelector("#rarity").addEventListener("click", function (e) {
@@ -241,7 +241,7 @@ aboutBtn.addEventListener("click", function (e) {
 });
 
 
-document.addEventListener("DOMContentLoaded", () => {
+function addComputer() {
     const dialog = document.getElementById("addComputerManufacturer");
     const form = document.getElementById("computerManufacturerForm");
     const errorBox = document.getElementById("errorComputerManufacturer"); // add_elem in form
@@ -270,12 +270,19 @@ document.addEventListener("DOMContentLoaded", () => {
         errorBox.textContent = data.error;
        
     });
-});
+}
 
 
+function init() {
+    addComputer();
+    loadManufacturerList();
+    treatImages();
+     loadComputerList();
+}
 
-document.addEventListener("DOMContentLoaded", loadManufacturerList);
-document.addEventListener("DOMContentLoaded", loadComputerList);
+
+document.addEventListener("DOMContentLoaded", init);
+
 
 async function loadManufacturerList() {
     const errorBox = document.getElementById("manufacturerErrors");
@@ -301,7 +308,6 @@ async function loadManufacturerList() {
 
 function updateManufacturerSelect(manufacturers) {
     const select = document.getElementById("computerManufacturerSelect");
-
     // Clear existing options
     select.innerHTML = "";
 
@@ -316,13 +322,18 @@ function updateManufacturerSelect(manufacturers) {
         const opt = document.createElement("option");
         opt.value = m.id_fab_ordinateur;
         opt.textContent = m.nom;
+
+       /* if (String(m.id_fab_ordinateur) === selectedManufacturer) {
+             opt.selected = true;
+        }*/
         select.appendChild(opt);
     });
+
 }
 
 async function loadComputerList() {
-    const errorBox = document.getElementById("successorErrors");
 
+    const errorBox = document.getElementById("successorErrors");
     try {
         const response = await fetch("/listComputer", {
             method: "GET"
@@ -343,7 +354,8 @@ async function loadComputerList() {
 }
 
 function updateComputerSelect(computers) {
-    const select = document.getElementById("successor");
+
+    const select = document.querySelector("#successor");
 
     // Clear existing options
     select.innerHTML = "";
@@ -362,6 +374,7 @@ function updateComputerSelect(computers) {
         select.appendChild(opt);
     });
 }
+
 
 function changeLogo(){
   
