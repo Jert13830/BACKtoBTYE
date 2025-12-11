@@ -16,6 +16,7 @@
     overflow-y: auto;
 }
 
+/* Colour the computer cards */
 .computerCardOuter{
     background: linear-gradient(to left,
             #F8a51c 0%,
@@ -102,6 +103,10 @@
             border: solid 1px #F8A5C2;
 }
 
+img {
+    max-inline-size:100%;
+}
+
 .computerCardBackground{
     width: 95%;
     height: 95%;
@@ -130,10 +135,6 @@
     gap:10px;
 }
 
-.computerCardTitle{
-    display:flex;
-    gap: 10px;
-}
 
 .blackStar{
     color:#000;
@@ -143,9 +144,176 @@
     color: #fff;
 }
 
-.roundedWhiteRect{
-    width : 280px;
+.computerCardTitle {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;   /* Center inside product card */
+    margin: 0 auto;
+}
+
+/* The white background of the computer card title */
+.computerCardTitleBkg {
+    position: absolute;
+    width: 92%;                
     height: 38px;
-    color:blue;
-    border-radius: 25px;
+    background: white;
+    border-radius: 30px;
+    z-index: 1;               
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    
+}
+.makerImage{
+    width: 68px;
+    height:20px;
+    transform: translateX(15%);
+    margin-top:2px;
+    
+}
+
+.makerImage img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* The computer name and year (the coloured part) */
+.computerCardTitleColoured {
+    position: relative;
+    display: flex;
+    align-items: center;
+    z-index: 2;             
+    left: 48%;                  
+    transform: translateX(-52%);
+}
+
+/* Middle coloured title piece */
+.computerCardTitleMiddle {
+    position: relative;
+    display: flex;
+    align-items: center;
+     transform: translateX(10%);
+     justify-content: center;
+}
+
+.computerName{
+    position: absolute;
+     transform: translateX(30%);
+}
+
+/* Coloured end of computer card title */
+.computerCardTitleEnd {
+    display: flex;
+    align-items: center;
+}
+
+.computerYear{
+    position: absolute;
+     transform: translateX(70%);
+}
+
+/* Make the entire red cluster match the background width 
+.computerCardTitle > .computerCardTitleRed {
+    width: 90%;                
+    display: flex;
+    justify-content: flex-end; 
+}*/
+
+/* Colour the computer card titles */
+.computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-1 {
+  stop-color: #ff7675;
+}
+.computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-2 {
+  stop-color: #ffcccb;
+}
+.computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-3 {
+  stop-color: #e74c3c;
+}
+.computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-4 {
+  stop-color: #ffcccb;
+}
+.computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-5 {
+  stop-color: #ff7675;
+}            
+
+.computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-1 {
+  stop-color: #55A630;
+}
+.computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-2 {
+  stop-color: #D1F2A5;
+}
+.computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-3 {
+  stop-color: #27AE60;
+}
+.computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-4 {
+  stop-color: #D1F2A5;
+}
+.computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-5 {
+  stop-color: #55A630;
+}
+
+.computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-1 {
+  stop-color: #74B9FF;
+}
+.computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-2 {
+  stop-color: #A8E6CF;
+}
+.computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-3 {
+  stop-color: #0984E3 ;
+}
+.computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-4 {
+  stop-color: #A8E6CF;
+}
+.computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-5 {
+  stop-color: #74B9FF;
+}
+
+.computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-1 {
+  stop-color: #A29BFE;
+}
+.computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-2 {
+  stop-color: #E1BEE7;
+}
+.computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-3 {
+  stop-color: #8E44AD  ;
+}
+.computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-4 {
+  stop-color: #E1BEE7;
+}
+.computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-5 {
+  stop-color: #A29BFE;
+}
+
+.computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-1 {
+  stop-color: #FFB347;
+}
+.computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-2 {
+  stop-color: #FFE0B2;
+}
+.computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-3 {
+  stop-color: #E67E22  ;
+}
+.computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-4 {
+  stop-color: #FFE0B2;
+}
+.computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-5 {
+  stop-color: #FFB347;
+}
+
+.computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-1 {
+  stop-color: #F8A5C2;
+}
+.computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-2 {
+  stop-color: #FCDDE2;
+}
+.computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-3 {
+  stop-color: #E84393   ;
+}
+.computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-4 {
+  stop-color: #FCDDE2;
+}
+.computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-5 {
+  stop-color: #F8A5C2;
 }

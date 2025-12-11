@@ -8,11 +8,51 @@
 			<div class="computerCardBackground">
 				<div class="computerCardInner">
 					<div class="computerCardTitle">
-						<div>
-						<div class = "roundedWhiteRect"></div>
-
-						<div>{{computer.nom}}</div>
-						<div>{{computer.annee}}</div>
+						<div class="computerCardTitleBkg">
+							<div>
+								<img class="makerImage" src="/assets/images/logos/{{ computer.fabricantOrdinateur.nom }}.webp"
+									alt="Logo of {{ computer.fabricantOrdinateur.nom }}">
+							</div>
+						</div>
+						<div class="computerCardTitleColoured">
+							<div class="computerCardTitleMiddle">
+								<svg width="182" height="38" viewbox="0 0 182 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<mask id="path-1-inside-1_6096_145" fill="white">
+										<path d="M158.975 38H0C0 29.4498 6.93128 22.5186 15.4814 22.5186H47.3936L59.6016 0H182L158.975 38Z"/>
+									</mask>
+									<path d="M158.975 38H0C0 29.4498 6.93128 22.5186 15.4814 22.5186H47.3936L59.6016 0H182L158.975 38Z" fill="url(#paint0_linear_{{ loop.index }})"/>
+									<path d="M158.975 38V39H159.538L159.83 38.5182L158.975 38ZM0 38H-1V39H0V38ZM15.4814 22.5186V21.5186H15.4814L15.4814 22.5186ZM47.3936 22.5186V23.5186H47.9889L48.2727 22.9952L47.3936 22.5186ZM59.6016 0V-1H59.0062L58.7224 -0.476599L59.6016 0ZM182 0L182.855 0.518221L183.775 -1H182V0ZM158.975 38V37H0V38V39H158.975V38ZM0 38H1C1 30.0021 7.48356 23.5186 15.4814 23.5186L15.4814 22.5186L15.4814 21.5186C6.37899 21.5186 -1 28.8975 -1 38H0ZM15.4814 22.5186V23.5186H47.3936V22.5186V21.5186H15.4814V22.5186ZM47.3936 22.5186L48.2727 22.9952L60.4807 0.476599L59.6016 0L58.7224 -0.476599L46.5144 22.042L47.3936 22.5186ZM59.6016 0V1H182V0V-1H59.6016V0ZM182 0L181.145 -0.518221L158.119 37.4818L158.975 38L159.83 38.5182L182.855 0.518221L182 0Z" mask="url(#path-1-inside-1_6096_145)"/>
+									<defs>
+										<linearGradient id="paint0_linear_{{ loop.index }}" x1="91" y1="0" x2="91" y2="38" gradientunits="userSpaceOnUse">
+											<stop class="grad-1" stop-color="#FF7675"/>
+											<stop class="grad-2" offset="0.2" stop-color="#FFCCCB"/>
+											<stop class="grad-3" offset="0.5" stop-color="#E74C3C"/>
+											<stop class="grad-4" offset="0.8" stop-color="#FFCCCB"/>
+											<stop class="grad-5" offset="1" stop-color="#FF7675"/>
+										</linearGradient>
+									</defs>
+								</svg>
+								<div class="computerName">
+									{{computer.nom}}
+								</div>
+							</div>
+							<div class="computerCardTitleEnd">
+								<svg width="83" height="38" viewbox="0 0 83 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M83 19C83 29.4934 74.4934 38 64 38H0L22.5 0H64C74.4934 0 83 8.50659 83 19Z" fill="url(#paint0_linear_{{ loop.index }})"/>
+									<defs>
+										<linearGradient id="paint0_linear_{{ loop.index }}" x1="41.5" y1="38" x2="41.5" y2="0" gradientunits="userSpaceOnUse">
+											<stop class="grad-1" stop-color="#FF7675"/>
+											<stop class="grad-2" offset="0.2" stop-color="#FFCCCB"/>
+											<stop class="grad-3" offset="0.5" stop-color="#E74C3C"/>
+											<stop class="grad-4" offset="0.8" stop-color="#FFCCCB"/>
+											<stop class="grad-5" offset="1" stop-color="#FF7675"/>
+										</linearGradient>
+									</defs>
+								</svg>
+								<div class="computerYear">
+									{{computer.annee}}
+								</div>
+							</div>
 						</div>
 					</div>
 					<div>
@@ -32,7 +72,7 @@
 						</div>
 						<div>
 							{% set rarity = 0 %}
-			
+
 							{% for r in computer.rarity %}
 								{% set rarity = rarity + r %}
 							{% endfor %}
@@ -52,7 +92,7 @@
 						</div>
 						<div>
 							{% set popularity = 0 %}
-			
+
 							{% for p in computer.popularity %}
 								{% set popularity= popularity + p %}
 							{% endfor %}

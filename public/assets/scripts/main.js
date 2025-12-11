@@ -64,8 +64,8 @@ async function loadImage(files, imageType, fileName, sourcePhoto) {
     formData.append("filename", fileName);
     formData.append("phototype", "logos");
     //The required size of the photo
-    formData.append("photoWidth", 70);
-    formData.append("photoHeight", 47);
+    formData.append("photoWidth", 68  );
+    formData.append("photoHeight", 20);
   }
 
   try {
