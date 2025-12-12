@@ -5,213 +5,215 @@
 
 /* form section */
 .computerListGrid {
-    display: grid;
-    /*grid-template-columns: 1fr 1fr 1fr;*/
-    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-    gap:20px;
-    height: 100%;
-    width: 100%;
+  display: grid;
+  /*grid-template-columns: 1fr 1fr 1fr;*/
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 20px;
+  height: 100%;
+  width: 100%;
 
-    overflow-x: hidden;
-    overflow-y: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* Colour the computer cards */
-.computerCardOuter{
-    background: linear-gradient(to left,
-            #F8a51c 0%,
-            #f4d03f 20%,
-            #f39c12 50%,
-            #f4d03f 80%,
-            #e67e22 100%);
+.computerCardOuter {
+  background: linear-gradient(to left,
+      #F8a51c 0%,
+      #f4d03f 20%,
+      #f39c12 50%,
+      #f4d03f 80%,
+      #e67e22 100%);
 
-    border: 2px solid #000;
-    border-radius: 10px;
-    width:330px;
-    height: 420px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  width: 330px;
+  height: 420px;
 
-    display: flex;
-    flex-direction: column;
-    margin: auto;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
   justify-content: center;
   align-items: center;
 }
 
 .computerCardOuter:nth-child(6n + 1) .computerCardBackground {
-    background: linear-gradient(to top left,
-            #ff7675 0%,
-            #ffcccb 20%,
-            #e74c3c 50%,
-            #ffcccb 80%,
-            #ff7675 100%);
+  background: linear-gradient(to top left,
+      #ff7675 0%,
+      #ffcccb 20%,
+      #e74c3c 50%,
+      #ffcccb 80%,
+      #ff7675 100%);
 
-            border: solid 1px #FF7675;
+  border: solid 1px #FF7675;
 }
 
 .computerCardOuter:nth-child(6n + 2) .computerCardBackground {
-    background: linear-gradient(to top left,
-            #55A630 0%,
-            #D1F2A5 20%,
-            #27AE60 50%,
-            #D1F2A5 80%,
-            #55A630 100%);
+  background: linear-gradient(to top left,
+      #55A630 0%,
+      #D1F2A5 20%,
+      #27AE60 50%,
+      #D1F2A5 80%,
+      #55A630 100%);
 
-            border: solid 1px #55A630;
+  border: solid 1px #55A630;
 }
 
 .computerCardOuter:nth-child(6n + 3) .computerCardBackground {
-    background: linear-gradient(to top left,
-            #74B9FF 0%,
-            #A8E6CF 20%,
-            #0984E3 50%,
-            #A8E6CF 80%,
-            #74B9FF 100%);
+  background: linear-gradient(to top left,
+      #74B9FF 0%,
+      #A8E6CF 20%,
+      #0984E3 50%,
+      #A8E6CF 80%,
+      #74B9FF 100%);
 
-            border: solid 1px #74B9FF;
+  border: solid 1px #74B9FF;
 }
 
 .computerCardOuter:nth-child(6n + 4) .computerCardBackground {
-    background: linear-gradient(to top left,
-            #A29BFE 0%,
-            #E1BEE7 20%,
-            #8E44AD 50%,
-            #E1BEE7 80%,
-            #A29BFE 100%);
+  background: linear-gradient(to top left,
+      #A29BFE 0%,
+      #E1BEE7 20%,
+      #8E44AD 50%,
+      #E1BEE7 80%,
+      #A29BFE 100%);
 
-            border: solid 1px #A29BFE;
+  border: solid 1px #A29BFE;
 }
 
 .computerCardOuter:nth-child(6n + 5) .computerCardBackground {
-    background: linear-gradient(to top left,
-            #FFB347 0%,
-            #FFE0B2 20%,
-            #E67E22 50%,
-            #FFE0B2 80%,
-            #FFB347 100%);
+  background: linear-gradient(to top left,
+      #FFB347 0%,
+      #FFE0B2 20%,
+      #E67E22 50%,
+      #FFE0B2 80%,
+      #FFB347 100%);
 
-            border: solid 1px #FFB347;
+  border: solid 1px #FFB347;
 }
 
 .computerCardOuter:nth-child(6n + 6) .computerCardBackground {
-    background: linear-gradient(to top left,
-            #F8A5C2 0%,
-            #FCDDE2 20%,
-            #E84393 50%,
-            #FCDDE2 80%,
-            #F8A5C2 100%);
+  background: linear-gradient(to top left,
+      #F8A5C2 0%,
+      #FCDDE2 20%,
+      #E84393 50%,
+      #FCDDE2 80%,
+      #F8A5C2 100%);
 
-            border: solid 1px #F8A5C2;
+  border: solid 1px #F8A5C2;
 }
 
 img {
-    max-inline-size:100%;
+  max-inline-size: 100%;
 }
 
-.computerCardBackground{
-    width: 95%;
-    height: 95%;
-    border-radius: 10px;
-    border: 0;
+.computerCardBackground {
+  width: 95%;
+  height: 95%;
+  border-radius: 10px;
+  border: 0;
 
-    display: flex;
-    flex-direction: column;
-    margin: auto;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
   justify-content: center;
   align-items: center;
 }
 
-.computerCardInner{
-    display:flex;
-    flex-direction: column;
-    gap:1.5rem;
-    align-items: center;
-    margin: auto;
+.computerCardInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  margin: auto;
 }
 
-.innerGrid{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    
-    gap:10px;
+.innerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 10px;
 }
 
 
-.blackStar{
-    color:#000;
+.blackStar {
+  color: #000;
 }
 
-.whiteStar{
-    color: #fff;
+.whiteStar {
+  color: #fff;
 }
 
 .computerCardTitle {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center;   /* Center inside product card */
-    margin: 0 auto;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* Center inside product card */
+  margin: 0 auto;
 }
 
 /* The white background of the computer card title */
 .computerCardTitleBkg {
-    position: absolute;
-    width: 92%;                
-    height: 38px;
-    background: white;
-    border-radius: 30px;
-    z-index: 1;               
-    left: 50%;
-    transform: translateX(-50%);
-    align-items: center;
-    
-}
-.makerImage{
-    width: 68px;
-    height:20px;
-    transform: translateX(15%);
-    margin-top:2px;
-    
+  position: absolute;
+  width: 92%;
+  height: 38px;
+  background: white;
+  border-radius: 30px;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+
 }
 
-.makerImage img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.makerImage {
+  width: 68px;
+  height: 20px;
+  transform: translateX(15%);
+  margin-top: 2px;
+
+}
+
+.makerImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* The computer name and year (the coloured part) */
 .computerCardTitleColoured {
-    position: relative;
-    display: flex;
-    align-items: center;
-    z-index: 2;             
-    left: 48%;                  
-    transform: translateX(-52%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  left: 48%;
+  transform: translateX(-52%);
 }
 
 /* Middle coloured title piece */
 .computerCardTitleMiddle {
-    position: relative;
-    display: flex;
-    align-items: center;
-     transform: translateX(10%);
-     justify-content: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  transform: translateX(10%);
+  justify-content: center;
 }
 
-.computerName{
-    position: absolute;
-     transform: translateX(30%);
+.computerName {
+  position: absolute;
+  transform: translateX(30%);
 }
 
 /* Coloured end of computer card title */
 .computerCardTitleEnd {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
-.computerYear{
-    position: absolute;
-     transform: translateX(70%);
+.computerYear {
+  position: absolute;
+  transform: translateX(70%);
 }
 
 /* Make the entire red cluster match the background width 
@@ -225,31 +227,39 @@ img {
 .computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #ff7675;
 }
+
 .computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #ffcccb;
 }
+
 .computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #e74c3c;
 }
+
 .computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #ffcccb;
 }
+
 .computerCardOuter:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #ff7675;
-}            
+}
 
 .computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #55A630;
 }
+
 .computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #D1F2A5;
 }
+
 .computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #27AE60;
 }
+
 .computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #D1F2A5;
 }
+
 .computerCardOuter:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #55A630;
 }
@@ -257,15 +267,19 @@ img {
 .computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #74B9FF;
 }
+
 .computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #A8E6CF;
 }
+
 .computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-3 {
-  stop-color: #0984E3 ;
+  stop-color: #0984E3;
 }
+
 .computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #A8E6CF;
 }
+
 .computerCardOuter:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #74B9FF;
 }
@@ -273,15 +287,19 @@ img {
 .computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #A29BFE;
 }
+
 .computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #E1BEE7;
 }
+
 .computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-3 {
-  stop-color: #8E44AD  ;
+  stop-color: #8E44AD;
 }
+
 .computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #E1BEE7;
 }
+
 .computerCardOuter:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #A29BFE;
 }
@@ -289,15 +307,19 @@ img {
 .computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #FFB347;
 }
+
 .computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #FFE0B2;
 }
+
 .computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-3 {
-  stop-color: #E67E22  ;
+  stop-color: #E67E22;
 }
+
 .computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #FFE0B2;
 }
+
 .computerCardOuter:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #FFB347;
 }
@@ -305,15 +327,78 @@ img {
 .computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #F8A5C2;
 }
+
 .computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #FCDDE2;
 }
+
 .computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-3 {
-  stop-color: #E84393   ;
+  stop-color: #E84393;
 }
+
 .computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #FCDDE2;
 }
+
 .computerCardOuter:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #F8A5C2;
+}
+
+/***** Carousel ********/
+#carouselContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+#sliderContainer {
+  display: grid;
+  /*grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));*/
+  gap: 40px;
+  height: 100%;
+  width: 100%;
+  place-items: center;
+  align-items: center;
+  padding-bottom: 7px;
+  grid-auto-columns: 330px;
+  grid-auto-flow: column;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  
+}
+
+#sliderContainer::-webkit-scrollbar{
+  display : none;
+}
+
+#sliderContainer > div{
+
+  scroll-snap-align: start;
+
+}
+
+.sliderBtn {
+  display: flex;
+  align-items: center;
+  width: 40px;
+  height: 20px;
+  box-sizing: border-box;
+  background-color: #000;
+
+  clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+  border-radius: 5px;
+}
+
+#slideLeftBtn {
+  transform: rotate(90deg);
+}
+
+#slideRightBtn {
+  transform: rotate(270deg);
 }

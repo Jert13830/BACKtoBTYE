@@ -7,16 +7,45 @@ const errors = {};
 
 const fs = require('fs');
 
-/*
+
 // Show homepage
 exports.displayHome = async (req,res)=>{
+   try {
+    const computers = await prisma.ordinateur.findMany({
+      include:
+      {
+        photos: true,
+        fabricantOrdinateur: true,
+        popularites: true,
+        raretes: true,
+      },
+    });
+
     res.render("pages/home.twig", {
-    title: "Homepage",
-    error: null,
-    duplicateSiret: null,
-    confirmPassword: null
-  })
-}*/
+      title: "Home",
+      computers,
+      error: null,
+    });
+
+  } catch (error) {
+    if (error.details) {
+      return res.render("pages/home.twig", {
+        errors: error.details,
+        computers
+      });
+    }
+
+    // Unknown error
+    errors.computerName = "An unexpected error occurred.";
+    console.error(error);
+
+    return res.render("pages/home.twig", {
+      errors,
+      computers
+    });
+  }
+
+}
 
 // Show computer list page
 

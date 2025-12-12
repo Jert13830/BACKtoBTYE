@@ -24,6 +24,11 @@ const computerManuDialog = document.querySelector('#addComputerManufacturer');
 const aboutBtn = document.querySelector("#aboutBtn");
 const aboutDialog = document.querySelector("#aboutDialog");
 
+/** Computer Carrousel **/
+const slider = document.getElementById("sliderContainer");
+const cardWidth = 330;
+
+
 let computerPhotoPath = '/assets/images/';
 let statusText = "";
 let fileName = "";
@@ -387,7 +392,26 @@ function changeLogo(){
   {
        document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + label + ".webp";
   }
-
- 
-
 }
+
+/********  Carousel scroll ******/
+
+ function slideRight()
+ {
+
+    slider.scrollBy({
+        left: cardWidth,
+        behavior: "smooth"
+    });
+
+ }
+
+ function slideLeft()
+ {
+
+     slider.scrollBy({
+        left: -cardWidth,
+        behavior: "smooth"
+    });
+
+ }

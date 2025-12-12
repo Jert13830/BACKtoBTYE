@@ -9,15 +9,21 @@
 	<main>
 		<div id="pageContainer">
 			<section>
-				<div id="carousel">
-            {% include "/partials/window.twig" with {
-                windowType: 'largeWindow',
-                title: 'Home',
-                content: '<p>Carousel Informations</p>',
-                showPlus: 0
-            } %}
-        </div>
+				<div id="computerList">
+					{% embed '/partials/window.twig' with {
+						windowType: 'largeWindow',
+						title: 'Home',
+						showPlus: 0,
+						pageId: 'home'
+						} %}
+					{% block content %}
+						{% include '/partials/computerCarousel.twig' %}
+					{% endblock %}
+				{% endembed %}
+				</div>
 			</section>
+
+		</div>
 			<section>
 
         {# Lower section windows #}

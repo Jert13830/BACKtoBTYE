@@ -4,14 +4,14 @@ const validateUser = require("../middleware/extensions/validateUser");
 
 const prisma = new PrismaClient().$extends(validateUser);
 
-
+/*
 // Show Homepage
 exports.displayHome = async (req,res)=>{
     res.render("pages/home.twig", {
     title: "Homepage",
     error: null
   })
-}
+}*/
 
 /*
 //Show About
