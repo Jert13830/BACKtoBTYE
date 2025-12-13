@@ -7,5 +7,6 @@ const authGuard = require('../middleware/services/authguard');
 //userRouter.get('/home',userController.displayHome);
 //userRouter.get('/about',userController.displayAbout);
 
+userRouter.get('/connect',userController.displayconnect);
 
 module.exports = userRouter;

@@ -22,3 +22,10 @@
     color: #1A1A1A;
     font-weight: 700;
 }
+
+#computerManufacturerFormContent{
+    display: flex;
+    align-content: center !important;
+    justify-content: center;
+    margin: auto;
+}

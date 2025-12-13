@@ -25,7 +25,7 @@ const authguard = async (req, res, next) => {
         throw new Error("Utilisateur non connecté")
     } catch (error) {
         // En cas d'erreur, on redirige vers la page de connexion
-        res.redirect('/login')
+        res.redirect('/connect')
     }
 }
 

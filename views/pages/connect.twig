@@ -1,0 +1,29 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>connect</title>
+	<link rel="stylesheet" href="/assets/css/connect.css">
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section>
+				<div id="connect">
+					{% embed '/partials/window.twig' with {
+						windowType: 'smallWindow',
+						title: 'Connect',
+						showPlus: 0,
+						pageId: 'connect'
+						} %}
+					{% block content %}
+						{% include '/partials/connectForm.twig' %}
+					{% endblock %}
+				{% endembed %}
+				</div>
+			</section>
+
+		</div>
+			
+	</main>
+{% endblock %}

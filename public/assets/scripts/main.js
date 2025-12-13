@@ -242,6 +242,7 @@ addComputerManu.addEventListener("click", function (e) {
 //Open About dialog
 aboutBtn.addEventListener("click", function (e) {
  aboutDialog.showModal();
+  console.log("About called");
   openedDialog = aboutDialog;
 });
 

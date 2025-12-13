@@ -23,3 +23,10 @@ exports.displayAbout = async (req,res)=>{
 }
 */
 
+//Show connect
+exports.displayconnect = async (req,res)=>{
+    res.render("pages/connect.twig", {
+    title: "connect",
+    error: null
+  })
+}

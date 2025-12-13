@@ -122,8 +122,6 @@ exports.postComputer = async (req, res) => {
   const data = req.body;
   const name = req.body.computer.trim();
 
-  console.log(data);
-
   try {
     const exists = await prisma.ordinateur.findFirst({
       where: { nom: name }
