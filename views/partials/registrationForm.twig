@@ -1,0 +1,100 @@
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/registry.css">
+{% endblock %}
+
+<div id="formDiv">
+	<form id="registrationForm" action="/register" method="post">
+
+		<div id="profileContainer">
+			<img id="profileImage" src="/assets/images/users/{{data.usernameProfile}}.webp" alt="Profile image" onerror="this.src='/assets/images/users/defaultUserImage.webp'" >
+		</div>
+		<input id="uploadImageProfile" type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="uploadImageProfile" placeholder="Photo">
+
+		<div class="registrationFormInput">
+			<div>
+				<label for="usernameProfile">Username :</label>
+			</div>
+			<div>
+				<input type="text" id="usernameProfile" required name="usernameProfile" value="{{ data.usernameProfile|default('')}}">
+
+			</div>
+		</div>
+		<p class="errorMessage errP" id="errorUsernameProfile">{{ errors.usernameProfile }}</p>
+		{% if duplicateUser %}
+			<p class="error errP">{{ duplicateUser }}</p>
+		{% endif %}
+		{% if errors.usernameProfile %}
+			<p class="error errP">{{ errors.usernameProfile}}</p>
+		{% endif %}
+
+		<div class="registrationFormInput">
+			<div>
+				<label for="email">Email :</label>
+			</div>
+			<div>
+				<input type="text" id="email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" value="{{ data.email|default('')}}">
+			</div>
+		</div>
+		{% if errors.email %}
+			<p class="error errP">{{ errors.email }}</p>
+		{% endif %}
+		{% if duplicateEmail %}
+			<p class="error errP">{{ duplicateEmail }}</p>
+		{% endif %}
+
+
+		<div class="registrationFormInput">
+			<div>
+				<label for="password">Password :
+				</label>
+			</div>
+			<div>
+				<input type="password" id="password" name="password" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" value="{{ data.password|default('')}}">
+			</div>
+
+
+		</div>
+		{% if errors.password%}
+			<p class="errP">{{errors.password}}</p>
+		{% endif %}
+
+		<div class="registrationFormInput errNinput">
+			<div>
+				<label for="confirmPassword">Confirm password :
+				</label>
+			</div>
+			<div>
+				<input type="password" id="confirmPassword" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" name="confirmPassword" value="{{ data.confirmPassword|default('')}}">
+
+			</div>
+
+		</div>
+		{% if confirmPassword %}
+			<p class="errP">{{confirmPassword}}</p>
+		{% endif %}
+		
+		<div class="registrationFormInput">
+			<div>
+				<label for="userRole">Role :
+				</label>
+			</div>
+			<div>
+				{% if data.userRole %}
+					<script>
+						document.querySelector("#userRole").value = {{ data.userRole }};
+					</script>
+				{% endif %}
+
+				<select id="userRole" name="userRole">
+					<option value="user">User</option>
+					<option value="admin">Administrator</option>
+				</select>
+			</div>
+		</div>
+		<div class="formBtnDiv">
+			<div>
+				<button class="btnForm" type="submit" id="registerSubmit" name="registerSubmit">Register</button>
+			</div>
+		</div>
+	</form>
+</div>

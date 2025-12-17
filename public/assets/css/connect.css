@@ -1,33 +1,22 @@
-body {
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f0f0f0;
-    flex-direction: column;
-    font-family: "Montserrat", sans-serif;
-    font-style: normal;
-}
-
-#connectFormDiv{
-    width:100%;
-}
-
 #connectForm {
-    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    width: fit-content;
     width: 100%;
-    margin: 0 auto;
+    padding-top: 10px;
+   
     align-content: center;
+    justify-content: center;
+
+    justify-self: center;
     
 }
 
 .connectFormInput {
     display: flex;
     gap: 10px;
+    justify-content: center;
+    align-items: center;
 }
 
 .connectFormInput label {
@@ -46,6 +35,11 @@ body {
     border: 1px solid #d7dcdf;
 }
 
+.connectFormInput > div:first-child {
+    width: 100px;          
+    flex-shrink: 0;         
+    text-align: left;    
+}
 
 #connectSubmit:hover {
     background-color: #7c7c7d;
@@ -92,22 +86,18 @@ body {
 
 }
 
-#logos {
-    display: flex;
-    align-items: center;
-}
-
-#logoUser {
-    width: 50px;
-    cursor: pointer;
+.error{
+    justify-self: center;
 }
 
 @media (width <=520px) {
     .connectFormInput {
         flex-direction: column;
+        align-items: normal;
     }
 
     #connectForm {
         width: 85%;
     }
+
 }

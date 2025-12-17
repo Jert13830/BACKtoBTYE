@@ -1,0 +1,28 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>Registration</title>
+	<link rel="stylesheet" href="/assets/css/home.css">
+{% endblock %}
+
+{% block main %}
+	<main>
+    <div id="pageContainer">
+		<section id="registrySection">
+			<div id="registration">
+				{% embed '/partials/window.twig' with {
+   					 	windowType: 'mediumWindow',
+    					title: 'Registration',
+    					showPlus: 0,
+						showClose : 0,
+						pageId: 'registration'
+					} %}
+					{% block content %}
+						{% include '/partials/registrationForm.twig' %}
+					{% endblock %}
+				{% endembed %}
+			</div>
+		</section>
+    </div>
+	</main>
+{% endblock %}

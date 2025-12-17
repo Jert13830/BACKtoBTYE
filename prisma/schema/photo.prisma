@@ -9,6 +9,7 @@ model Photo {
   id_fab_emulateur    Int?
   id_emulateur        Int?
   id_article          Int?                @unique
+  id_utilisateur      Int?                @unique
   article             Article?             @relation(fields: [id_article], references: [id_article])
   emulateur           Emulateur?           @relation(fields: [id_emulateur], references: [id_emulateur])
   fabricantEmulateur  FabricantEmulateur?  @relation(fields: [id_fab_emulateur], references: [id_fab_emulateur])
@@ -16,7 +17,7 @@ model Photo {
   fabricantOrdinateur FabricantOrdinateur? @relation(fields: [id_fab_ordinateur], references: [id_fab_ordinateur])
   logiciel            Logiciel?            @relation(fields: [id_logiciel], references: [id_logiciel])
   ordinateur          Ordinateur?          @relation(fields: [id_ordinateur], references: [id_ordinateur])
-  utilisateur         Utilisateur?
+  utilisateur         Utilisateur?         @relation(fields: [id_utilisateur], references: [id_utilisateur])
 
   @@index([id_emulateur], map: "Photo_id_emulateur_fkey")
   @@index([id_fab_emulateur], map: "Photo_id_fab_emulateur_fkey")
@@ -24,4 +25,5 @@ model Photo {
   @@index([id_fab_ordinateur], map: "Photo_id_fab_ordinateur_fkey")
   @@index([id_logiciel], map: "Photo_id_logiciel_fkey")
   @@index([id_ordinateur], map: "Photo_id_ordinateur_fkey")
+  @@index([id_utilisateur], map: "Photo_id_utilisateur_fkey")
 }

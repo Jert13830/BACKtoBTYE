@@ -9,8 +9,8 @@ const fs = require('fs');
 
 
 // Show homepage
-exports.displayHome = async (req,res)=>{
-   try {
+exports.displayHome = async (req, res) => {
+  try {
     const computers = await prisma.ordinateur.findMany({
       include:
       {
@@ -197,3 +197,72 @@ exports.postComputer = async (req, res) => {
 
 }
 
+exports.filterComputerList = async (req, res) => {
+  try{
+  const { searchBar, selection } = req.body;
+
+  // 1️⃣ WHERE clause (optional search)
+  const where = searchBar
+    ? {
+        OR: [
+          {
+            nom: {
+              contains: searchBar,
+            },
+          },
+          {
+            fabricantOrdinateur: {
+              nom: {
+                contains: searchBar,
+              },
+            },
+          },
+        ],
+      }
+    : undefined;
+
+  // 2️⃣ ORDER BY clause (dynamic)
+  let orderBy;
+
+  if (selection === 'annee') {
+    orderBy = {
+      annee: 'asc',
+    };
+  } else if (selection === 'fabricant') {
+    orderBy = {
+      fabricantOrdinateur: {
+        nom: 'asc',
+      },
+    };
+  }
+
+  // 3️⃣ Query
+  const computers = await prisma.ordinateur.findMany({
+    where,
+    orderBy,
+    include: {
+      fabricantOrdinateur: true,
+    },
+  });
+
+  res.render('pages/computerList.twig', { computers });
+}
+catch (error) {
+    // Custom validation extension
+    if (error.details) {
+      return res.render("pages/computerList.twig", {
+        errors: error.details,
+        data
+      });
+    }
+
+    // Unknown error
+    console.error(error);
+
+    return res.render("pages/computerList.twig", {
+      errors,
+      data
+    });
+  }
+
+};

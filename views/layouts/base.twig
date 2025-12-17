@@ -19,30 +19,7 @@
 		</header>
 
 		{% block main %}{% endblock %}
-		<section id="aboutSection">
-			<dialog id="aboutDialog">
-				{% embed '/partials/window.twig' with {
-   					 	windowType: 'smallWindow',
-    					title: 'About',
-    					showPlus: 0,
-						showClose : 1,
-						pageId: 'about'
-					} %}
-					{% block content %}
-						<p>
-							<b>BACKtoBYTE</b>
-							is for those who still feel the magic of the 1980s and 1990s home computers.</p>
-
-						<p>A time when every beep, pixel and floppy disk felt like a glimpse into the future.</p>
-
-						<p>Built as my final training project, it’s a growing tribute to the machines that sparked the digital age.</p>
-
-						<p>I hope it will keep growing — much like our love for those classic machines.</p>
-					{% endblock %}
-				{% endembed %}
-
-			</dialog>
-		</section>
+		
 
 		{% block scripts %}
 			<script src="/assets/scripts/main.js" defer></script>

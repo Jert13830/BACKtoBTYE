@@ -3,9 +3,7 @@
 {% block style %}
 	<link rel="stylesheet" href="/assets/css/computerList.css">
 	<title>Computer List</title>
-	
 {% endblock %}
-
 {% block main %}
 	<main>
 		<div id="pageContainer">
@@ -15,20 +13,43 @@
 						windowType: 'largeWindow',
 						title: 'Computers',
 						showPlus: 1,
+						showSearch: 1,
 						pageId: 'computerList'
 						} %}
-					{% block content %}
-						{% include '/partials/computerListGrid.twig' %}
-					{% endblock %}
-				{% endembed %}
+						{% block content %}
+							{% include '/partials/computerListGrid.twig' %}
+						{% endblock %}
+					{% endembed %}
 				</div>
 			</section>
-
 		</div>
-	</main>
-{% endblock %}
-
-{% block scripts %}
-    {{ parent() }}
-{% endblock %}
-
+		<section id="searchComputerSection">
+			<dialog id="searchComputer" class="dialog">
+				<div id="searchBarContent">
+					<button class="squareBtnClose" type="button">
+						<span class="closeBtn">×</span>
+					</button>
+					<form id="searchForm" method="post" action="/filterComputers" >
+						<div id="searchGrid">
+							<div id="searchBarDiv">
+								<input type="search" id="searchBar" name="searchBar"/>
+								<button id="btnResearch">Search</button>
+							</div>
+							<div>
+								<fieldset>
+									<div>
+										<input type="radio" id="manufacturer" name="selection" value="id_fab_ordinateur" checked/>
+										<label for="manufacturer">Manufacturer</label>
+										<input type="radio" id="year" name="selection" value="annee"/>
+										<label for="year">Year</label>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</dialog>
+	</section>
+</main>{% endblock %}{% block scripts %}
+{{ parent() }}{% endblock %}

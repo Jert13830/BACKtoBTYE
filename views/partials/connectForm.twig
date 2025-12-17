@@ -1,35 +1,44 @@
 <div id="connectFormDiv">
 	<form id="connectForm" action="/connect" method="post">
 		<div class="connectFormInput">
-				<div>
-					<label for="username">Username :
-					</label>
-				</div>
-				<div>
-					<input type="text" name="username" id="username" required pattern="^[A-Za-z][A-Za-z0-9_]{2,14}$" maxlength="15;" placeholder="3–15 characters">
-					{% if error.username %}
-						<p class="error">{{ error.username }}</p>
-					{% endif %}
-				</div>
+			<div>
+				<label for="email">Email :
+				</label>
+			</div>
+			<div>
+				<input type="text" name="email" id="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="Email address">
+				{% if errors.email %}
+					<p>{{errors.email}}</p>
+				{% endif %}
+			</div>
 		</div>
 		<div class="connectFormInput">
-    <div>
-			<label for="password">Password :
-			</label>
-      </div>
-      <div>
-			<input type="password" name="password" id="password" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" placeholder="6+ characters" autocomplete="current-password">
-			{% if error.password %}
-				<p class="error">{{ error.password }}</p>
-			{% endif %}
-      </div>
+			<div>
+				<label for="password">Password :
+				</label>
+			</div>
+			<div>
+				<input type="password" name="password" id="password" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" placeholder="6+ characters" autocomplete="current-password">
+				{% if errors.password %}
+					<p class="error">{{ errors.password }}</p>
+				{% endif %}
+			</div>
 		</div>
 		<div id="submitBtnDiv">
-			<button type="submit" id="connectSubmit" name="connectSubmit">Connect</button>
+			{% if user %}
+				<button type="submit" id="connectSubmit" name="connectSubmit">Log out</button>
+			{% else %}
+				<button type="submit" id="connectSubmit" name="connectSubmit">Connect</button>
+			{% endif %}
+		</div>
+		<div>
+			{% if errors.connection %}
+				<p class="error">{{ errors.connection }}</p>
+			{% endif %}
 		</div>
 		<div>
 			<p id="connectP">You are not registered,
-				<a id="connectA" href="/registryPage">please register</a>
+				<a id="connectA" href="/register">please register</a>
 			</p>
 		</div>
 	</form>

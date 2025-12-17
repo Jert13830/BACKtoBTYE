@@ -1,0 +1,37 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>About</title>
+	<link rel="stylesheet" href="/assets/css/home.css">
+{% endblock %}
+
+{% block main %}
+	<main>
+    <div id="pageContainer">
+		<section id="aboutSection">
+			<div id="about">
+				{% embed '/partials/window.twig' with {
+   					 	windowType: 'smallWindow',
+    					title: 'About',
+    					showPlus: 0,
+						showClose : 1,
+						pageId: 'about'
+					} %}
+					{% block content %}
+						<p>
+							<b>BACKtoBYTE</b>
+							is for those who still feel the magic of the 1980s and 1990s home computers.</p>
+
+						<p>A time when every beep, pixel and floppy disk felt like a glimpse into the future.</p>
+
+						<p>Built as my final training project, it’s a growing tribute to the machines that sparked the digital age.</p>
+
+						<p>I hope it will keep growing — much like our love for those classic machines.</p>
+					{% endblock %}
+				{% endembed %}
+
+			</div>
+		</section>
+    </div>
+	</main>
+{% endblock %}

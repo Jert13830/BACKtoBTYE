@@ -9,7 +9,9 @@ computerRouter.get('/home',computerController.displayHome);
 computerRouter.get('/computerList',computerController.displayComputerList);
 computerRouter.get('/listComputer', upload.none(),computerController.listComputer);
 
-computerRouter.get('/addComputer', computerController.displayAddComputer);
-computerRouter.post('/addComputer', computerController.postComputer);
+computerRouter.get('/addComputer', authGuard ,computerController.displayAddComputer);
+computerRouter.post('/addComputer',authGuard ,computerController.postComputer);
+
+computerRouter.post('/filterComputers',computerController.filterComputerList);
 
 module.exports = computerRouter;

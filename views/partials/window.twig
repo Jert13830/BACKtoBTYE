@@ -22,7 +22,7 @@
 		</div>
 
 		{# Only show + button if showPlus == 1 #}
-		{% if showPlus|default(0) == 1 %}
+		{% if showPlus|default(0) == 1 and user %}
 			<div class="roundBtn" data-page="{{ pageId|default('unknown') }}">
 				<span class="plusBtn">+</span>
 			</div>
@@ -39,6 +39,11 @@
 		{% if showClose|default(0) == 1 %}
 			<div class="squareBtnClose" data-page="{{ pageId|default('unknown') }}">
 				<span class="closeBtn">x</span>
+			</div>
+		{% endif %}
+		{% if showSearch|default(0) == 1 %}
+			<div class="btnSearch" data-page="{{ pageId|default('unknown') }}">
+				<span class="searchBtn"><img src="/assets/images/glass.png" alt="search"></span>
 			</div>
 		{% endif %}
 	</div>

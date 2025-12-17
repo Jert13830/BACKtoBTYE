@@ -1,3 +1,4 @@
+
 const menuToggle = document.querySelector('#menu-toggle');
 const navDiv = document.querySelector('#navDiv');
 
@@ -7,6 +8,8 @@ const addComputerDialogue = document.querySelector('#addComputer');
 
 const squareBtnClose = document.querySelector('.squareBtnClose');
 let openedDialog;
+
+const btnSearch = document.querySelector('.btnSearch');
 
 const computerName = document.querySelector('#computer');
 const computerManufacturerName = document.querySelector('#computerManufacturerName');
@@ -20,9 +23,15 @@ const manuImage = document.querySelector('.manuImage');
 const addComputerManu = document.querySelector('#addComputerManu');
 
 const computerManuDialog = document.querySelector('#addComputerManufacturer');
+const searchComputerBar = document.querySelector("#searchComputerBar");
 
-const aboutBtn = document.querySelector("#aboutBtn");
-const aboutDialog = document.querySelector("#aboutDialog");
+const profileImage = document.querySelector("#profileImage");
+const profileContainer = document.querySelector("#profileContainer");
+const uploadImageProfile = document.querySelector("#uploadImageProfile");
+const usernameProfile = document.querySelector('#usernameProfile');
+
+const searchInput = document.getElementById('searchBar');
+const btnResearch = document.getElementById('btnResearch');
 
 /** Computer Carrousel **/
 const slider = document.getElementById("sliderContainer");
@@ -62,14 +71,14 @@ async function loadImage(files, imageType, fileName, sourcePhoto) {
     formData.append("filename", fileName);
     formData.append("phototype", "users");
     //The required size of the photo
-    formData.append("photoWidth", 180);
-    formData.append("photoHeight", 180);
+    formData.append("photoWidth", 150);
+    formData.append("photoHeight", 150);
   }
   else if (imageType === "Manufactuer") { //User Images
     formData.append("filename", fileName);
     formData.append("phototype", "logos");
     //The required size of the photo
-    formData.append("photoWidth", 68  );
+    formData.append("photoWidth", 68);
     formData.append("photoHeight", 20);
   }
 
@@ -105,7 +114,7 @@ async function loadImage(files, imageType, fileName, sourcePhoto) {
   }
 }
 
-// Toggle the side menu when on mobeil
+// Toggle the side menu when on mobile
 menuToggle.addEventListener('click', () => {
   menuToggle.classList.toggle('active');
   navDiv.classList.toggle('active');
@@ -131,50 +140,73 @@ if (roundBtn) {
   });
 }
 
+
+
 //close button
 if (squareBtnClose) {
   document.addEventListener('click', (e) => {
-      const closeBtn = e.target.closest('.squareBtnClose');
-      if (!closeBtn) return;
+    const closeBtn = e.target.closest('.squareBtnClose');
+    if (!closeBtn) return;
 
-      const page = closeBtn.dataset.page;
+    const page = closeBtn.dataset.page;
 
-      if (page === 'addComputer') {
-        window.location.href = '/computerList';
-      } 
-      
-      // Find if we're inside an open dialog
-      const dialog = closeBtn.closest('dialog');
-      if (dialog && dialog.open) {
-          dialog.close();
-      } 
+    if (page === 'addComputer') {
+      window.location.href = '/computerList';
+    }
+
+    // Find if we're inside an open dialog
+    const dialog = closeBtn.closest('dialog');
+    if (dialog && dialog.open) {
+      dialog.close();
+    }
   });
 }
 
 
-function treatImages(){
 
+/**** search computer ****/
+
+if (btnSearch) {
+  btnSearch.addEventListener("click", function (e) {
+    searchComputer.showModal();
+    openedDialog = searchComputer;
+  });
+}
+
+if (btnResearch) {
+btnResearch.addEventListener('click', () => {
+  // Search text
+  const searchValue = searchInput.value.trim();
+
+  // Selected radio value
+  const selectedRadio = document.querySelector('input[name="selection"]:checked');
+  const selectionValue = selectedRadio ? selectedRadio.value : null;
+
+  console.log('searchBar:', searchValue);
+  console.log('selection:', selectionValue);
+});
+}
+
+function treatImages() {
   if (manuImage) {
     manuImage.addEventListener("change", () => {
       const files = Array.from(manuImage.files);
       //No files selected
       if (!files.length) return;
 
-
       const value = computerManufacturerName.value?.trim();
       if (value) { //Test if a manufacturer name has been given
 
         fileName = computerManufacturerName.value;
 
-
         loadImage(files, "Manufactuer", fileName, "#manuLogo");
 
-      // document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + fileName + ".webp";
+        // document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + fileName + ".webp";
 
       }
-      else{
+      else {
         document.querySelector("#errorComputerManufacturer").textContent = "Please enter a manfacturer's name";
-        
+
       }
     });
   }
@@ -199,18 +231,57 @@ function treatImages(){
 
 }
 
-//Star rating 
-document.querySelector("#rarity").addEventListener("click", function (e) {
-  const child = e.target;
-  const nList = document.querySelector("#rarityStars");
-  lightStars(child, nList);
-});
+const rarity = document.querySelector("#rarity");
 
-document.querySelector("#popularity").addEventListener("click", function (e) {
-  const child = e.target;
-  const nList = document.querySelector("#popularityStars");
-  lightStars(child, nList);
-});
+if (rarity) {
+  //Star rating 
+  rarity.addEventListener("click", function (e) {
+    const child = e.target;
+    const nList = document.querySelector("#rarityStars");
+    lightStars(child, nList);
+  });
+}
+
+
+const popularity = document.querySelector("#popularity");
+
+if (popularity) {
+  popularity.addEventListener("click", function (e) {
+    const child = e.target;
+    const nList = document.querySelector("#popularityStars");
+    lightStars(child, nList);
+  });
+}
+
+
+/****** profile photo  ******/
+
+if (profileContainer) {
+  profileContainer.addEventListener("click", () => {
+    uploadImageProfile.click();
+  });
+
+  uploadImageProfile.addEventListener("change", () => {
+    const files = Array.from(uploadImageProfile.files);
+
+    //No files selected
+    if (!files.length) return;
+
+    const value = usernameProfile.value?.trim();
+
+    if (value) { //Test if a user name has been given
+      fileName = usernameProfile.value;
+      loadImage(files, "Profile", fileName, "#profileImage");
+    }
+
+    else {
+      document.querySelector("#errorUsernameProfile").textContent = "Please enter a username";
+    }
+  });
+
+}
+
+
 
 function lightStars(child, nList) {
   const parent = child.parentNode;
@@ -233,57 +304,50 @@ function lightStars(child, nList) {
   }
 }
 
-
-addComputerManu.addEventListener("click", function (e) {
-  addComputerManufacturer.showModal();
-  openedDialog = addComputerManufacturer;
-});
-
-//Open About dialog
-aboutBtn.addEventListener("click", function (e) {
- aboutDialog.showModal();
-  console.log("About called");
-  openedDialog = aboutDialog;
-});
-
+if (addComputerManu) {
+  addComputerManu.addEventListener("click", function (e) {
+    addComputerManufacturer.showModal();
+    openedDialog = addComputerManufacturer;
+  });
+}
 
 function addComputer() {
-    const dialog = document.getElementById("addComputerManufacturer");
-    const form = document.getElementById("computerManufacturerForm");
-    const errorBox = document.getElementById("errorComputerManufacturer"); // add_elem in form
+  const dialog = document.getElementById("addComputerManufacturer");
+  const form = document.getElementById("computerManufacturerForm");
+  const errorBox = document.getElementById("errorComputerManufacturer"); // add_elem in form
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault(); //Stops the parent page from being refreshed and loosing data
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); //Stops the parent page from being refreshed and loosing data
 
-        const formData = new FormData(form);
+    const formData = new FormData(form);
 
-        const response = await fetch("/addComputerManufacturer", {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-           loadManufacturerList(); //update manufacturer list
-            dialog.close();
-
-
-            return;
-        }
-
-        // Show error
-        errorBox.textContent = data.error;
-       
+    const response = await fetch("/addComputerManufacturer", {
+      method: "POST",
+      body: formData
     });
+
+    const data = await response.json();
+
+    if (data.success) {
+      loadManufacturerList(); //update manufacturer list
+      dialog.close();
+
+
+      return;
+    }
+
+    // Show error
+    errorBox.textContent = data.error;
+
+  });
 }
 
 
 function init() {
-    addComputer();
-    loadManufacturerList();
-    treatImages();
-     loadComputerList();
+  addComputer();
+  loadManufacturerList();
+  treatImages();
+  loadComputerList();
 }
 
 
@@ -291,128 +355,128 @@ document.addEventListener("DOMContentLoaded", init);
 
 
 async function loadManufacturerList() {
-    const errorBox = document.getElementById("manufacturerErrors");
+  const errorBox = document.getElementById("manufacturerErrors");
 
-    try {
-        const response = await fetch("/listComputerManufacturer", {
-            method: "GET"
-        });
+  try {
+    const response = await fetch("/listComputerManufacturer", {
+      method: "GET"
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if (!data.success) {
-            errorBox.textContent = data.error;
-            return;
-        }
-
-        updateManufacturerSelect(data.manufacturers);
-
-    } catch (err) {
-        errorBox.textContent = "Failed to load manufacturer list.";
+    if (!data.success) {
+      errorBox.textContent = data.error;
+      return;
     }
+
+    updateManufacturerSelect(data.manufacturers);
+
+  } catch (err) {
+    errorBox.textContent = "Failed to load manufacturer list.";
+  }
 }
 
 function updateManufacturerSelect(manufacturers) {
-    const select = document.getElementById("computerManufacturerSelect");
-    // Clear existing options
-    select.innerHTML = "";
+  const select = document.getElementById("computerManufacturerSelect");
+  // Clear existing options
+  select.innerHTML = "";
 
-    // Add placeholder
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = "Select manufacturer…";
-    select.appendChild(placeholder);
+  // Add placeholder
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Select manufacturer…";
+  select.appendChild(placeholder);
 
-    // Add all manufacturers
-    manufacturers.forEach(m => {
-        const opt = document.createElement("option");
-        opt.value = m.id_fab_ordinateur;
-        opt.textContent = m.nom;
+  // Add all manufacturers
+  manufacturers.forEach(m => {
+    const opt = document.createElement("option");
+    opt.value = m.id_fab_ordinateur;
+    opt.textContent = m.nom;
 
-       /* if (String(m.id_fab_ordinateur) === selectedManufacturer) {
-             opt.selected = true;
-        }*/
-        select.appendChild(opt);
-    });
+    /* if (String(m.id_fab_ordinateur) === selectedManufacturer) {
+          opt.selected = true;
+     }*/
+    select.appendChild(opt);
+  });
 
 }
 
 async function loadComputerList() {
 
-    const errorBox = document.getElementById("successorErrors");
-    try {
-        const response = await fetch("/listComputer", {
-            method: "GET"
-        });
+  const errorBox = document.getElementById("successorErrors");
+  try {
+    const response = await fetch("/listComputer", {
+      method: "GET"
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if (!data.success) {
-            errorBox.textContent = data.error;
-            return;
-        }
-
-        updateComputerSelect(data.computers);
-
-    } catch (err) {
-        errorBox.textContent = "Failed to load computer list.";
+    if (!data.success) {
+      errorBox.textContent = data.error;
+      return;
     }
+
+    updateComputerSelect(data.computers);
+
+  } catch (err) {
+    errorBox.textContent = "Failed to load computer list.";
+  }
 }
 
 function updateComputerSelect(computers) {
 
-    const select = document.querySelector("#successor");
+  const select = document.querySelector("#successor");
 
-    // Clear existing options
-    select.innerHTML = "";
+  // Clear existing options
+  select.innerHTML = "";
 
-    // Add placeholder
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = "Select computer…";
-    select.appendChild(placeholder);
+  // Add placeholder
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Select computer…";
+  select.appendChild(placeholder);
 
-    // Add all computers
-    computers.forEach(m => {
-        const opt = document.createElement("option");
-        opt.value = m.id_ordinateur;
-        opt.textContent = m.nom;
-        select.appendChild(opt);
-    });
+  // Add all computers
+  computers.forEach(m => {
+    const opt = document.createElement("option");
+    opt.value = m.id_ordinateur;
+    opt.textContent = m.nom;
+    select.appendChild(opt);
+  });
 }
 
 
-function changeLogo(){
-  
+function changeLogo() {
+
   const select = document.querySelector("#computerManufacturerSelect");
   const label = select.options[select.selectedIndex].text;
-  if (select.selectedIndex < 1){
-     document.querySelector("#computerManuLogo").src = "/assets/images/logos/defaultLogo.webp";
+  if (select.selectedIndex < 1) {
+    document.querySelector("#computerManuLogo").src = "/assets/images/logos/defaultLogo.png";
   }
-  else
-  {
-       document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + label + ".webp";
+  else {
+    document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + label + ".webp";
   }
 }
 
 /********  Carousel scroll ******/
 
- function slideRight()
- {
+function slideRight() {
 
-    slider.scrollBy({
-        left: cardWidth,
-        behavior: "smooth"
-    });
+  slider.scrollBy({
+    left: cardWidth,
+    behavior: "smooth"
+  });
 
- }
+}
 
- function slideLeft()
- {
+function slideLeft() {
 
-     slider.scrollBy({
-        left: -cardWidth,
-        behavior: "smooth"
-    });
+  slider.scrollBy({
+    left: -cardWidth,
+    behavior: "smooth"
+  });
 
- }
+}
+
+
+

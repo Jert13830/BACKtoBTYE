@@ -1,3 +1,4 @@
+
 /**********************/
 /*Window Sizes - Start*/
 /**********************/
@@ -7,6 +8,7 @@
     filter: drop-shadow(#b8b8b9 0.4rem 0.4rem 2px);
     background-color: #D9D9D9;
     border-radius: 10px;
+     justify-self:center;
 }
 
 .largeWindow{
@@ -35,6 +37,8 @@
 /********************/
 /*Window Sizes - End*/
 /********************/
+
+
 
 
 
@@ -107,7 +111,7 @@
     color: #3C3C43;
 }
 
-.squareBtnReduce, .squareBtnClose{
+.squareBtnReduce, .squareBtnClose .btnSearch{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -122,9 +126,13 @@
  margin-left: 10px;
 }
 
-.squareBtnClose {
+.squareBtnClose , .btnSearch{
  margin-right: 10px;
  cursor: pointer;
+}
+
+.btnSearch{
+    margin-top: 5px;
 }
 
 
@@ -188,6 +196,7 @@ dialog[open] .squareBtnClose {
     height: 65vh;
     border-radius: 0px 0px 10px 10px;
     padding: 2%;
+    
 }
 /************************/
 /*Window Content - Start*/
@@ -200,15 +209,16 @@ dialog[open] .squareBtnClose {
     height:450px;
 }*/
 
-#connect .titleP{
-    font-size: 1.5rem;
-    color: #3C3C43;
-}
 
 #addComputerManufacturer{
     background-color: transparent;
     border:0;
-    
+    overflow: hidden;
+}
+
+#registration .content{
+    overflow-y: auto;
+    height: 70vh;
 }
 
 #addComputerManufacturer .content{
@@ -218,7 +228,29 @@ dialog[open] .squareBtnClose {
 
 }
 
+#connect .titleP{
+    font-size: 1.5rem;
+    color: #3C3C43;
+    font-weight: normal;
+}
+
+#about .titleP{
+    font-size: 1.5rem;
+    color: #3C3C43;
+    font-weight: normal;
+}
+
 #connect .content{
+   height:auto;
+
+}
+
+#computerList .content{
+   height:66vh;
+   overflow: hidden;
+}
+
+#about .content{
    height:auto;
 
 }
@@ -231,7 +263,7 @@ dialog[open] {
   max-height: 45vh;
 }
 
-#aboutDialog{
+#about{
     justify-self:center;
     background-color: transparent;
     border:0;
