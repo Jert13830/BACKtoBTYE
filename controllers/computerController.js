@@ -201,7 +201,7 @@ exports.filterComputerList = async (req, res) => {
   try{
   const { searchBar, selection } = req.body;
 
-  // 1️⃣ WHERE clause (optional search)
+  // WHERE the searchBar the computer's name, computer manufacturer's name or is empty
   const where = searchBar
     ? {
         OR: [
@@ -221,22 +221,27 @@ exports.filterComputerList = async (req, res) => {
       }
     : undefined;
 
-  // 2️⃣ ORDER BY clause (dynamic)
+ // The radio buttons all for sorting by manufactured Year or Manufacturer(sorted by year)
   let orderBy;
 
-  if (selection === 'annee') {
+  if (selection === 'year') {
     orderBy = {
       annee: 'asc',
     };
-  } else if (selection === 'fabricant') {
-    orderBy = {
-      fabricantOrdinateur: {
-        nom: 'asc',
+  } else if (selection === 'manufacturer') {
+    orderBy = [
+      {
+        fabricantOrdinateur: {
+          nom: 'asc',
+        },
       },
-    };
+      {
+         annee: 'asc',
+      },
+  ];
   }
 
-  // 3️⃣ Query
+  // The query, and the Manufacturer table has to be returned too
   const computers = await prisma.ordinateur.findMany({
     where,
     orderBy,

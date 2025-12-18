@@ -419,7 +419,7 @@ img {
 
 #searchBarContent {
   width: min(90vw, 500px); /* responsive */
-  background-color: #333;
+  background-color: #7e7f7f;
   border-radius: 20px;
   padding: 20px;
   position: relative; /* needed for X button */

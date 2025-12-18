@@ -99,6 +99,7 @@
     height: 40px;
     background-color: #D3CBCB;
     border-radius: 10px 10px 0px 0px;
+    align-items: center;
 }
 
 .titleP {
@@ -121,6 +122,7 @@
     width: 18px;
     border-radius: 3px;
     align-self: center;
+    
 }
 .squareBtnReduce {
  margin-left: 10px;
