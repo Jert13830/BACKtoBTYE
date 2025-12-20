@@ -10,8 +10,6 @@ module.exports = Prisma.defineExtension({
                 if (!/^[A-Za-z0-9][A-Za-z0-9 ./_+-]*$/.test(args.data.pseudo)) {
                     errors.usernameProfile = "Invalid or empty user name"
                 }
-
-                console.log("hello from here");
                 
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(args.data.email)) {
                         errors.email = "Invalid or empty email address"
@@ -20,6 +18,12 @@ module.exports = Prisma.defineExtension({
                 if(!/^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$/.test(args.data.motDePasse)){
                         errors.password = "6 characters minimum, with at least one letter (A-Za-z)";
                     }
+
+                if(!/^[a-z][a-z_]{1,28}[a-z]$/.test(args.data.userRoleTitle)){
+                        errors.userRoleTitle = "Lowercase letters (3–30 characters max)";
+                    }
+
+                    console.log("Checked role");
                 
                 if (Object.keys(errors).length > 0) {
                     const error = new Error("Validation error")

@@ -22,7 +22,7 @@
 		</div>
 
 		{# Only show + button if showPlus == 1 #}
-		{% if showPlus|default(0) == 1 and user %}
+		{% if showPlus|default(0) == 1 %}
 			<div class="roundBtn" data-page="{{ pageId|default('unknown') }}">
 				<span class="plusBtn">+</span>
 			</div>

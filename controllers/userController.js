@@ -22,6 +22,20 @@ exports.displayHome = async (req,res)=>{
   })
 }*/
 
+exports.showUserRoles = async (req, res) => {
+  try {
+    
+    const roles = await prisma.role.findMany();
+
+    res.render("pages/roleList.twig", {
+      roles,
+    });
+  } catch (error) {
+    req.session.errorRequest = "Error loading list";
+    res.redirect("/error");
+  }
+};
+
 
 //Show About
 exports.displayAbout = async (req, res) => {
@@ -245,8 +259,96 @@ exports.registerUser = async (req, res) => {
 
 }
 
+//Get user role list
+exports.listUserRoles = async (req, res) => {
+    console.log("Fetching Roles");
+    try {
+        const roles = await prisma.role.findMany();
+        console.log("Got list, come back");
+        return res.json({
+            success: true,
+            roles,
+        });
+
+    } catch (error) {
+        console.error("Error retrieving user roles:", error);
+
+        return res.status(500).json({
+            success: false,
+            error: "Unexpected error while retrieving user roles."
+        });
+    }
+};
+
+
+exports.treatRoleList = async (req, res) => {
+   console.log(req.body);
+    const action = req.body.buttons; // "delete-123" or "modify-123"
+   
+   //Delete the role
+  if (action.startsWith("delete-")) {
+    let toDelete = action.split("-")[1];
+    toDelete = parseInt(toDelete );
+   
+    try {
+        const deleteRole = await prisma.role.delete({
+            where: {
+                id_role: toDelete
+            }
+        })
+        res.redirect("/register")
+    } catch (error) {
+   
+        req.session.errorRequest = "The role could not be deleted"
+        res.redirect("/registry")
+
+    }
+
+  } else if (action.startsWith("modify-")) {
+    let id = action.split("-")[1];
+
+    id = parseInt(id);
+    // handle modify
+
+    res.redirect("/updateRole/"+id)
+     
+  }
+};
+
+//Add Role
+exports.postRole = async (req, res) => {
+   const roles= req.body;
+    try {
+        const role = await prisma.role.create({
+            data: {
+               role: req.body.userRoleTitle,
+                
+            }
+        })
+
+        res.redirect("/register")
+    } catch (error) {
+
+        if (error.code === 'P2002') {
+      //Duplicate Role)
+      return res.render('pages/roleList.twig', {
+            error: null,
+            userRoleTitle: "The role already exists",
+            roles,
+            });
+        } else{
+            
+            res.render("pages/register.twig")
+
+        }
+    }
+}
+
+
+
 exports.userLogout = async (req, res) => {
   req.app.loginStatus = false;
   req.session.destroy()
   res.redirect('/home')
 }
+

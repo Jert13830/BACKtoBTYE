@@ -1,12 +1,15 @@
 {% block style %}
-	<link rel="stylesheet" href="/assets/css/computerList.css">
+	<link rel="stylesheet" href="/assets/css/computerCarrousel.css">
 {% endblock %}
 
 
 <div id="carouselContainer">
 <span id="slideLeftBtn" onclick="slideLeft()" class="sliderBtn"></span>
-	<div id="sliderContainer">
+	<div class="sliderContainer">
 		{% for computer in computers %}
+		{% set bgIndex = (loop.index0 % 6) + 1 %}
+		{% set bgClass = 'bg-' ~ bgIndex %}
+		<a class="computerListGridA" href="/computerDetailSelect/{{ computer.id_ordinateur }}?bg={{ bgClass }}&origin=home">
 			<div class="computerCardOuter">
 				<div class="computerCardBackground">
 					<div class="computerCardInner">
@@ -114,7 +117,7 @@
 					</div>
 				</div>
 			</div>
-
+			</a>
 		{% endfor %}
 	</div>
 	<span id="slideRightBtn" onclick="slideRight()" class="sliderBtn"></span>

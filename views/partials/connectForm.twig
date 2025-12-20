@@ -1,6 +1,8 @@
 <div id="connectFormDiv">
-	<form id="connectForm" action="/connect" method="post">
+
+	<form id="connectForm" action= {{user ? "/userLogout" : "/connect"}} method="post">
 		<div class="connectFormInput">
+		{% if not user %}
 			<div>
 				<label for="email">Email :
 				</label>
@@ -24,6 +26,7 @@
 				{% endif %}
 			</div>
 		</div>
+		{% endif %}
 		<div id="submitBtnDiv">
 			{% if user %}
 				<button type="submit" id="connectSubmit" name="connectSubmit">Log out</button>
@@ -37,9 +40,14 @@
 			{% endif %}
 		</div>
 		<div>
-			<p id="connectP">You are not registered,
-				<a id="connectA" href="/register">please register</a>
+			{% if not user %}
+				<p id="connectP">You are not registered,
+					<a id="connectA" href="/register">please register</a>
+				</p>
+			{% else %}
+				<a id="connectA" href="/register">Edit your profile</a>
 			</p>
+			{% endif %}
 		</div>
 	</form>
 </div>

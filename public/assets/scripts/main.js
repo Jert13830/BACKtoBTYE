@@ -34,7 +34,7 @@ const searchInput = document.getElementById('searchBar');
 const btnResearch = document.getElementById('btnResearch');
 
 /** Computer Carrousel **/
-const slider = document.getElementById("sliderContainer");
+const slider = document.querySelector(".sliderContainer");
 const cardWidth = 330;
 
 
@@ -151,7 +151,8 @@ if (squareBtnClose) {
     const page = closeBtn.dataset.page;
 
     if (page === 'addComputer') {
-      window.location.href = '/computerList';
+     const origin = "/" + document.querySelector("#originInput").value;
+      window.location.href = origin;
     }
 
     // Find if we're inside an open dialog
@@ -162,7 +163,11 @@ if (squareBtnClose) {
   });
 }
 
-
+/*function openUserRole(){
+  const addUserRole = document.querySelector("#addUserRole");
+   addUserRole.showModal();
+    openedDialog = addUserRole;
+}*/
 
 /**** search computer ****/
 
@@ -211,25 +216,33 @@ function treatImages() {
     });
   }
 
-  if (computerImage) {
-    computerImage.addEventListener("change", () => {
-      const files = Array.from(computerImage.files);
+    if (computerProfileImage) {
+  computerProfileImage.addEventListener("click", () => {
+    uploadImageComputer.click();
+  });
 
-      //No files selected
-      if (!files.length) return;
+  uploadImageComputer.addEventListener("change", () => {
+    const files = Array.from(uploadImageComputer.files);
 
-      const value = computerName.value?.trim();
-      if (value) { //Test if a computer name has been given
-        fileName = computerName.value;
-        loadImage(files, "Computer", fileName, "#computerPhoto");
-      }
-      else {
-        document.querySelector("#computerNameErrors").textContent = "Please enter a computer name";
-      }
-    });
-  }
+    //No files selected
+    if (!files.length) return;
+
+    const value = computer.value?.trim();
+
+    if (value) { //Test if a user name has been given
+      fileName = computer.value;
+      loadImage(files, "Computer", fileName, "#computerPhoto");
+    }
+
+    else {
+      document.querySelector("#computerNameErrors").textContent = "Please enter a computer name";
+    }
+  });
 
 }
+  }
+
+
 
 const rarity = document.querySelector("#rarity");
 
@@ -314,7 +327,12 @@ if (addComputerManu) {
 function addComputer() {
   const dialog = document.getElementById("addComputerManufacturer");
   const form = document.getElementById("computerManufacturerForm");
-  const errorBox = document.getElementById("errorComputerManufacturer"); // add_elem in form
+  const errorBox = document.getElementById("errorComputerManufacturer");
+
+  // Only add listener if the form exists 
+  if (!form || !errorBox) {
+    return;
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault(); //Stops the parent page from being refreshed and loosing data
@@ -342,17 +360,101 @@ function addComputer() {
   });
 }
 
+function addRole() {
+  const dialog = document.getElementById("userRoleForm");
+  const form = document.getElementById("addUserRoleForm");
+  const errorBox = document.getElementById("errorUserRoleTitle");
+  // Only add listener if the form exists 
+  if (!form || !errorBox) {
+    return;
+  }
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); //Stops the parent page from being refreshed and loosing data
 
-function init() {
-  addComputer();
-  loadManufacturerList();
-  treatImages();
-  loadComputerList();
+    const formData = new FormData(form);
+    const response = await fetch("/addUserRole", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      loadRoleList(); //update role list
+      dialog.close();
+
+
+      return;
+    }
+
+    // Show error
+    errorBox.textContent = data.error;
+
+  });
 }
 
 
-document.addEventListener("DOMContentLoaded", init);
 
+
+
+
+async function loadRoleList() {
+  const response = await fetch('/listUserRoles');
+  const data = await response.json();
+
+  if (!data.success) return;
+
+  const select = document.getElementById('userRole');
+  select.innerHTML = '';
+
+  data.roles.forEach(r => {
+    const option = document.createElement('option');
+    option.value = r.role;
+    option.textContent = r.role;
+    select.appendChild(option);
+  });
+}
+
+function openUserRole() {
+  
+  document.getElementById('userRoleForm').showModal();
+  openedDialog = addUserRole;
+}
+
+function updateRoleSelect(roles) {
+ 
+  const select = document.querySelector("#userRole");
+  const selectedId =   document.querySelector("#previousRole").value
+
+  // Clear existing options
+  select.innerHTML = "";
+
+  // Add placeholder
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Select role …";
+  placeholder.disabled = true; // optional: prevent selecting placeholder again
+  select.appendChild(placeholder);
+
+  // Add all es
+  roles.forEach(m => {
+    const opt = document.createElement("option");
+    opt.value = r.id_role;
+    opt.textContent = r.role;
+
+    // Pre-select if this matches the previous value
+    if (selectedId !== null && String(r.role) === String(selectedId)) {
+      opt.selected = true;
+    }
+
+    select.appendChild(opt);
+  });
+
+  // Optional: if nothing was selected
+  if (selectedId === null)  {
+    select.selectedIndex = 0; // ensures placeholder is shown
+  }
+}
 
 async function loadManufacturerList() {
   const errorBox = document.getElementById("manufacturerErrors");
@@ -377,7 +479,10 @@ async function loadManufacturerList() {
 }
 
 function updateManufacturerSelect(manufacturers) {
-  const select = document.getElementById("computerManufacturerSelect");
+ 
+  const select = document.querySelector("#computerManufacturerSelect");
+  const selectedId =   document.querySelector("#previousManufacturer").value
+
   // Clear existing options
   select.innerHTML = "";
 
@@ -385,6 +490,7 @@ function updateManufacturerSelect(manufacturers) {
   const placeholder = document.createElement("option");
   placeholder.value = "";
   placeholder.textContent = "Select manufacturer…";
+  placeholder.disabled = true; // optional: prevent selecting placeholder again
   select.appendChild(placeholder);
 
   // Add all manufacturers
@@ -393,12 +499,18 @@ function updateManufacturerSelect(manufacturers) {
     opt.value = m.id_fab_ordinateur;
     opt.textContent = m.nom;
 
-    /* if (String(m.id_fab_ordinateur) === selectedManufacturer) {
-          opt.selected = true;
-     }*/
+    // Pre-select if this matches the previous value
+    if (selectedId !== null && String(m.id_fab_ordinateur) === String(selectedId)) {
+      opt.selected = true;
+    }
+
     select.appendChild(opt);
   });
 
+  // Optional: if nothing was selected
+  if (selectedId === null)  {
+    select.selectedIndex = 0; // ensures placeholder is shown
+  }
 }
 
 async function loadComputerList() {
@@ -426,6 +538,7 @@ async function loadComputerList() {
 function updateComputerSelect(computers) {
 
   const select = document.querySelector("#successor");
+  const selectedId = document.querySelector("#previousSuccessor");
 
   // Clear existing options
   select.innerHTML = "";
@@ -441,6 +554,12 @@ function updateComputerSelect(computers) {
     const opt = document.createElement("option");
     opt.value = m.id_ordinateur;
     opt.textContent = m.nom;
+
+    // Pre-select if this matches the previous value
+    if (selectedId !== null && String(m.successeur) === String(selectedId)) {
+      opt.selected = true;
+    }
+
     select.appendChild(opt);
   });
 }
@@ -479,4 +598,55 @@ function slideLeft() {
 }
 
 
+document.addEventListener("DOMContentLoaded", init);
+
+async function init() {
+ 
+  const manuImage = document.querySelector('.manuImage');
+  const computerProfileImage = document.querySelector('#computerPhoto'); // or whatever the ID is
+  const uploadImageComputer = document.querySelector('#uploadImageComputer'); // adjust if needed
+
+  if (manuImage || computerProfileImage || uploadImageComputer) {
+    treatImages();  // only call if at least one file input might exist
+  }
+
+  const manufacturerForm = document.getElementById("computerManufacturerForm");
+  if (manufacturerForm) {
+    addComputer();
+  }
+
+  const userRoleForm = document.getElementById("userRoleForm");
+  if (userRoleForm) {
+    addRole();
+  }
+
+  const manufacturerSelect = document.querySelector("#computerManufacturerSelect");
+  if (manufacturerSelect) {
+    await loadManufacturerList().catch(err => {
+      console.error("Failed to load manufacturers:", err);
+    });
+  } else {
+    console.log("No manufacturer select on this page — skipping loadManufacturerList");
+  }
+
+  const successorSelect = document.querySelector("#successor");
+  if (successorSelect) {
+    await loadComputerList().catch(err => {
+      console.error("Failed to load computers:", err);
+    });
+  } else {
+    console.log("No successor select on this page — skipping loadComputerList");
+  }
+
+  const roleSelect = document.getElementById("userRole");
+  if (roleSelect) {
+    await loadRoleList().catch(err => {
+      console.error("Failed to load roles:", err);
+    });
+  } else {
+    console.log("No userRole select on this page — skipping loadRoleList");
+  }
+
+  console.log("All relevant data loaded successfully!");
+}
 

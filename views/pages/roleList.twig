@@ -1,0 +1,29 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>User Role</title>
+	<link rel="stylesheet" href="/assets/css/roleList.css">
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section>
+				<div id="roleList">
+					{% embed '/partials/window.twig' with {
+						windowType: 'mediumWindow',
+						title: 'User Role',
+						showPlus: 0,
+						pageId: 'roleList'
+						} %}
+					{% block content %}
+						{% include '/partials/userRole.twig' %}
+					{% endblock %}
+				{% endembed %}
+				</div>
+			</section>
+
+		</div>
+			
+	</main>
+{% endblock %}

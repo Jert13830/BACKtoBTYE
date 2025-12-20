@@ -211,6 +211,16 @@ dialog[open] .squareBtnClose {
     height:450px;
 }*/
 
+#addUserRole{
+    background-color: transparent;
+    border:0;
+    overflow: hidden;
+}
+
+#addUserRole .content{ 
+  
+    height:20vh;
+}
 
 #addComputerManufacturer{
     background-color: transparent;
@@ -255,6 +265,10 @@ dialog[open] .squareBtnClose {
 #about .content{
    height:auto;
 
+}
+
+#roleList .content{
+    height:auto;
 }
 
 dialog[open] {

@@ -39,6 +39,7 @@
    margin: auto;
    height: 100%;
    gap:15px;
+   border:0;
 }
 
 /* Mobile: Stack vertically */

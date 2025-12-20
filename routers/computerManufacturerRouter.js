@@ -14,5 +14,4 @@ computerManufacturerRouter.get('/removeComputerManufacturer', authGuard, compute
 computerManufacturerRouter.get('/updateComputerManufacturer', authGuard, computerManufacturerController.displayUpdateComputerManufacturer);
 computerManufacturerRouter.post('/updateComputerManufacturer', authGuard, computerManufacturerController.updateComputerManufacturer);
 
-
 module.exports = computerManufacturerRouter;

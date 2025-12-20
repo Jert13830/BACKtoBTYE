@@ -1,22 +1,22 @@
 {% block style %}
 	<link rel="stylesheet" href="/assets/css/computerForm.css">
 {% endblock %}
-
 <div class="formBk1">
-	<div class="formBk2">
+	<div class="formBk2 {{bkgClass}}">
 		<form id="computerForm" action="/addComputer" method="post">
+			<input type="text" id="originInput" hidden value="{{ origin|default('computerList')}}">
 			<div id="formDiv">
 				<div id="formLeft">
 				<div class="errNinput">
 					<div class="formInputLine">
 						<div class="manufacturerLogo">
 							<div>
-								<img id="computerManuLogo" src="/assets/images/logos/defaultLogo.webp" alt="Computer Manufacturer's logo">
+								<img id="computerManuLogo" name="computerManuLogo" src="/assets/images/logos/{{data.fabricantOrdinateur.nom}}.webp" alt="Logo" onerror="this.src='/assets/images/logos/defaultLogo.webp'" >
 							</div>
 						</div>
 						<!-- END OF fomanuLogoHolder -->
 						<div>
-							<input type="text" name="computer" maxlength="15" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (15 max)" required value="{{ data.computer|default('') }}"/>
+							<input type="text" name="computer" maxlength="15" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (15 max)" required value="{{data.nom|default('') }}"/>
 						</div>
 					</div>
 					<p id="computerNameErrors">{{errors.computerName}}</p>
@@ -29,11 +29,14 @@
 						</div>
 						<div>
 							<div>
-								<select id="computerManufacturerSelect" name="fabricantId" onchange="changeLogo();" required value="{{ data.fabricantId|default('')}}"></select>
-
-								<span class="plus-label" id="addComputerManu">
-									<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-								</span>
+							
+								<select id="computerManufacturerSelect" name="fabricantId" onchange="changeLogo();" required></select>
+								<input id="previousManufacturer" type="text" hidden value="{{ data.id_fab_ordinateur|default('0') }}">
+								{% if user %}
+									<span class="plus-label" id="addComputerManu">
+										<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+									</span>
+								{% endif %}
 							</div>
 						</div>
 					</div>
@@ -46,7 +49,7 @@
 							<label for="manufacturerYear">Year : </label>
 						</div>
 						<div>
-							<input type="number" min="1970" max="2000" step="1" id="manufacturerYear" name="manufacturerYear" required value="{{ data.manufacturerYear|default('1980') }}"/>
+							<input type="number" min="1970" max="2000" step="1" id="manufacturerYear" name="manufacturerYear" required value="{{ data.annee|default('1980') }}"/>
 						</div>
 					</div>
 
@@ -79,7 +82,7 @@
 						<div>
 							<label for="clockSpeed">Clock speed : </label>
 						</div>
-						<div><input type="number" min="1" max="20" step="1" id="clockSpeed" name="clockSpeed" required value="{{ data.clockSpeed|default('4') }}"/><span>
+						<div><input type="number" min="1" max="20" step="1" id="clockSpeed" name="clockSpeed" required value="{{ data.vitesseHorloge|default('4') }}"/><span>
 								MHz</span>
 						</div>
 					</div>
@@ -111,7 +114,7 @@
 								<label for="graphics">Graphics : </label>
 							</div>
 							<div>
-								<input type="text" name="graphics" id="graphics" required value="{{ data.graphics|default('') }}"/>
+								<input type="text" name="graphics" id="graphics" required value="{{data.graphique|default('') }}"/>
 								
 							</div>
 						</div>
@@ -125,7 +128,7 @@
 							<label for="nbColours">N° Colours : </label>
 						</div>
 						<div>
-							<input type="number" min="1" max="100000" step="1" id="nbColours" name="nbColours" value="{{ data.nbColours|default('256') }}" required/>
+							<input type="number" min="1" max="100000" step="1" id="nbColours" name="nbColours" value="{{ data.nbCouleurs|default('256') }}" required/>
 						</div>
 					</div>
 						<div class="errNinput">
@@ -134,7 +137,7 @@
 								<label for="sound">Sound : </label>
 							</div>
 							<div>
-								<input type="text" name="sound" id="sound" required value="{{ data.sound|default('') }}"/>
+								<input type="text" name="sound" id="sound" required value="{{ data.son|default('') }}"/>
 								
 							</div>
 						</div>
@@ -148,7 +151,8 @@
 								<label for="successor">Successor : </label>
 							</div>
 							<div>
-								<select id="successor" name="successor" value="{{ data.successor|default('0') }}"></select>
+								<select id="successor" name="successor" value="{{ data.successeur|default('0') }}"></select>
+								<input id="previousSuccessor" type="text" hidden value="{{ data.successeur|default('0') }}">
 								<p id="successorErrors"></p>
 							</div>
 						</div>
@@ -157,20 +161,19 @@
 				<div id="formRight">
 					<div id="computerPhotoHolder">
 						<div id="computerProfileImage">
-							<img id="computerPhoto" src="/assets/images/computers/{{computer}}.webp" alt="Computer image" onerror="this.src='/assets/images/computers/defaultComputer.webp'" >
+							<img id="computerPhoto" src="/assets/images/computers/{{data.nom}}.webp" alt="Computer image" onerror="this.src='/assets/images/computers/defaultComputer.webp'" >
 						</div>
-						<label for="filePath" class="camera-label">
-							<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-260q75 0 127.5-52.5T660-440q0-75-52.5-127.5T480-620q-75 0-127.5 52.5T300-440q0 75 52.5 127.5T480-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM160-120q-33 0-56.5-23.5T80-200v-480q0-33 23.5-56.5T160-760h126l74-80h240l74 80h126q33 0 56.5 23.5T880-680v480q0 33-23.5 56.5T800-120H160Zm0-80h640v-480H638l-73-80H395l-73 80H160v480Zm320-240Z" fill="currentColor"/></svg>
-						</span>
-					</label>
-					<input type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="filePath" id="filePath" class="computerImage" hidden>
+						
+					<input id="uploadImageComputer" type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="filePath" id="filePath" class="computerImage" hidden>
 				</div>
+				
 				<!-- END OF computerProfileImage -->
 				<div id="computerInformation">
 					<div class="textBk1">
-						<textarea id="computerInfo" name="computerInfo" rows="10" cols="50" placeholder="Computer Information" value="{{ data.computerInfo|default('') }}"></textarea>
+						<textarea id="computerInfo" name="computerInfo" rows="10" cols="50" placeholder="Computer Information" value="{{ data.info|default('') }}"></textarea>
 					</div>
 				</div>
+				{% if user %}
 				<div id="scoringBtn">
 					<div id="rarity">
 						<div>
@@ -203,21 +206,29 @@
 						</div>
 					</div>
 				</div>
+				{% endif %}
+				{% if user %}
 				<!-- END OF scoringBtn-->
-				<div class="formBtnDiv">
-					<div>
-						<button class="btnForm" type="submit" id="addComputerSubmit" name="addComputerSubmit">Add</button>
-					</div>
-					<div>
-						<button class="btnForm" type="reset" id="btnReset" value="reset">Reset</button>
+						<div class="formBtnDiv">
+							<div>
+								<button class="btnForm" type="submit" id="addComputerSubmit" name="addComputerSubmit">Add</button>
+							</div>
+							<div>
+								<button class="btnForm" type="reset" id="btnReset" value="reset">Reset</button>
 
+							</div>
+						</div>
+						<!-- END OF formBtnDiv -->
 					</div>
-				</div>
-				<!-- END OF formBtnDiv -->
-			</div>
+				{% endif %}
 			<!-- END OF formRight -->
 		</div>
 		<!-- END OF formDiv -->
 	</form>
+	<script>
+
+  document.getElementById("computerManufacturerSelect").value = "Amstrad";
+
+</script>
 </div>
 <!-- END OF formBK2 --></div><!-- END OF formBK1 -->

@@ -91,9 +91,11 @@ exports.displayComputerList = async (req, res) => {
 
 //Show add computer screen
 exports.displayAddComputer = (req, res) => {
+  const bkgClass = "bg-1";
   res.render("pages/addComputer.twig", {
     title: "Add Computer",
     error: null,
+    bkgClass,
   })
 }
 
@@ -120,7 +122,11 @@ exports.listComputer = async (req, res) => {
 //Create computer
 exports.postComputer = async (req, res) => {
   const data = req.body;
+  
+  console.log(data);
+
   const name = req.body.computer.trim();
+  const bkgClass = "bg-1";
 
   try {
     const exists = await prisma.ordinateur.findFirst({
@@ -132,7 +138,8 @@ exports.postComputer = async (req, res) => {
 
       return res.render("pages/addComputer.twig", {
         errors,
-        data
+        data,
+        bkgClass,
       });
     }
 
@@ -181,7 +188,8 @@ exports.postComputer = async (req, res) => {
     if (error.details) {
       return res.render("pages/addComputer.twig", {
         errors: error.details,
-        data
+        data,
+        bkgClass,
       });
     }
 
@@ -191,19 +199,20 @@ exports.postComputer = async (req, res) => {
 
     return res.render("pages/addComputer.twig", {
       errors,
-      data
+      data,
+      bkgClass,
     });
   }
 
 }
 
 exports.filterComputerList = async (req, res) => {
-  try{
-  const { searchBar, selection } = req.body;
+  try {
+    const { searchBar, selection } = req.body;
 
-  // WHERE the searchBar the computer's name, computer manufacturer's name or is empty
-  const where = searchBar
-    ? {
+    // WHERE the searchBar the computer's name, computer manufacturer's name or is empty
+    const where = searchBar
+      ? {
         OR: [
           {
             nom: {
@@ -219,40 +228,40 @@ exports.filterComputerList = async (req, res) => {
           },
         ],
       }
-    : undefined;
+      : undefined;
 
- // The radio buttons all for sorting by manufactured Year or Manufacturer(sorted by year)
-  let orderBy;
+    // The radio buttons all for sorting by manufactured Year or Manufacturer(sorted by year)
+    let orderBy;
 
-  if (selection === 'year') {
-    orderBy = {
-      annee: 'asc',
-    };
-  } else if (selection === 'manufacturer') {
-    orderBy = [
-      {
-        fabricantOrdinateur: {
-          nom: 'asc',
+    if (selection === 'year') {
+      orderBy = {
+        annee: 'asc',
+      };
+    } else if (selection === 'manufacturer') {
+      orderBy = [
+        {
+          fabricantOrdinateur: {
+            nom: 'asc',
+          },
         },
+        {
+          annee: 'asc',
+        },
+      ];
+    }
+
+    // The query, and the Manufacturer table has to be returned too
+    const computers = await prisma.ordinateur.findMany({
+      where,
+      orderBy,
+      include: {
+        fabricantOrdinateur: true,
       },
-      {
-         annee: 'asc',
-      },
-  ];
+    });
+
+    res.render('pages/computerList.twig', { computers });
   }
-
-  // The query, and the Manufacturer table has to be returned too
-  const computers = await prisma.ordinateur.findMany({
-    where,
-    orderBy,
-    include: {
-      fabricantOrdinateur: true,
-    },
-  });
-
-  res.render('pages/computerList.twig', { computers });
-}
-catch (error) {
+  catch (error) {
     // Custom validation extension
     if (error.details) {
       return res.render("pages/computerList.twig", {
@@ -271,3 +280,39 @@ catch (error) {
   }
 
 };
+
+exports.computerDetailSelect = async (req, res) => {
+  const bkgClass = req.query.bg;
+  const origin = req.query.origin;
+
+  console.log(origin);
+
+ try {
+    const data = await prisma.ordinateur.findUnique({
+      where: {
+        id_ordinateur: Number(req.params.id_ordinateur)
+      },
+      include:
+      {
+        photos: true,
+        fabricantOrdinateur: true,
+        popularites: true,
+        raretes: true,
+      },
+    })
+
+    console.log("Here is the computer data : ",data);
+
+    res.render("pages/addComputer.twig", {
+      title: "Computer Details",
+      bkgClass,
+      data,
+      origin,
+    });
+  }
+  catch (error) {
+    req.session.errorRequest = "Computer data could not be sent";
+    console.log("Computer data could not be sent");
+    res.redirect("/computerList");
+  }
+}

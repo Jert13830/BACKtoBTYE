@@ -58,7 +58,6 @@
    
 }
 
-
 /* Window Backgrounds*/
 .formBk1 {
     width: 77vw;
@@ -77,15 +76,75 @@
     justify-content: center;
 }
 
+.bg-1{
+  background: linear-gradient(to top left,
+      #ff7675 0%,
+      #ffcccb 20%,
+      #e74c3c 50%,
+      #ffcccb 80%,
+      #ff7675 100%);
+
+  border: solid 1px #FF7675;
+}
+
+.bg-2{
+  background: linear-gradient(to top left,
+      #55A630 0%,
+      #D1F2A5 20%,
+      #27AE60 50%,
+      #D1F2A5 80%,
+      #55A630 100%);
+
+  border: solid 1px #55A630;
+}
+
+.bg-3{
+  background: linear-gradient(to top left,
+      #74B9FF 0%,
+      #A8E6CF 20%,
+      #0984E3 50%,
+      #A8E6CF 80%,
+      #74B9FF 100%);
+
+  border: solid 1px #74B9FF;
+}
+
+.bg-4{
+  background: linear-gradient(to top left,
+      #A29BFE 0%,
+      #E1BEE7 20%,
+      #8E44AD 50%,
+      #E1BEE7 80%,
+      #A29BFE 100%);
+
+  border: solid 1px #A29BFE;
+}
+
+.bg-5{
+  background: linear-gradient(to top left,
+      #FFB347 0%,
+      #FFE0B2 20%,
+      #E67E22 50%,
+      #FFE0B2 80%,
+      #FFB347 100%);
+
+  border: solid 1px #FFB347;
+}
+
+.bg-6{
+  background: linear-gradient(to top left,
+      #F8A5C2 0%,
+      #FCDDE2 20%,
+      #E84393 50%,
+      #FCDDE2 80%,
+      #F8A5C2 100%);
+
+  border: solid 1px #F8A5C2;
+}
+
 .formBk2 {
     width: 75vw;
     height: 72vh;
-    background: linear-gradient(to top left,
-            #ff7675 0%,
-            #ffcccb 20%,
-            #e74c3c 50%,
-            #ffcccb 80%,
-            #ff7675 100%);
 
     border-radius: 10px;
     border: 0;

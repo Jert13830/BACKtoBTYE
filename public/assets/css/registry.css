@@ -186,6 +186,15 @@ select{
     padding:0;
 }
 
+
+.plus-label svg path {
+    fill: #000;
+}
+
+.plus-label {
+    cursor: pointer;
+}
+
 @media (width <=520px) {
     .registrationFormInput {
         flex-direction: column;

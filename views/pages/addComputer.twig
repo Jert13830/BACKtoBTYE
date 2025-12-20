@@ -1,7 +1,7 @@
 {% extends "/layouts/base.twig" %}
 
 {% block style %}
-	<title>Add Computer</title>
+	<title>{{ title }}</title>
 
 {% endblock %}
 
@@ -12,7 +12,7 @@
 				<div id="addComputer">
 					{% embed '/partials/window.twig' with {
    					 	windowType: 'largeWindow',
-    					title: 'Add Computer',
+    					title:  title ,
     					showPlus: 0,
 						showClose : 1,
 						pageId: 'addComputer'

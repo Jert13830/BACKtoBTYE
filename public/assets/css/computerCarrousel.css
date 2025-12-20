@@ -39,7 +39,7 @@
   
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 1) .computerCardBackground {
+.sliderContainer > .computerListGridA:nth-child(6n + 1) .computerCardBackground {
   background: linear-gradient(to top left,
       #ff7675 0%,
       #ffcccb 20%,
@@ -50,7 +50,7 @@
   border: solid 1px #FF7675;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 2) .computerCardBackground {
+.sliderContainer > .computerListGridA:nth-child(6n + 2) .computerCardBackground {
   background: linear-gradient(to top left,
       #55A630 0%,
       #D1F2A5 20%,
@@ -61,7 +61,7 @@
   border: solid 1px #55A630;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 3) .computerCardBackground {
+.sliderContainer > .computerListGridA:nth-child(6n + 3) .computerCardBackground {
   background: linear-gradient(to top left,
       #74B9FF 0%,
       #A8E6CF 20%,
@@ -72,7 +72,7 @@
   border: solid 1px #74B9FF;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 4) .computerCardBackground {
+.sliderContainer > .computerListGridA:nth-child(6n + 4) .computerCardBackground {
   background: linear-gradient(to top left,
       #A29BFE 0%,
       #E1BEE7 20%,
@@ -83,7 +83,7 @@
   border: solid 1px #A29BFE;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 5) .computerCardBackground {
+.sliderContainer > .computerListGridA:nth-child(6n + 5) .computerCardBackground {
   background: linear-gradient(to top left,
       #FFB347 0%,
       #FFE0B2 20%,
@@ -94,7 +94,7 @@
   border: solid 1px #FFB347;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 6) .computerCardBackground {
+.sliderContainer > .computerListGridA:nth-child(6n + 6) .computerCardBackground {
   background: linear-gradient(to top left,
       #F8A5C2 0%,
       #FCDDE2 20%,
@@ -226,123 +226,123 @@ img {
 }*/
 
 /* Colour the computer card titles */
-.computerListGrid > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-1 {
+.sliderContainer > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #ff7675;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-2 {
+.sliderContainer > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #ffcccb;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-3 {
+.sliderContainer > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #e74c3c;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-4 {
+.sliderContainer > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #ffcccb;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-5 {
+.sliderContainer > .computerListGridA:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #ff7675;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-1 {
+.sliderContainer > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #55A630;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-2 {
+.sliderContainer > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #D1F2A5;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-3 {
+.sliderContainer > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #27AE60;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-4 {
+.sliderContainer > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #D1F2A5;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-5 {
+.sliderContainer > .computerListGridA:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #55A630;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-1 {
+.sliderContainer > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #74B9FF;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-2 {
+.sliderContainer > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #A8E6CF;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-3 {
+.sliderContainer > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #0984E3;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-4 {
+.sliderContainer > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #A8E6CF;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-5 {
+.sliderContainer > .computerListGridA:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #74B9FF;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-1 {
+.sliderContainer > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #A29BFE;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-2 {
+.sliderContainer > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #E1BEE7;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-3 {
+.sliderContainer > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #8E44AD;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-4 {
+.sliderContainer > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #E1BEE7;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-5 {
+.sliderContainer > .computerListGridA:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #A29BFE;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-1 {
+.sliderContainer > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #FFB347;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-2 {
+.sliderContainer > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #FFE0B2;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-3 {
+.sliderContainer > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #E67E22;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-4 {
+.sliderContainer > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #FFE0B2;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-5 {
+.sliderContainer > .computerListGridA:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #FFB347;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-1 {
+.sliderContainer > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #F8A5C2;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-2 {
+.sliderContainer > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #FCDDE2;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-3 {
+.sliderContainer > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #E84393;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-4 {
+.sliderContainer > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #FCDDE2;
 }
 
-.computerListGrid > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-5 {
+.sliderContainer > .computerListGridA:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #F8A5C2;
 }
 
@@ -358,7 +358,7 @@ img {
 }
 
 
-#sliderContainer {
+.sliderContainer {
   display: grid;
   /*grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));*/
   gap: 40px;
@@ -375,11 +375,11 @@ img {
 
 }
 
-#sliderContainer::-webkit-scrollbar {
+.sliderContainer::-webkit-scrollbar {
   display: none;
 }
 
-#sliderContainer>div {
+.sliderContainer>div {
 
   scroll-snap-align: start;
 
@@ -395,6 +395,7 @@ img {
 
   clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
   border-radius: 5px;
+  cursor: pointer;
 }
 
 #slideLeftBtn {
@@ -534,7 +535,7 @@ img {
  margin-left: 10px;
 }
 
-  #sliderContainer {
+  .sliderContainer {
     /* Switch to vertical layout */
     grid-auto-flow: row;
     grid-auto-columns: unset;
@@ -546,7 +547,7 @@ img {
 
   }
 
-  #sliderContainer>* {
+  .sliderContainer>* {
     scroll-snap-align: start;
     max-width: 300px;
   }

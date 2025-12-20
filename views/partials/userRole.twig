@@ -1,0 +1,50 @@
+<section>
+	<div class="table-container">
+		<table>
+			<thead>
+				<tr>
+					<th>Role</th>
+					<th class="role-column">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for role in roles%}
+					<tr class="roleLine">
+						<td>{{role.role}}</td>
+						<td class="role-column">
+						<form method="post" action="/roleList">
+							<button class="btnForm" id="btnModify" name="buttons" value="modify-{{role.id_role}}">✏️</button>
+							<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{role.id_role}}">🗑️</button>
+						</form>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		
+	</div>
+	<div id="addDiv">
+			<form id="newRoleForm" name="newRoleForm" method="post" action="/postRole" >
+				<div>
+					<label for="userRoleTitle">Role :
+					</label>
+				
+				
+					<input type="text" id="userRoleTitle" name="userRoleTitle" pattern="^[a-z][a-z_]{1,28}[a-z]$" placeholder="Lower case (3-30 char)">
+				
+					{% if errors.userRoleTitle %}
+						<p>{{ errors.userRoleTitle }} </p>
+					{% endif %}
+				
+				
+					<button class="btnForm" id="btnAdd" name="btnAdd">Add</button>
+					<button
+  type="button"
+  class="btnForm"
+  onclick="window.location.href='/register'">
+  Close
+</button>
+				</div>
+			</form>
+		</div>
+</section>

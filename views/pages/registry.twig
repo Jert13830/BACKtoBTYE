@@ -24,5 +24,21 @@
 			</div>
 		</section>
     </div>
+	<section id="addUserRoleSection">
+		<dialog id="userRoleForm" class="dialog">
+				{% embed '/partials/window.twig' with {
+   					 	windowType: 'smallWindow',
+    					title: 'User Role',
+    					showPlus: 0,
+						showClose : 1,
+						pageId: 'userRoleForm'
+					} %}
+					{% block content %}
+						{% include '/partials/userRoleForm.twig' %}
+					{% endblock %}
+				{% endembed %}
+
+			</dialog>
+		</section>
 	</main>
 {% endblock %}
