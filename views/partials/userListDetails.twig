@@ -1,0 +1,32 @@
+<section>
+	<div class="table-container">
+		<table>
+			<thead>
+				<tr>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Role</th>
+					<th class="role-column">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users%}
+					<tr class="userLine">
+						<td>{{user.pseudo}}</td>
+						<td>{{user.email}}</td>
+						<td>{{user.role}}</td>
+						<td class="action-column">
+							<form method="post" action="/userList">
+								<button type="button" class="btnForm" data-user-id="{{ user.id_utilisateur }}" data-user-name="{{ user.pseudo }}" onclick="updateRole(this)">
+									✏️
+								</button>
+
+								<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{user.id_utilisateur}}">🗑️</button>
+							</form>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</section>

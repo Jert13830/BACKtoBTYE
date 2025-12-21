@@ -19,8 +19,9 @@ module.exports = Prisma.defineExtension({
                         errors.password = "6 characters minimum, with at least one letter (A-Za-z)";
                     }
 
-                if(!/^[a-z][a-z_]{1,28}[a-z]$/.test(args.data.userRoleTitle)){
+                if(!/^(?!\s*$)(?!.*<.*?>)[a-z][a-z0-9_-]{2,29}$/.test(args.data.role)){
                         errors.userRoleTitle = "Lowercase letters (3–30 characters max)";
+                        console.log("ERROR LOADED");
                     }
 
                     console.log("Checked role");

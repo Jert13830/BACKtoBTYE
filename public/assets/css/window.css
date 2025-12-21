@@ -9,6 +9,8 @@
     background-color: #D9D9D9;
     border-radius: 10px;
      justify-self:center;
+
+     
 }
 
 .largeWindow{
@@ -269,6 +271,7 @@ dialog[open] .squareBtnClose {
 
 #roleList .content{
     height:auto;
+    overflow-y: auto;
 }
 
 dialog[open] {

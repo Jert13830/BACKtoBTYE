@@ -192,6 +192,21 @@ btnResearch.addEventListener('click', () => {
 });
 }
 
+function updateRole(button) {
+  updateRoleDialog.showModal();
+   const  updateRoleText = document.querySelector("#updateRoleText");
+   const roleId = document.querySelector("#roleId");
+
+    
+
+    updateRoleText.value = button.dataset.roleName;
+    roleId.value = button.dataset.roleId;
+
+    openedDialog = updateRoleDialog;
+
+
+}
+
 function treatImages() {
   if (manuImage) {
     manuImage.addEventListener("change", () => {
@@ -399,7 +414,11 @@ function addRole() {
 
 
 async function loadRoleList() {
+
+
   const response = await fetch('/listUserRoles');
+  const selectedId =   document.querySelector("#previousRole").value
+  
   const data = await response.json();
 
   if (!data.success) return;
@@ -409,10 +428,18 @@ async function loadRoleList() {
 
   data.roles.forEach(r => {
     const option = document.createElement('option');
-    option.value = r.role;
+    option.value = r.id_role;
     option.textContent = r.role;
+
+    // Pre-select if this matches the previous value
+    if (selectedId !== null && String(r.id_role) === String(selectedId)) {
+      option.selected = true;
+    }
     select.appendChild(option);
   });
+
+  
+  
 }
 
 function openUserRole() {
@@ -422,6 +449,7 @@ function openUserRole() {
 }
 
 function updateRoleSelect(roles) {
+
  
   const select = document.querySelector("#userRole");
   const selectedId =   document.querySelector("#previousRole").value
@@ -647,6 +675,11 @@ async function init() {
     console.log("No userRole select on this page — skipping loadRoleList");
   }
 
+  const btnModify = document.querySelector("#btnModify");
+  const updateId = document.querySelector("#updateId");
+  if (btnModify){
+      updateId = btnModify.value;
+  }
   console.log("All relevant data loaded successfully!");
 }
 

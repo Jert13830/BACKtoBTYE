@@ -1,6 +1,6 @@
 .table-container {
     width: 100%;
-    max-height: 60vh;
+    max-height: 55vh;
     overflow-y: auto;
     overflow-x: auto;
     border: 1px solid #ddd;
@@ -59,7 +59,9 @@ td, th {
   border-bottom: 1px solid #808080; 
   color: #000000;
 }
-
+#roleUpdateContent{
+    background-color: red;
+}
 .action-btn {
     padding: 6px 12px;
     margin: 0 4px;
@@ -107,7 +109,98 @@ thead th {
     
 }
 
+#updateRoleDialog{
+  background-color: transparent;
+  border: 0;
 
+  /* Center dialog */
+  padding: 0;
+}
+
+#updateRoleDialog::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+
+#updateRoleContent {
+width: min(90vw, 250px); 
+  background-color: #7e7f7f;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative; 
+  border: 1px solid white;
+}
+
+#btnUpdateRole {
+    border-radius: 6px;
+    background-color: #D3CBCB;
+    color: #3C3C43;
+    border: 1px #b2afaf solid;
+    padding: 5px;
+    width: 5rem;
+    font-size: 1rem;
+
+}
+
+#updateBarDiv{
+    display:flex;
+    width:100%;
+    gap:10px;
+}
+
+#btnUpdateRole:hover {
+    background-color: #7c7c7d;
+    color: #fff;
+}
+
+  .closeBtn{
+    color:white;
+  }
+
+  #updateRoleText{
+    border-radius: 10px 0px 0 10px;
+  }
+
+  #updateRoleFormForm{
+      align-content: center;
+  }
+
+  #roleGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 30px;
+}
+  .squareBtnClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 28px;
+  width: 28px;
+  border-radius: 6px;
+
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.squareBtnClose:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 480px) {
+#updateRoleContent {
+    border-radius: 16px;
+    padding: 16px;
+  }
+}
 
 @media (max-width: 600px) {
     .action-btn {

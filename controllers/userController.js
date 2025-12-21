@@ -24,7 +24,7 @@ exports.displayHome = async (req,res)=>{
 
 exports.showUserRoles = async (req, res) => {
   try {
-    
+
     const roles = await prisma.role.findMany();
 
     res.render("pages/roleList.twig", {
@@ -35,6 +35,41 @@ exports.showUserRoles = async (req, res) => {
     res.redirect("/error");
   }
 };
+
+
+exports.displayUserList = async (req, res) => {
+   try {
+    const users = await prisma.utilisateur.findMany({
+      include:
+      {
+       roleUtilisateur: true,
+       role: true,
+      },
+    });
+
+    res.render("pages/userList.twig", {
+      title: "User List",
+      users,
+      error: null,
+    });
+
+  } catch (error) {
+    if (error.details) {
+      return res.render("pages/registry.twig", {
+        errors: error.details,
+        users
+      });
+    }
+
+    // Unknown error
+    console.error(error);
+
+    return res.render("pages/registry.twig", {
+      errors,
+    });
+  }
+};
+
 
 
 //Show About
@@ -71,7 +106,7 @@ exports.connect = async (req, res) => {
         req.session.user = user
         req.app.loginStatus = true;
         // Redirect to the homepage
-         res.redirect('/home')
+        res.redirect('/home')
 
       } else {
         // If the password is incorrect return error
@@ -122,6 +157,8 @@ exports.registration = async (req, res) => {
 
 exports.registerUser = async (req, res) => {
   const data = req.body;
+  console.log("User ERROR");
+  console.log(data);
   try {
 
     // Check the two passwords match
@@ -211,14 +248,16 @@ exports.registerUser = async (req, res) => {
             },
           });
 
+
           console.log("Save role")
-          /*await prisma.photo.create({
+          console.log(req.body);
+          await prisma.roleUtilisateur.create({
             data: {
+              id_role : Number(req.body.userRole),
               id_utilisateur: user.id_utilisateur,
-              alt: `Profile photo of ${user.pseudo}`,
-              path: filePath,
+              
             },
-          });*/
+          });
 
           // Redirect to the connect page to log in
           res.redirect('/connect');
@@ -261,46 +300,64 @@ exports.registerUser = async (req, res) => {
 
 //Get user role list
 exports.listUserRoles = async (req, res) => {
-    console.log("Fetching Roles");
-    try {
-        const roles = await prisma.role.findMany();
-        console.log("Got list, come back");
-        return res.json({
-            success: true,
-            roles,
-        });
+  console.log("Fetching Roles");
+  try {
+    const roles = await prisma.role.findMany();
+    console.log("Got list, come back");
+    return res.json({
+      success: true,
+      roles,
+    });
 
-    } catch (error) {
-        console.error("Error retrieving user roles:", error);
+  } catch (error) {
+    console.error("Error retrieving user roles:", error);
 
-        return res.status(500).json({
-            success: false,
-            error: "Unexpected error while retrieving user roles."
-        });
-    }
+    return res.status(500).json({
+      success: false,
+      error: "Unexpected error while retrieving user roles."
+    });
+  }
 };
 
 
 exports.treatRoleList = async (req, res) => {
-   console.log(req.body);
-    const action = req.body.buttons; // "delete-123" or "modify-123"
-   
-   //Delete the role
+  console.log(req.body);
+  const action = req.body.buttons; // "delete-123" or "modify-123"
+
+  //Delete the role
   if (action.startsWith("delete-")) {
     let toDelete = action.split("-")[1];
-    toDelete = parseInt(toDelete );
-   
+    toDelete = parseInt(toDelete);
+
     try {
-        const deleteRole = await prisma.role.delete({
-            where: {
-                id_role: toDelete
-            }
-        })
-        res.redirect("/register")
+
+      //Roles will be sent if an Error occurs
+      const roles = await prisma.role.findMany();
+
+      //Test if role is associated with at least one user
+      const exists = await prisma.roleUtilisateur.findFirst({
+        where: { id_role: toDelete }
+      });
+
+      if (exists) {
+        errors.userRoleTitle = "There are users associated with this role";
+        return res.render("pages/roleList.twig", {
+          errors,
+          roles,
+        });
+      }
+
+      //only delete Role if no user are associated with the role
+      const deleteRole = await prisma.role.delete({
+        where: {
+          id_role: toDelete
+        }
+      })
+      res.redirect("/showUserRoles")
     } catch (error) {
-   
-        req.session.errorRequest = "The role could not be deleted"
-        res.redirect("/registry")
+
+      req.session.errorRequest = "The role could not be deleted"
+      res.redirect("/registry")
 
     }
 
@@ -310,38 +367,107 @@ exports.treatRoleList = async (req, res) => {
     id = parseInt(id);
     // handle modify
 
-    res.redirect("/updateRole/"+id)
-     
+    res.redirect("/updateRole/" + id)
+
   }
 };
+//Update Role Title
+exports.updateRoleText = async (req, res) => {
+  console.log(req.body);
+  try {
+    //Get Roles to be returned if error occurs
+    const roles = await prisma.role.findMany();
+
+    //Test if role exists already
+    const exists = await prisma.role.findFirst({
+      where: { role: req.body.updateRoleText }
+    });
+
+
+    if (exists) {
+      errors.userRoleTitle = "Role already exists";
+      return res.render("pages/roleList.twig", {
+        errors,
+        roles,
+      });
+    }
+
+    //Update role
+    await prisma.role.update({
+      where: {
+        id_role: Number(req.body.roleId),
+      },
+      data: {
+        role: req.body.updateRoleText,
+      },
+    });
+    res.redirect("/showUserRoles")
+  } catch (error) {
+
+    if (error.code === 'P2002') {
+      //Duplicate Role)
+      errors.userRoleTitle = "Role already exists";
+      return res.render('pages/roleList.twig', {
+        errors,
+        roles,
+      });
+    } else {
+      errors.userRoleTitle = "Unknown error";
+      return res.render('pages/roleList.twig', {
+        errors,
+      });
+
+    }
+  }
+}
+
 
 //Add Role
 exports.postRole = async (req, res) => {
-   const roles= req.body;
-    try {
-        const role = await prisma.role.create({
-            data: {
-               role: req.body.userRoleTitle,
-                
-            }
-        })
+  try {
+    //Get Roles to be returned if error occurs
+    const roles = await prisma.role.findMany();
 
-        res.redirect("/register")
-    } catch (error) {
+    //Test if role exists already
+    const exists = await prisma.role.findFirst({
+      where: { role: req.body.userRoleTitle }
+    });
 
-        if (error.code === 'P2002') {
-      //Duplicate Role)
-      return res.render('pages/roleList.twig', {
-            error: null,
-            userRoleTitle: "The role already exists",
-            roles,
-            });
-        } else{
-            
-            res.render("pages/register.twig")
 
-        }
+    if (exists) {
+      errors.userRoleTitle = "Role already exists";
+      return res.render("pages/roleList.twig", {
+        errors,
+        roles,
+      });
     }
+
+    //Add role
+    await prisma.role.create({
+      data: {
+        role: req.body.userRoleTitle,
+
+      }
+    })
+
+    res.redirect("/showUserRoles")
+  } catch (error) {
+
+    if (error.code === 'P2002') {
+      //Duplicate Role)
+      errors.userRoleTitle = "Role already exists";
+      return res.render('pages/roleList.twig', {
+        errors,
+        roles,
+      });
+    } else {
+      errors.userRoleTitle = "Unknown error";
+      return res.render('pages/roleList.twig', {
+        errors,
+      });
+
+    }
+  }
 }
 
 

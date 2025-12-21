@@ -10,6 +10,8 @@ const upload = multer();
 
 userRouter.get('/about',userController.displayAbout);
 
+
+
 userRouter.get('/connect',userController.displayconnect);
 userRouter.post("/userLogout", userController.userLogout);
 
@@ -23,8 +25,11 @@ userRouter.get('/listUserRoles', userController.listUserRoles);
 
 userRouter.post('/roleList', userController.treatRoleList);
 
+userRouter.get('/userList',userController.displayUserList);
 userRouter.get('/showUserRoles', userController.showUserRoles);
 
 userRouter.post('/postRole',userController.postRole);
+
+userRouter.post('/updateRoleText',userController.updateRoleText);
 
 module.exports = userRouter;

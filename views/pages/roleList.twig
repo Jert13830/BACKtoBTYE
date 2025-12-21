@@ -24,6 +24,24 @@
 			</section>
 
 		</div>
-			
+			<section id="updateRoleSection">
+			<dialog id="updateRoleDialog" class="dialog">
+				<div id="updateRoleContent">
+					<button class="squareBtnClose" type="button">
+						<span class="closeBtn">×</span>
+					</button>
+					<form id="updateRoleForm" method="post" action="/updateRoleText" >
+						<div id="roleGrid">
+							<div id="updateBarDiv">
+								<input type="text" id="updateRoleText" name="updateRoleText" required minlength="3" maxlength="30" pattern="[a-z][a-z0-9_-]*"/>
+								<input type="text" hidden id="roleId" name="roleId">
+								<button id="btnUpdateRole">Update</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</dialog>
+	</section>
 	</main>
 {% endblock %}

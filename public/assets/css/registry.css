@@ -15,6 +15,11 @@
 
 }
 
+#userDiv{
+    display:flex;
+    gap:10px;
+}
+
 .btnForm {
     border-radius: 6px;
     background-color: #D3CBCB;
