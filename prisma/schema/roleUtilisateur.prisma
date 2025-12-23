@@ -1,5 +1,5 @@
 model RoleUtilisateur {
-  id_role_utilisateurteur Int         @id @default(autoincrement())
+  id_role_utilisateur     Int         @id @default(autoincrement())
   id_role                 Int
   id_utilisateur          Int
   role                    Role        @relation(fields: [id_role], references: [id_role])

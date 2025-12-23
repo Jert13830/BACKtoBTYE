@@ -6,6 +6,9 @@ module.exports = Prisma.defineExtension({
         utilisateur: {
             create: async ({ args, query }) => {
                 const errors = { }
+                  console.log("checking things out");
+                console.log(args.data);
+
                 //First character must be a letter or number (no leading +, space, -, etc.) With at least 1 character (not null)
                 if (!/^[A-Za-z0-9][A-Za-z0-9 ./_+-]*$/.test(args.data.pseudo)) {
                     errors.usernameProfile = "Invalid or empty user name"
@@ -19,13 +22,20 @@ module.exports = Prisma.defineExtension({
                         errors.password = "6 characters minimum, with at least one letter (A-Za-z)";
                     }
 
-                if(!/^(?!\s*$)(?!.*<.*?>)[a-z][a-z0-9_-]{2,29}$/.test(args.data.role)){
-                        errors.userRoleTitle = "Lowercase letters (3–30 characters max)";
-                        console.log("ERROR LOADED");
+                    if(!/^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$/.test(args.data.currentPassword)){
+                        errors.password = "6 characters minimum, with at least one letter (A-Za-z)";
                     }
 
-                    console.log("Checked role");
-                
+                    if(!/^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$/.test(args.data.newPassword)){
+                        errors.password = "6 characters minimum, with at least one letter (A-Za-z)";
+                    }
+
+                    if(!/^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$/.test(args.data.confirmPassword)){
+                        errors.password = "6 characters minimum, with at least one letter (A-Za-z)";
+                    }
+
+              
+
                 if (Object.keys(errors).length > 0) {
                     const error = new Error("Validation error")
                     error.details = errors

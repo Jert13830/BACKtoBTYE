@@ -31,5 +31,10 @@ userRouter.get('/showUserRoles', userController.showUserRoles);
 userRouter.post('/postRole',userController.postRole);
 
 userRouter.post('/updateRoleText',userController.updateRoleText);
+userRouter.post('/updateUserList',userController.updateUserList);
+userRouter.get('/updateUser/:id', userController.updateUser);
+
+userRouter.post('/updateUserInfo/:id', userController.updateUserInfo);
+userRouter.post('/updatePassword', userController.updatePassword);
 
 module.exports = userRouter;

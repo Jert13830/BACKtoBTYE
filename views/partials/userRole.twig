@@ -1,5 +1,5 @@
 <section>
-	<div class="table-container">
+	<div class="table-container" id="roleDetailsList">
 		<table>
 			<thead>
 				<tr>
@@ -33,7 +33,7 @@
 				</label>
 
 
-				<input type="text" id="userRoleTitle" name="userRoleTitle" required minlength="3" maxlength="30" pattern="[a-z][a-z0-9_-]*">
+				<input type="text" id="userRoleTitle" name="userRoleTitle" required minlength="3" maxlength="30" >
 				<input type="text" hidden id="updateId" value="">
 				<button class="btnForm" id="btnAdd" name="btnAdd">Add</button>
 				<button type="button" class="btnForm" onclick="window.location.href='/register'">

@@ -20,7 +20,7 @@
     gap:10px;
 }
 
-.btnForm {
+.btnForm, #changePasswordBtn {
     border-radius: 6px;
     background-color: #D3CBCB;
     color: #3C3C43;
@@ -30,12 +30,21 @@
 
     padding: 5px;
 
-    width: 5rem;
+
     font-size: 1rem;
 
 }
 
-.btnForm:hover {
+#changePasswordBtn {
+    margin-bottom: 20px;
+}
+
+.btnForm{
+        width: 5rem;
+        margin-top: 10px;
+}
+
+.btnForm:hover, #changePasswordBtn:hover{
     background-color: #7c7c7d;
     color: #fff;
 }
@@ -174,6 +183,116 @@
 
 }
 
+#updatePasswordDialog{
+background-color: transparent;
+  border: 0;
+  /* Center dialog */
+  padding: 0;
+}
+
+#updatePasswordDialog::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+
+#updatePasswordContent {
+width: min(90vw, 250px); 
+  background-color: #7e7f7f;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative; 
+  border: 1px solid white;
+}
+
+#btnUpdatePassword {
+    border-radius: 6px;
+    background-color: #D3CBCB;
+    color: #3C3C43;
+    border: 1px #b2afaf solid;
+    padding: 5px;
+    width: 5rem;
+    font-size: 1rem;
+
+}
+
+.updatePasswordText{
+    border-radius: 10px 0px 0 10px;
+  }
+
+#updateBarDiv{
+    display:flex;
+    flex-direction: column;
+    width:100%;
+    gap:10px;
+    
+}
+
+#btnUpdatePassword:hover {
+    background-color: #7c7c7d;
+    color: #fff;
+}
+
+  .closeBtn{
+    color:white;
+  }
+
+  #updatePasswordText{
+    border-radius: 10px 0px 0 10px;
+  }
+
+  #updatePasswordForm{
+      align-content: center;
+      
+  }
+
+  #passwordGrid {
+  display:flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 30px;
+  
+  justify-self:center;
+}
+  .squareBtnClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 28px;
+  width: 28px;
+  border-radius: 6px;
+
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.squareBtnClose:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.formInputLine {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 10px;
+}
+
+.formInputLine>div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+******************
+
 #profileContainer:hover {
   opacity: 0.8;
 }
@@ -200,12 +319,19 @@ select{
     cursor: pointer;
 }
 
+#listOfUsers{
+    position: absolute;
+    display:flex;
+    margin-left: 20px;
+     bottom: 45px;
+}
+
 @media (width <=520px) {
     .registrationFormInput {
         flex-direction: column;
         gap: 5px;
         align-items: normal;
-
+       
     }
 
     #registrationForm {
@@ -221,4 +347,8 @@ select{
     .registrationFormInput>div:first-child {
         white-space: nowrap;
     }
+
+    #listOfUsers{
+     bottom: 10px;
+}
 }

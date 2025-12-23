@@ -7,8 +7,6 @@ const prisma = new PrismaClient().$extends(validateUser).$extends(hashExtension)
 // Importing bcrypt for password hashing and comparison
 const bcrypt = require('bcrypt');
 
-const errors = {};
-
 const fs = require('fs/promises');
 
 
@@ -38,14 +36,18 @@ exports.showUserRoles = async (req, res) => {
 
 
 exports.displayUserList = async (req, res) => {
-   try {
+  const errors = {};
+  const data = req.body;
+  try {
     const users = await prisma.utilisateur.findMany({
-      include:
-      {
-       roleUtilisateur: true,
-       role: true,
-      },
-    });
+      include: {
+        roleUtilisateurs: {
+          include: {
+            role: true
+          }
+        }
+      }
+    })
 
     res.render("pages/userList.twig", {
       title: "User List",
@@ -91,17 +93,20 @@ exports.displayconnect = async (req, res) => {
 
 //User connection
 exports.connect = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const email = req.body.email.toLowerCase().trim();
   const data = req.body;
+
   try {
     // research email
     const user = await prisma.utilisateur.findUnique({
       where: {
-        email: req.body.email
+        email: email
       }
     })
     if (user) {
       // Check the password
-      if (bcrypt.compareSync(req.body.password, user.motDePasse)) {
+      if (await bcrypt.compareSync(req.body.password, user.motDePasse)) {
         //If the password matches then the User is added to the session
         req.session.user = user
         req.app.loginStatus = true;
@@ -156,6 +161,9 @@ exports.registration = async (req, res) => {
 
 
 exports.registerUser = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const email = req.body.email.toLowerCase().trim();
+  const pseudo = req.body.usernameProfile.trim();
   const data = req.body;
   console.log("User ERROR");
   console.log(data);
@@ -165,9 +173,10 @@ exports.registerUser = async (req, res) => {
     if (req.body.password == req.body.confirmPassword) {
 
       // Check to see if the Email address is already registered
+
       const userEmail = await prisma.utilisateur.findUnique({
         where: {
-          email: req.body.email
+          email: email
         }
       })
 
@@ -184,9 +193,10 @@ exports.registerUser = async (req, res) => {
       else {
         console.log("Going to test username");
         //Check to see if the Username is already used
+
         const userProfile = await prisma.utilisateur.findFirst({
           where: {
-            pseudo: req.body.usernameProfile,
+            pseudo: pseudo,
           }
         });
 
@@ -212,8 +222,9 @@ exports.registerUser = async (req, res) => {
           //It is a new user - create the user   
           const user = await prisma.utilisateur.create({
             data: {
-              pseudo: req.body.usernameProfile,
-              email: req.body.email,
+              pseudo: pseudo,
+              email: email,
+              // password is hashed via prisma extension bcrypt
               motDePasse: req.body.password,
             }
           });
@@ -251,11 +262,12 @@ exports.registerUser = async (req, res) => {
 
           console.log("Save role")
           console.log(req.body);
+
           await prisma.roleUtilisateur.create({
             data: {
-              id_role : Number(req.body.userRole),
+              id_role: Number(req.body.userRole),
               id_utilisateur: user.id_utilisateur,
-              
+
             },
           });
 
@@ -319,8 +331,74 @@ exports.listUserRoles = async (req, res) => {
   }
 };
 
+exports.updateUserList = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+
+  console.log(req.body);
+  const action = req.body.buttons; // "delete-123" or "modify-123"
+
+  //Delete the role
+  if (action.startsWith("delete-")) {
+    let toDelete = action.split("-")[1];
+    toDelete = parseInt(toDelete);
+
+    try {
+
+      //Users will be sent if an Error occurs
+      const users = await prisma.utilisateur.findMany();
+
+      //Delete the roleUtilisateur entry before deleting the user
+
+      console.log("Check if exists");
+      const exists = await prisma.roleUtilisateur.findFirst({
+        where: {
+          id_utilisateur: toDelete,
+        }
+      });
+
+      if (exists) {
+        console.log("Remove if exists");
+        console.log("user exists");
+        await prisma.roleUtilisateur.deleteMany({
+          where: {
+            id_utilisateur: toDelete
+          }
+        });
+      }
+
+      //Delete User 
+      console.log("Check if exists");
+      await prisma.utilisateur.delete({
+        where: {
+          id_utilisateur: toDelete
+        }
+      });
+
+      res.redirect("/userList")
+    } catch (error) {
+
+      errors.userError = "The user could not be deleted"
+      res.render("pages/userList.twig", {
+        errors,
+      });
+
+    }
+
+  } else if (action.startsWith("modify-")) {
+    let id = action.split("-")[1];
+
+    id = parseInt(id);
+    // handle modify
+
+    res.redirect("/updateUser/" + id)
+
+  }
+};
+
 
 exports.treatRoleList = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+
   console.log(req.body);
   const action = req.body.buttons; // "delete-123" or "modify-123"
 
@@ -367,13 +445,218 @@ exports.treatRoleList = async (req, res) => {
     id = parseInt(id);
     // handle modify
 
-    res.redirect("/updateRole/" + id)
+    res.redirect("/updateUser/" + id);
 
   }
 };
+
+exports.updateUserInfo = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const userId = parseInt(req.params.id);
+  const data = req.body; // To be sent back if there is an error
+  console.log("Data to update");
+  console.log(req.body);
+  console.log(userId);
+  try {
+    //Get actual user information
+    const actualUser = await prisma.utilisateur.findFirst({
+      where: { id_utilisateur: userId },
+      include: {
+        roleUtilisateurs: { include: { role: true } },
+        photo: true
+      }
+    })
+
+    //The actual user doesn't exist - this should not be impossible
+    if (!actualUser) {
+      return res.render("pages/registry.twig", {
+        errors: { usernameProfile: "User not found" },
+        transaction: "update"
+      });
+    }
+    //Check the if username is the same, if not, that the username is not in use 
+
+    if (data.usernameProfile !== actualUser.pseudo) {
+      const usernameInUse = await prisma.utilisateur.findFirst({
+        where: { pseudo: data.usernameProfile }
+      });
+
+      //name already in use
+      if (usernameInUse) {
+        return res.render("pages/registry.twig", {
+          errors: { usernameProfile: "Username already in use" },
+          data,
+          transaction: "update",
+        });
+      }
+    }
+
+    //The username is the same or available
+
+    //Check that the email addresses are the same or not already in use
+    if (data.email !== actualUser.email) {
+      const emailInUse = await prisma.utilisateur.findFirst({
+        where: { email: data.email }
+      });
+
+      //Email already in use
+      if (emailInUse) {
+        return res.render("pages/registry.twig", {
+          errors: { email: "The user is already registered" },
+          data,
+          transaction: "update",
+        });
+      }
+    }
+
+    //Email address is the same or available
+
+    //Find the photo and change the name
+
+    const fs = require('fs/promises');
+    const path = require('path');
+
+    if (data.usernameProfile !== actualUser.pseudo && actualUser.photo) {
+
+      const oldPath = path.join(
+        __dirname,
+        `../public/assets/images/users/${actualUser.pseudo}.webp`
+      );
+
+      const newPath = path.join(
+        __dirname,
+        `../public/assets/images/users/${data.usernameProfile}.webp`
+      );
+
+      try {
+        await fs.rename(oldPath, newPath);
+
+        await prisma.photo.update({
+          where: { id_photo: actualUser.photo.id_photo },
+          data: {
+            path: `/assets/images/users/${data.usernameProfile}.webp`
+          }
+        });
+
+      } catch (err) {
+        console.error("Image rename failed:", err);
+
+      }
+    }
+
+    //Now update the user account
+
+    await prisma.utilisateur.update({
+      where: {
+        id_utilisateur: userId,
+      },
+      data: {
+        pseudo: data.usernameProfile,
+        email: data.email,
+      },
+    });
+
+    //Update the Role
+
+    const roleLink = await prisma.roleUtilisateur.findFirst({
+      where: {
+        id_utilisateur: userId,
+      },
+    });
+
+    if (roleLink) {
+      await prisma.roleUtilisateur.update({
+        where: {
+          id_role_utilisateur: roleLink.id_role_utilisateur,
+        },
+        data: {
+          id_role: Number(req.body.userRole),
+        },
+      });
+    } else {
+      // Safety fallback (should not happen normally)
+      await prisma.roleUtilisateur.create({
+        data: {
+          id_utilisateur: userId,
+          id_role: Number(req.body.userRole),
+        },
+      });
+    }
+
+    //Everything went well return to Home page
+    return res.redirect('/home');
+  }
+  catch (error) {
+    console.error("Error updating user data:", error);
+
+    return res.render("pages/registry.twig", {
+      errors: {
+        global: "An unexpected error occurred while updating your profile."
+      },
+      data,
+      transaction: "update"
+    });
+  }
+
+}
+
+exports.updateUser = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const userId = parseInt(req.params.id);
+
+  try {
+    const user = await prisma.utilisateur.findFirst({
+      where: { id_utilisateur: userId },
+      include: {
+        roleUtilisateurs: {
+          include: {
+            role: true
+          }
+        }
+      }
+    })
+
+    if (!user) {
+      return res.render("pages/userList.twig", {
+        errors: { userError: "User not found" }
+      });
+    }
+
+    const data = [];
+    data.id = user.id_utilisateur;
+    data.usernameProfile = user.pseudo;
+    data.email = user.email;
+    data.password = "******";
+    data.confirmPassword = "******";
+    data.userRole = user.roleUtilisateurs[0].role.role;
+
+    return res.render("pages/registry.twig", {
+      data,
+      transaction: "update",
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.render("pages/userList.twig", {
+      errors: { userError: "Unknown error" }
+    });
+  }
+};
+
+
 //Update Role Title
 exports.updateRoleText = async (req, res) => {
-  console.log(req.body);
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const roleTitle = req.body.updateRoleText;
+
+  if (!/^[a-z][a-z0-9_-]{2,29}$/.test(roleTitle)) {
+    return res.render("pages/roleList.twig", {
+      errors: {
+        userRoleTitle: "Lowercase letters (3–30 characters max)"
+      }
+    });
+  }
+
   try {
     //Get Roles to be returned if error occurs
     const roles = await prisma.role.findMany();
@@ -424,6 +707,18 @@ exports.updateRoleText = async (req, res) => {
 
 //Add Role
 exports.postRole = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+
+  const roleTitle = req.body.userRoleTitle;
+
+  if (!/^[a-z][a-z0-9_-]{2,29}$/.test(roleTitle)) {
+    return res.render("pages/roleList.twig", {
+      errors: {
+        userRoleTitle: "Lowercase letters (3–30 characters max)"
+      }
+    });
+  }
+
   try {
     //Get Roles to be returned if error occurs
     const roles = await prisma.role.findMany();
@@ -469,6 +764,80 @@ exports.postRole = async (req, res) => {
     }
   }
 }
+
+exports.updatePassword = async (req, res) => {
+  console.log(req.body);
+  const data = req.body;
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+
+  const userId = req.session.user.id_utilisateur;
+
+  try {
+    // Get the old password from the database
+    const user = await prisma.utilisateur.findUnique({
+      where: {
+        id_utilisateur: data.passwordChangeUserId,
+      }
+    })
+
+    if (await bcrypt.compareSync(data.currentPassword, user.motDePasse)) {
+      //If the password matches then the we check the new password and the confirmed password
+
+
+      if (data.newPassword == data.confirmPassword) {
+        // change the password.
+        await prisma.utilisateur.update({
+          where: {
+            id_utilisateur: data.passwordChangeUserId,
+          },
+          data: {
+            motDePasse: data.newPassword,
+          }
+
+        })
+
+          res.redirect("/connect")
+
+      }
+      else {
+        // If the passwords don't match return error
+        errors.password = "The passwords don't match";
+        return res.render("pages/registry.twig", {
+          errors,
+
+        });
+      }
+    }
+    else {
+      // If the password is incorrect return error
+      errors.password = "Incorrect password";
+      return res.render("pages/registry.twig", {
+        errors,
+
+      });
+
+    }
+
+  }
+  catch (error) {
+    // Custom validation extension
+    if (error.details) {
+      return res.render("pages/connect.twig", {
+        errors: error.details,
+      });
+    }
+
+    // Unknown error
+    errors.connection = "An unexpected error occurred.";
+    console.error(error);
+
+    return res.render("pages/connect.twig", {
+      errors,
+      data
+    });
+  }
+}
+
 
 
 

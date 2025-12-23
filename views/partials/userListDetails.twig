@@ -1,5 +1,5 @@
 <section>
-	<div class="table-container">
+	<div class="table-container" id="userDetailsList">
 		<table>
 			<thead>
 				<tr>
@@ -14,13 +14,10 @@
 					<tr class="userLine">
 						<td>{{user.pseudo}}</td>
 						<td>{{user.email}}</td>
-						<td>{{user.role}}</td>
+						<td>{{user.roleUtilisateurs[0].role.role}}</td>
 						<td class="action-column">
-							<form method="post" action="/userList">
-								<button type="button" class="btnForm" data-user-id="{{ user.id_utilisateur }}" data-user-name="{{ user.pseudo }}" onclick="updateRole(this)">
-									✏️
-								</button>
-
+							<form method="post" action="/updateUserList">
+								<button class="btnForm" id="btnModify" name="buttons" value="modify-{{user.id_utilisateur}}">✏️</button>
 								<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{user.id_utilisateur}}">🗑️</button>
 							</form>
 						</td>
@@ -28,5 +25,13 @@
 				{% endfor %}
 			</tbody>
 		</table>
+	</div>
+	<div id="closeDiv">
+		{% if errors.userError %}
+			<p>{{errors.userError}}</p>
+		{% endif %}
+		<button type="button" class="btnForm" onclick="window.location.href='/register'">
+			Close
+		</button>
 	</div>
 </section>

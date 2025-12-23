@@ -178,6 +178,18 @@ if (btnSearch) {
   });
 }
 
+function openUpdatePasswordDialog(button) {
+
+  const updatePasswordDialog = document.querySelector("#updatePasswordDialog");
+  const passwordChangeUserId = document.querySelector("#passwordChangeUserId");
+
+  updatePasswordDialog.showModal();
+
+  passwordChangeUserId.value = button.dataset.userId;
+
+  openedDialog = updatePasswordDialog;
+}
+
 if (btnResearch) {
 btnResearch.addEventListener('click', () => {
   // Search text
@@ -408,13 +420,7 @@ function addRole() {
   });
 }
 
-
-
-
-
-
 async function loadRoleList() {
-
 
   const response = await fetch('/listUserRoles');
   const selectedId =   document.querySelector("#previousRole").value
@@ -432,7 +438,7 @@ async function loadRoleList() {
     option.textContent = r.role;
 
     // Pre-select if this matches the previous value
-    if (selectedId !== null && String(r.id_role) === String(selectedId)) {
+    if (selectedId !== null && String(r.role) === String(selectedId)) {
       option.selected = true;
     }
     select.appendChild(option);
@@ -461,7 +467,7 @@ function updateRoleSelect(roles) {
   const placeholder = document.createElement("option");
   placeholder.value = "";
   placeholder.textContent = "Select role …";
-  placeholder.disabled = true; // optional: prevent selecting placeholder again
+  placeholder.disabled = true; // prevent selecting placeholder again
   select.appendChild(placeholder);
 
   // Add all es
@@ -478,7 +484,7 @@ function updateRoleSelect(roles) {
     select.appendChild(opt);
   });
 
-  // Optional: if nothing was selected
+  // if nothing was selected
   if (selectedId === null)  {
     select.selectedIndex = 0; // ensures placeholder is shown
   }
@@ -518,7 +524,7 @@ function updateManufacturerSelect(manufacturers) {
   const placeholder = document.createElement("option");
   placeholder.value = "";
   placeholder.textContent = "Select manufacturer…";
-  placeholder.disabled = true; // optional: prevent selecting placeholder again
+  placeholder.disabled = true; // prevent selecting placeholder again
   select.appendChild(placeholder);
 
   // Add all manufacturers
@@ -535,7 +541,7 @@ function updateManufacturerSelect(manufacturers) {
     select.appendChild(opt);
   });
 
-  // Optional: if nothing was selected
+  // if nothing was selected
   if (selectedId === null)  {
     select.selectedIndex = 0; // ensures placeholder is shown
   }

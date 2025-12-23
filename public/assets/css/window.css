@@ -230,7 +230,14 @@ dialog[open] .squareBtnClose {
     overflow: hidden;
 }
 
+#updatePasswordDialog{
+    background-color: transparent;
+    border:0;
+    overflow: hidden;
+}
+
 #registration .content{
+    position: relative;
     overflow-y: auto;
     height: 70vh;
 }
