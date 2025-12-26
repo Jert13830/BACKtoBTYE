@@ -97,18 +97,28 @@ exports.connect = async (req, res) => {
   const email = req.body.email.toLowerCase().trim();
   const data = req.body;
 
+
   try {
     // research email
     const user = await prisma.utilisateur.findUnique({
       where: {
         email: email
+      }, include: {
+        roleUtilisateurs: { include: { role: true } },
       }
     })
     if (user) {
       // Check the password
       if (await bcrypt.compareSync(req.body.password, user.motDePasse)) {
         //If the password matches then the User is added to the session
-        req.session.user = user
+        req.session.user = {
+          id: user.id_utilisateur,
+          pseudo: user.pseudo,
+          email: user.email,
+          role: user.roleUtilisateurs?.[0]?.role?.role
+        };
+
+        console.log("User:", req.session.user);
         req.app.loginStatus = true;
         // Redirect to the homepage
         res.redirect('/home')
@@ -170,6 +180,7 @@ exports.registerUser = async (req, res) => {
   try {
 
     // Check the two passwords match
+    console.log("The password is : " + req.body.password + "( and the confirmeed : " + req.body.confirmPassword);
     if (req.body.password == req.body.confirmPassword) {
 
       // Check to see if the Email address is already registered
@@ -263,9 +274,17 @@ exports.registerUser = async (req, res) => {
           console.log("Save role")
           console.log(req.body);
 
+
+          const iRole = await prisma.role.findFirst({
+            where: {
+              role: req.body.userRole,
+            }
+          });
+
+
           await prisma.roleUtilisateur.create({
             data: {
-              id_role: Number(req.body.userRole),
+              id_role: iRole.id_role,
               id_utilisateur: user.id_utilisateur,
 
             },
@@ -390,7 +409,7 @@ exports.updateUserList = async (req, res) => {
     id = parseInt(id);
     // handle modify
 
-    res.redirect("/updateUser/" + id)
+    res.redirect("/updateUser/" + id);
 
   }
 };
@@ -455,8 +474,8 @@ exports.updateUserInfo = async (req, res) => {
   const userId = parseInt(req.params.id);
   const data = req.body; // To be sent back if there is an error
   console.log("Data to update");
-  console.log(req.body);
-  console.log(userId);
+  console.log("Req Body: ", req.body);
+  console.log("UserID: ", userId);
   try {
     //Get actual user information
     const actualUser = await prisma.utilisateur.findFirst({
@@ -540,6 +559,13 @@ exports.updateUserInfo = async (req, res) => {
 
       } catch (err) {
         console.error("Image rename failed:", err);
+        //place default image
+        await prisma.photo.update({
+          where: { id_photo: actualUser.photo.id_photo },
+          data: {
+            path: `/assets/images/users/defaultUserImage.webp`
+          }
+        });
 
       }
     }
@@ -565,12 +591,31 @@ exports.updateUserInfo = async (req, res) => {
     });
 
     if (roleLink) {
+      console.log("The role is : ", req.body.userRole);
+
+      let indexRole = 0;
+
+      if (isNaN(req.body.userRole)) {
+        const iRole = await prisma.role.findFirst({
+          where: {
+            role: req.body.userRole,
+          }
+        });
+
+        indexRole = iRole.id_role;
+      }
+      else {
+        indexRole = req.body.userRole;
+      }
+
+      console.log("iRole.id_role : ", indexRole);
+
       await prisma.roleUtilisateur.update({
         where: {
           id_role_utilisateur: roleLink.id_role_utilisateur,
         },
         data: {
-          id_role: Number(req.body.userRole),
+          id_role: Number(indexRole),
         },
       });
     } else {
@@ -629,6 +674,11 @@ exports.updateUser = async (req, res) => {
     data.password = "******";
     data.confirmPassword = "******";
     data.userRole = user.roleUtilisateurs[0].role.role;
+
+    console.log("User ID: " + userId + " Session : " + req.session.user.id);
+    if (userId !== req.session.user.id) {
+      data.administratorChange = true;
+    }
 
     return res.render("pages/registry.twig", {
       data,
@@ -770,25 +820,31 @@ exports.updatePassword = async (req, res) => {
   const data = req.body;
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
-  const userId = req.session.user.id_utilisateur;
+  console.log("The session user : ", req.session.user);
+
+  const userId = req.session.user.id;
 
   try {
     // Get the old password from the database
-    const user = await prisma.utilisateur.findUnique({
+    const userDb = await prisma.utilisateur.findUnique({
       where: {
-        id_utilisateur: data.passwordChangeUserId,
+        id_utilisateur: userId,
       }
     })
 
-    if (await bcrypt.compareSync(data.currentPassword, user.motDePasse)) {
+    if (await bcrypt.compareSync(data.currentPassword, userDb.motDePasse)) {
       //If the password matches then the we check the new password and the confirmed password
 
 
       if (data.newPassword == data.confirmPassword) {
+        //Hash the password
+        const hashedPassword = bcrypt.hashSync(data.newPassword, 12);
+        data.newPassword = hashedPassword;
+
         // change the password.
         await prisma.utilisateur.update({
           where: {
-            id_utilisateur: data.passwordChangeUserId,
+            id_utilisateur: userId,
           },
           data: {
             motDePasse: data.newPassword,
@@ -796,13 +852,16 @@ exports.updatePassword = async (req, res) => {
 
         })
 
-          res.redirect("/connect")
+
+        res.redirect("/connect")
 
       }
       else {
         // If the passwords don't match return error
         errors.password = "The passwords don't match";
         return res.render("pages/registry.twig", {
+          transaction: "update",
+          data,
           errors,
 
         });
@@ -812,6 +871,8 @@ exports.updatePassword = async (req, res) => {
       // If the password is incorrect return error
       errors.password = "Incorrect password";
       return res.render("pages/registry.twig", {
+        data,
+        transaction: "update",
         errors,
 
       });
@@ -822,8 +883,10 @@ exports.updatePassword = async (req, res) => {
   catch (error) {
     // Custom validation extension
     if (error.details) {
-      return res.render("pages/connect.twig", {
+      return res.render("pages/registry.twig", {
         errors: error.details,
+        data,
+        transaction: "update",
       });
     }
 
@@ -831,14 +894,92 @@ exports.updatePassword = async (req, res) => {
     errors.connection = "An unexpected error occurred.";
     console.error(error);
 
-    return res.render("pages/connect.twig", {
+    return res.render("pages/registry.twig", {
       errors,
-      data
+      data,
+      transaction: "update"
     });
   }
 }
 
+exports.resetPassword = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  console.log("Ready to start");
+  const userId = parseInt(req.params.id); //User to be reset
 
+  try {
+
+    // check to see if the connected user is an administrator, if not no need to continue
+    console.log("Session User : ", req.session.user);
+
+    if (req.session.user.role !== "administrator") {
+      errors.passwordReset = "You are not authorised to reset this password";
+
+      //get user details from session
+
+      const userData = await prisma.utilisateur.findUnique({
+      where: {
+        id_utilisateur: req.session.user.id,
+      }
+    })
+
+    const data = {
+    id:userData.id_utilisateur,   
+    usernameProfile: userData.pseudo,
+    email: userData.email,
+    }
+
+    console.log("The user is : ",data);
+
+      return res.render("pages/registry.twig", {
+        errors,
+        data,
+        transaction: "update"
+      });
+    }
+
+
+
+    console.log("Administrator : ", req.session.user.nom)
+    console.log("User : ", userId);
+
+    const userToChange = await prisma.utilisateur.findUnique({
+      where: { id_utilisateur: userId }
+    });
+
+    if (!userToChange) {
+      errors.passwordReset = "User not found";
+      return res.redirect("/updateUser/" + userId);
+    }
+
+    //Hash the password
+    const hashedPassword = bcrypt.hashSync("Reset123", 12);
+    const newPassword = hashedPassword;
+
+
+
+    // change the password.
+    await prisma.utilisateur.update({
+      where: {
+        id_utilisateur: userId,
+      },
+      data: {
+        motDePasse: newPassword,
+      }
+
+    })
+
+    res.redirect("/connect")
+
+  } catch (error) {
+    console.error("Reset password error:", error);
+
+    errors.passwordReset = "An unexpected error occurred while resetting the password.";
+
+    return res.redirect("/updateUser/" + userId);
+  }
+
+}
 
 
 exports.userLogout = async (req, res) => {

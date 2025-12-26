@@ -1,0 +1,61 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section id="sectionAdd">
+				<div id="addComputer">
+					{% embed '/partials/window.twig' with {
+   					 	windowType: 'largeWindow',
+    					title:  title ,
+    					showPlus: 0,
+						showClose : 1,
+						pageId: 'addComputer'
+					} %}
+						{% block content %}
+							{% include '/partials/softwareForm.twig' %}
+						{% endblock %}
+					{% endembed %}
+				</div>
+			</section>
+		</div>
+
+		{% if reopenDialog %}
+			<script>
+				document.addEventListener("DOMContentLoaded", () => {
+					document.querySelector("#addComputerManufacturer").showModal();
+				});
+			</script>
+		{% endif %}
+
+		{% if closeDialog %}
+			<script>
+				document.addEventListener("DOMContentLoaded", () => {
+					document.querySelector("#addComputerManufacturer").close();
+				});
+			</script>
+		{% endif %}
+
+		<section id="addComputerManuSection">
+			<dialog id="addComputerManufacturer" class="dialog">
+				{% embed '/partials/window.twig' with {
+   					 	windowType: 'smallWindow',
+    					title: 'Computer Manufacturer',
+    					showPlus: 0,
+						showClose : 1,
+						pageId: 'addComputerManufacturer'
+					} %}
+					{% block content %}
+						{% include '/partials/softwareManufacturerForm.twig' %}
+					{% endblock %}
+				{% endembed %}
+
+			</dialog>
+		</section>
+	</main>
+{% endblock %}

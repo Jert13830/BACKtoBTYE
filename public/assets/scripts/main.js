@@ -186,6 +186,7 @@ function openUpdatePasswordDialog(button) {
   updatePasswordDialog.showModal();
 
   passwordChangeUserId.value = button.dataset.userId;
+  alert(user);
 
   openedDialog = updatePasswordDialog;
 }

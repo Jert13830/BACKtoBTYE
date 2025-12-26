@@ -13,7 +13,7 @@ userRouter.get('/about',userController.displayAbout);
 
 
 userRouter.get('/connect',userController.displayconnect);
-userRouter.post("/userLogout", userController.userLogout);
+userRouter.post("/userLogout", authGuard,userController.userLogout);
 
 userRouter.post('/connect',userController.connect);
 
@@ -21,20 +21,22 @@ userRouter.get('/register',userController.registration);
 userRouter.post('/register',userController.registerUser);
 
 //userRouter.get('/listUserRoles', upload.none(),userController.listUserRoles);
-userRouter.get('/listUserRoles', userController.listUserRoles);
+userRouter.get('/listUserRoles', authGuard,userController.listUserRoles);
 
-userRouter.post('/roleList', userController.treatRoleList);
+userRouter.post('/roleList', authGuard,userController.treatRoleList);
 
-userRouter.get('/userList',userController.displayUserList);
-userRouter.get('/showUserRoles', userController.showUserRoles);
+userRouter.get('/userList',authGuard,userController.displayUserList);
+userRouter.get('/showUserRoles', authGuard,userController.showUserRoles);
 
-userRouter.post('/postRole',userController.postRole);
+userRouter.post('/postRole',authGuard,userController.postRole);
 
-userRouter.post('/updateRoleText',userController.updateRoleText);
-userRouter.post('/updateUserList',userController.updateUserList);
-userRouter.get('/updateUser/:id', userController.updateUser);
+userRouter.post('/updateRoleText',authGuard,userController.updateRoleText);
+userRouter.post('/updateUserList',authGuard,userController.updateUserList);
+userRouter.get('/updateUser/:id', authGuard,userController.updateUser);
 
-userRouter.post('/updateUserInfo/:id', userController.updateUserInfo);
-userRouter.post('/updatePassword', userController.updatePassword);
+userRouter.post('/updateUserInfo/:id', authGuard,userController.updateUserInfo);
+userRouter.post('/updatePassword', authGuard,userController.updatePassword);
+
+userRouter.post('/resetPassword/:id', authGuard,userController.resetPassword);
 
 module.exports = userRouter;

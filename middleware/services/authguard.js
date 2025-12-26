@@ -14,10 +14,10 @@ const authguard = async (req, res, next) => {
 
         if (req.session.user) {
             // Searches for the user in the database using their ID stored in the session.
-            console.log("User exists");
+            console.log("Search if User exists " , req.session.user.id);
             const user = await prisma.utilisateur.findUnique({
                 where: {
-                    id_utilisateur: req.session.user.id_utilisateur
+                    id_utilisateur: req.session.user.id
                 }
             })
             // If the user exists in the database, the request is allowed to proceed.
