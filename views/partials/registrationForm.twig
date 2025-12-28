@@ -51,12 +51,9 @@
 
 				{% if data.administratorChange %}
 
-					<button
-      type="submit"
-      formaction="/resetPassword/{{ data.id }}"
-      formmethod="POST">
-      Reset password
-    </button>
+					<button class="lgBtn" type="submit" formaction="/resetPassword/{{ data.id }}" formmethod="POST">
+						Reset password
+					</button>
 
 					{% if errors.passwordReset %}
 						<p class="error errP">{{% errors.passwordReset %}}</p>
@@ -64,7 +61,7 @@
 
 
 				{% else %}
-					<button id="changePasswordBtn" type="button" data-user-id="{{ data.id }}" onclick="openUpdatePasswordDialog(this)">
+					<button class="lgBtn" id="changePasswordBtn" type="button" data-user-id="{{ data.id }}" onclick="openUpdatePasswordDialog(this)">
 						Change password
 					</button>
 				{% endif %}

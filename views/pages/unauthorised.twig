@@ -1,0 +1,33 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/authorised.css">
+	<title>Access Denied</title>
+{% endblock %}
+
+{% block main %}
+<main>
+  <div class="unauthorised-container">
+
+    <h1>🚫 Access Denied</h1>
+
+    <p>
+      You do not have permission to access this page or perform this action.
+    </p>
+
+    {% if errors.authorisation %}
+      <p class="error-message">{{ errors.authorisation }}</p>
+    {% endif %}
+
+    <div class="actions">
+   
+      {% if user %}
+        <a href="/home" class="btn btn-secondary">Home</a>
+      {% else %}
+        <a href="/connect" class="btn btn-secondary">Connect</a>
+      {% endif %}
+    </div>
+
+  </div>
+  </main>
+{% endblock %}

@@ -122,7 +122,7 @@ exports.listComputer = async (req, res) => {
 //Create computer
 exports.postComputer = async (req, res) => {
   const data = req.body;
-  
+
   console.log(data);
 
   const name = req.body.computer.trim();
@@ -287,7 +287,7 @@ exports.computerDetailSelect = async (req, res) => {
 
   console.log(origin);
 
- try {
+  try {
     const data = await prisma.ordinateur.findUnique({
       where: {
         id_ordinateur: Number(req.params.id_ordinateur)
@@ -301,13 +301,21 @@ exports.computerDetailSelect = async (req, res) => {
       },
     })
 
-    console.log("Here is the computer data : ",data);
+    const successeur = await prisma.ordinateur.findUnique({
+      where: {
+        id_ordinateur: data.successeur,
+      }
+  })
 
+    console.log("Here is the computer data : ", data);
+
+    
     res.render("pages/addComputer.twig", {
       title: "Computer Details",
       bkgClass,
       data,
       origin,
+      successeur,
     });
   }
   catch (error) {
@@ -316,3 +324,53 @@ exports.computerDetailSelect = async (req, res) => {
     res.redirect("/computerList");
   }
 }
+
+exports.updateComputerList = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+
+  console.log(req.body);
+  const action = req.body.buttons; // "delete-123" or "modify-123"
+
+  const user = req.session.user;
+
+  //Delete the role
+  if (action.startsWith("delete-")) {
+    let toDelete = action.split("-")[1];
+    toDelete = parseInt(toDelete);
+
+    try {
+
+      //Computers will be sent if an Error occurs
+      const computers = await prisma.ordinateur.findMany();
+
+      console.log ("You are : ",user.role);
+
+   
+        //Delete computer
+        await prisma.ordinateur.delete({
+          where: {
+            id_ordinateur: toDelete
+          }
+        });
+      
+
+      res.redirect("/computerList")
+    } catch (error) {
+
+      errors.userError = "The computer could not be deleted"
+      res.render("pages/computerList.twig", {
+        errors,
+      });
+
+    }
+
+  } else if (action.startsWith("modify-")) {
+    let id = action.split("-")[1];
+
+    id = parseInt(id);
+    // handle modify
+
+    res.redirect("/updateComputer/" + id);
+
+  }
+};

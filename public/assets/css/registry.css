@@ -20,7 +20,7 @@
     gap:10px;
 }
 
-.btnForm, #changePasswordBtn {
+.btnForm, .lgBtn {
     border-radius: 6px;
     background-color: #D3CBCB;
     color: #3C3C43;

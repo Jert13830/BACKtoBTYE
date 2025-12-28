@@ -1,0 +1,47 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>User Role</title>
+	<link rel="stylesheet" href="/assets/css/roleList.css">
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section>
+				<div id="computerManufacturerList">
+					{% embed '/partials/window.twig' with {
+						windowType: 'mediumWindow',
+						title: 'Computer manufacturers',
+						showPlus: 0,
+						pageId: 'roleList'
+						} %}
+					{% block content %}
+						{% include '/partials/computerManufacture.twig' %}
+					{% endblock %}
+				{% endembed %}
+				</div>
+			</section>
+
+		</div>
+			<section id="updateComputerManufactureSection">
+			<dialog id="updateComputerManufacturerDialog" class="dialog">
+				<div id="updateComputerManufacturerContent">
+					<button class="squareBtnClose" type="button">
+						<span class="closeBtn">×</span>
+					</button>
+					<form id="updateComputerManufacturerForm" method="post" action="/updateComputerManufacturerText" >
+						<div id="roleGrid">
+							<div id="updateBarDiv">
+								<input type="text" id="updateRoleText" name="updateRoleText" required minlength="3" maxlength="30" pattern="[a-z][a-z0-9_-]*"/>
+								<input type="text" hidden id="roleId" name="roleId">
+								<button id="btnUpdateRole">Update</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</dialog>
+	</section>
+	</main>
+{% endblock %}

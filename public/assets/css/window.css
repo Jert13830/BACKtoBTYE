@@ -281,6 +281,11 @@ dialog[open] .squareBtnClose {
     overflow-y: auto;
 }
 
+#computerManufacturerList .content{
+    height:auto;
+    overflow-y: auto;
+}
+
 dialog[open] {
   position: fixed;
   top: 0; bottom: 0; left: 0; right: 0;   

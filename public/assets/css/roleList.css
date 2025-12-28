@@ -199,11 +199,36 @@ width: min(90vw, 250px);
   background: rgba(255, 255, 255, 0.15);
 }
 
+#formLine{
+  display: flex;
+  align-items: center;
+  gap:10px;
+}
+
+#logoName{
+  display:flex;
+  gap:10px;
+  align-items: center;
+}
+
+#logoName input{
+  height: auto;
+}
+
+
+
 @media (max-width: 480px) {
 #updateRoleContent {
     border-radius: 16px;
     padding: 16px;
   }
+  
+}
+
+@media (max-width: 500px) {
+  #logoName{
+  flex-direction: column;
+}
 }
 
 @media (max-width: 600px) {
@@ -211,6 +236,14 @@ width: min(90vw, 250px);
         padding: 6px 8px;
         font-size: 13px;
         margin: 0 2px;
+    }
+
+     
+}
+
+@media (max-width: 810px) {
+    #formLine{
+      flex-direction: column;
     }
 
      

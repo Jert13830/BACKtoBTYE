@@ -186,7 +186,6 @@ function openUpdatePasswordDialog(button) {
   updatePasswordDialog.showModal();
 
   passwordChangeUserId.value = button.dataset.userId;
-  alert(user);
 
   openedDialog = updatePasswordDialog;
 }
@@ -220,6 +219,45 @@ function updateRole(button) {
 
 }
 
+function updateComputerManufacturer(button) {
+   const  computerManufacturerName = document.querySelector("#computerManufacturerName");
+   const manuLogo = document.querySelector("#manuLogo");
+   const btnAddComputerManu = document.querySelector("#btnAddComputerManu");
+   const updateId = document.querySelector("#updateId");
+   const form = document.getElementById("newManufactureForm");
+   const manufacturerId = button.dataset.manufacturerId;
+
+
+   computerManufacturerName.value = button.dataset.manufacturerName;
+   updateId.value = manufacturerId;
+   manuLogo.src = "/assets/images/logos/"+button.dataset.manufacturerName+".webp";
+   btnAddComputerManu.textContent = "Update";
+
+   form.action = `/updateComputerManufacturer/${manufacturerId}`;
+}
+
+
+function saveAddComputerFormState() {
+    const form = document.querySelector("#computerForm");
+    const data = Object.fromEntries(new FormData(form));
+
+    sessionStorage.setItem("computerForm", JSON.stringify(data));
+}
+
+
+window.addEventListener("DOMContentLoaded", () => {
+    const saved = sessionStorage.getItem("computerForm");
+    if (!saved) return;
+
+    const data = JSON.parse(saved);
+
+    Object.entries(data).forEach(([name, value]) => {
+        const field = document.querySelector(`[name="${name}"]`);
+        if (field) field.value = value;
+    });
+});
+
+
 function treatImages() {
   if (manuImage) {
     manuImage.addEventListener("change", () => {
@@ -243,6 +281,7 @@ function treatImages() {
       }
     });
   }
+  
 
     if (computerProfileImage) {
   computerProfileImage.addEventListener("click", () => {
@@ -283,6 +322,34 @@ if (rarity) {
   });
 }
 
+
+function computerManufacturerLogoClick(){
+  const logoPath = document.querySelector("#logoPath");
+  logoPath.click();
+
+  logoPath.addEventListener("change", () => {
+    const files = Array.from(logoPath.files);
+   
+    //No files selected
+    if (!files.length) return;
+
+    const computerManufacturerName = document.querySelector("#computerManufacturerName");
+
+    const value = computerManufacturerName.value?.trim();
+
+    if (value) { //Test if a computer manufacturer name has been given
+      fileName = value;
+       
+       loadImage(files, "Manufactuer", fileName, "#manuLogo");
+     // loadImage(files, "Logo", fileName, "#manuLogo");
+    }
+
+    else {
+      document.querySelector("#computerManufacturerNameErrors").textContent = "Please enter a computer manufacturer's name";
+    }
+  });
+
+}
 
 const popularity = document.querySelector("#popularity");
 
@@ -345,12 +412,12 @@ function lightStars(child, nList) {
   }
 }
 
-if (addComputerManu) {
+/*if (addComputerManu) {
   addComputerManu.addEventListener("click", function (e) {
     addComputerManufacturer.showModal();
     openedDialog = addComputerManufacturer;
   });
-}
+}*/
 
 function addComputer() {
   const dialog = document.getElementById("addComputerManufacturer");

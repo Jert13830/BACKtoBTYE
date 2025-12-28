@@ -1,0 +1,33 @@
+.unauthorised-container {
+  max-width: 480px;
+  margin: 80px auto;
+  padding: 24px;
+  text-align: center;
+  border-radius: 8px;
+  background: #fff5f5;
+  border: 1px solid #ffcccc;
+  
+}
+
+.error-message {
+  color: #b00020;
+  margin-top: 12px;
+}
+
+.actions {
+  margin-top: 24px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  background: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  margin: 0 6px;
+}
+
+.btn-secondary {
+  background: #6c757d;
+}

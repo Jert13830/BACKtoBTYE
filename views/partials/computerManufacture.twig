@@ -1,0 +1,70 @@
+<section>
+	<div class="table-container" id="roleDetailsList">
+		<table>
+			<thead>
+				<tr>
+					<th>Logo</th>
+					<th>Name</th>
+					<th class="role-column">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for manufacturer in computerManufactuers%}
+					<tr class="roleLine">
+						<td>
+							{% if manufacturer.photos|length > 0 %}
+								{% for photo in manufacturer.photos %}
+									<img src="{{ photo.path }}" alt="{{ manufacturer.nom }}" width="80">
+								{% endfor %}
+							{% else %}
+								<img src="/assets/images/logos/defaultLogo.webp" alt="{{ manufacturer.nom }}" width="80">
+							{% endif %}
+						</td>
+						<td>{{manufacturer.nom}}</td>
+						<td class="role-column">
+							<form method="post" action="/updateComputerManufacturerList">
+								<button type="button" class="btnForm" data-manufacturer-id="{{ manufacturer.id_fab_ordinateur }}" data-manufacturer-name="{{ manufacturer.nom }}" onclick="updateComputerManufacturer(this)">
+									✏️
+								</button>
+
+								<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{manufacturer.id_fab_ordinateur}}">🗑️</button>
+							</form>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	</div>
+
+	<div id="addDiv">
+		<form id="newManufactureForm" name="newManufactureForm" method="post" action="/addComputerManufacturer">
+			<div id="formLine">
+				<div id="logoName">
+					<div id="computerManufacturerLogoImage" onclick="computerManufacturerLogoClick()">
+						<img id="manuLogo" src="/assets/images/logos/defaultLogo.webp" alt="Computer Manufacturer's logo">
+					</div>
+					<input hidden type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="logoPath" id="logoPath" class="manuImage" hidden>
+					<label for="computerManufacturerName">Name :
+					</label>
+					<input type="text" id="computerManufacturerName" name="computerManufacturerName" required minlength="3" maxlength="30">
+					<input type="text" hidden id="updateId" value="">
+				</div>
+				<div id="computerManuBtn">
+				<input type="text" hidden id="updateId" value="" name="updateId">
+					<button class="btnForm" id="btnAddComputerManu" name="btnAddComputerManu">Add</button>
+					<button type="button" class="btnForm" onclick="window.location.href='/addComputer'">
+						Close
+					</button>
+				</div>
+			</div>
+			<p id="computerManufacturerNameErrors"></p>
+			{% if errors.computerManufacturerName %}
+				<p>{{ errors.computerManufacturerName }}
+				</p>
+			{% endif %}
+
+
+		</form>
+	</div>
+</section>

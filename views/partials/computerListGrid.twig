@@ -7,8 +7,8 @@
 		{% set bgIndex = (loop.index0 % 6) + 1 %}
 		{% set bgClass = 'bg-' ~ bgIndex %}
 		<div class="computerCardDiv">
-				<div class="computerCardOuter">
-					<div class="computerCardBackground">
+			<div class="computerCardOuter">
+				<div class="computerCardBackground">
 					<a class="computerListGridA" href="/computerDetailSelect/{{ computer.id_ordinateur }}?bg={{ bgClass }}&origin=computerList">
 						<div class="computerCardInner">
 							<div class="computerCardTitle">
@@ -112,20 +112,18 @@
 								</div>
 							</div>
 						</div>
-						</a>
-					</div>
-
+					</a>
 				</div>
-				<div class="computerCardButtons">
 
-				<button type="button" class="btnForm" data-role-id="{{ role.id_role }}" data-role-name="{{ role.role }}" onclick="updateRole(this)">
-					✏️
-				</button>
-
-				<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{role.id_role}}">🗑️</button>
 			</div>
-	
-			
+			{% if user.role == "administrator" %}
+				<div class="computerCardButtons">
+					<form method="post" action="/updateComputerList">
+						<button type="button" class="btnForm" name="buttons" value="modify-{{user.id_ordinateur}}">✏️</button>
+						<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{computer.id_ordinateur}}">🗑️</button>
+					</form>
+				</div>
+			{% endif %}
 		</div>
 	{% endfor %}
 </div>
