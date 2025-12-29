@@ -119,7 +119,7 @@
 			{% if user.role == "administrator" %}
 				<div class="computerCardButtons">
 					<form method="post" action="/updateComputerList">
-						<button type="button" class="btnForm" name="buttons" value="modify-{{user.id_ordinateur}}">✏️</button>
+						<button class="btnForm" id="btnModify" name="buttons" value="modify-{{computer.id_ordinateur}}-{{ bgClass}}">✏️</button>
 						<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{computer.id_ordinateur}}">🗑️</button>
 					</form>
 				</div>

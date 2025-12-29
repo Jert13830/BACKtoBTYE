@@ -305,11 +305,11 @@ exports.computerDetailSelect = async (req, res) => {
       where: {
         id_ordinateur: data.successeur,
       }
-  })
+    })
 
     console.log("Here is the computer data : ", data);
 
-    
+
     res.render("pages/addComputer.twig", {
       title: "Computer Details",
       bkgClass,
@@ -328,7 +328,7 @@ exports.computerDetailSelect = async (req, res) => {
 exports.updateComputerList = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
-  console.log(req.body);
+  console.log("Data sent : ", req.body);
   const action = req.body.buttons; // "delete-123" or "modify-123"
 
   const user = req.session.user;
@@ -343,16 +343,16 @@ exports.updateComputerList = async (req, res) => {
       //Computers will be sent if an Error occurs
       const computers = await prisma.ordinateur.findMany();
 
-      console.log ("You are : ",user.role);
+      console.log("You are : ", user.role);
 
-   
-        //Delete computer
-        await prisma.ordinateur.delete({
-          where: {
-            id_ordinateur: toDelete
-          }
-        });
-      
+
+      //Delete computer
+      await prisma.ordinateur.delete({
+        where: {
+          id_ordinateur: toDelete
+        }
+      });
+
 
       res.redirect("/computerList")
     } catch (error) {
@@ -366,11 +366,178 @@ exports.updateComputerList = async (req, res) => {
 
   } else if (action.startsWith("modify-")) {
     let id = action.split("-")[1];
+    let bg = action.split("-")[3];
 
     id = parseInt(id);
+    bg = parseInt(bg);
+
     // handle modify
 
-    res.redirect("/updateComputer/" + id);
+    console.log("Ready to go bg :", bg);
+
+    res.redirect(`/showUpdateComputer/${id}?bg=${bg}`);
 
   }
 };
+
+exports.showUpdateComputer = async (req, res) => {
+  console.log("Ready to show");
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const computerId = Number(req.params.id);
+  const bg = Number(req.query.bg);
+
+  console.log("Background : ", parseInt(req.params.bg));
+
+  const bkgClass = "bg-" + bg;
+
+  console.log("Data carried : ", req.body);
+
+  try {
+    const data = await prisma.ordinateur.findUnique({
+      where: {
+        id_ordinateur: computerId,
+      },
+      include:
+      {
+        photos: true,
+        fabricantOrdinateur: true,
+        popularites: true,
+        raretes: true,
+      },
+    })
+
+    console.log("Data for updating : ", data);
+
+    const successeur = await prisma.ordinateur.findUnique({
+      where: {
+        id_ordinateur: data.successeur,
+      }
+    })
+
+    res.render("pages/addComputer.twig", {
+      title: "Computer Details",
+      data,
+      transaction: "update",
+      successeur,
+      bkgClass,
+    });
+  }
+  catch (error) {
+    req.session.errorRequest = "Computer data could not be sent";
+    console.log("Computer data could not be sent");
+    res.redirect("/computerList");
+  }
+};
+
+exports.updateComputer = async (req, res) => {
+  const data = req.body;
+  const computerId = Number(req.params.id);
+  const bkgClass = "bg-" + Number(req.params.bg);
+  console.log(data);
+
+  const name = req.body.computer.trim();
+
+  try {
+
+    //Check if a computer of the same name already exists
+    const exists = await prisma.ordinateur.findFirst({
+      where: { nom: name }
+    });
+
+    console.log("Checking exists");
+
+    if (exists && computerId !== exists.id_ordinateur) {
+      errors.computerName = "Computer already exists";
+
+      return res.render("pages/addComputer.twig", {
+        errors,
+        data,
+        bkgClass,
+      });
+    }
+
+    console.log("Updating computer");
+
+    // Update computer
+    const comput = await prisma.ordinateur.update({
+      where: { id_ordinateur: computerId },
+      data: {
+        nom: name,
+        annee: Number(req.body.manufacturerYear),
+        cpuType: Number(req.body.cpuType),
+        cpu: req.body.cpu,
+        vitesseHorloge: Number(req.body.clockSpeed),
+        ram: Number(req.body.ram),
+        rom: Number(req.body.rom),
+        graphique: req.body.graphics,
+        nbCouleurs: Number(req.body.nbColours),
+        info: req.body.computerInfo,
+        son: req.body.sound,
+        successeur: Number(req.body.successor),
+        id_fab_ordinateur: Number(req.body.fabricantId)
+      }
+    });
+
+    console.log("Checking photo");
+
+    let filePath = fs.existsSync(`./public/assets/images/computers/${comput.nom}.webp`);
+    console.log(`${comput.nom}.webp exists:`, filePath);
+
+    if (filePath) {
+      filePath = `/assets/images/computers/${comput.nom}.webp`;  // URL for browser
+    } else {
+      filePath = "/assets/images/computers/defaultComputer.webp";
+      console.log("Computer does not exist:", filePath);
+    }
+
+    console.log("Saving photo");
+
+    const existingPhoto = prisma.photo.findFirst({
+      where: {
+        id_ordinateur: computerId,
+      }
+    });
+
+    //Save computer photo
+    const photoId = comput.photos?.[0]?.id_photo;
+
+    if (!photoId) {
+      console.log("No photo found for this computer");
+    } else {
+      await prisma.photo.update({
+        where: {
+          id_photo: photoId,
+        },
+        data: {
+          alt: `${comput.nom} computer`,
+          path: filePath,
+        },
+      });
+    }
+
+
+    console.log("Coming back to computer list");
+
+    return res.redirect("/computerList");
+
+  } catch (error) {
+    // Custom validation extension
+    if (error.details) {
+      return res.render("pages/addComputer.twig", {
+        errors: error.details,
+        data,
+        bkgClass,
+      });
+    }
+
+    // Unknown error
+    errors.computerName = "An unexpected error occurred.";
+    console.error(error);
+
+    return res.render("pages/addComputer.twig", {
+      errors,
+      data,
+      bkgClass,
+    });
+  }
+}

@@ -151,7 +151,9 @@ if (squareBtnClose) {
     const page = closeBtn.dataset.page;
 
     if (page === 'addComputer') {
-     const origin = "/" + document.querySelector("#originInput").value;
+      //Clear form data
+      clearAddComputerFormState();
+      const origin = "/" + document.querySelector("#originInput").value;
       window.location.href = origin;
     }
 
@@ -191,71 +193,104 @@ function openUpdatePasswordDialog(button) {
 }
 
 if (btnResearch) {
-btnResearch.addEventListener('click', () => {
-  // Search text
-  const searchValue = searchInput.value.trim();
+  btnResearch.addEventListener('click', () => {
+    // Search text
+    const searchValue = searchInput.value.trim();
 
-  // Selected radio value
-  const selectedRadio = document.querySelector('input[name="selection"]:checked');
-  const selectionValue = selectedRadio ? selectedRadio.value : null;
+    // Selected radio value
+    const selectedRadio = document.querySelector('input[name="selection"]:checked');
+    const selectionValue = selectedRadio ? selectedRadio.value : null;
 
-  console.log('searchBar:', searchValue);
-  console.log('selection:', selectionValue);
-});
+    console.log('searchBar:', searchValue);
+    console.log('selection:', selectionValue);
+  });
 }
 
 function updateRole(button) {
   updateRoleDialog.showModal();
-   const  updateRoleText = document.querySelector("#updateRoleText");
-   const roleId = document.querySelector("#roleId");
+  const updateRoleText = document.querySelector("#updateRoleText");
+  const roleId = document.querySelector("#roleId");
 
-    
 
-    updateRoleText.value = button.dataset.roleName;
-    roleId.value = button.dataset.roleId;
 
-    openedDialog = updateRoleDialog;
+  updateRoleText.value = button.dataset.roleName;
+  roleId.value = button.dataset.roleId;
+
+  openedDialog = updateRoleDialog;
 
 
 }
 
 function updateComputerManufacturer(button) {
-   const  computerManufacturerName = document.querySelector("#computerManufacturerName");
-   const manuLogo = document.querySelector("#manuLogo");
-   const btnAddComputerManu = document.querySelector("#btnAddComputerManu");
-   const updateId = document.querySelector("#updateId");
-   const form = document.getElementById("newManufactureForm");
-   const manufacturerId = button.dataset.manufacturerId;
+  const computerManufacturerName = document.querySelector("#computerManufacturerName");
+  const manuLogo = document.querySelector("#manuLogo");
+  const btnAddComputerManu = document.querySelector("#btnAddComputerManu");
+  const updateId = document.querySelector("#updateId");
+  const form = document.getElementById("newManufactureForm");
+  const manufacturerId = button.dataset.manufacturerId;
 
 
-   computerManufacturerName.value = button.dataset.manufacturerName;
-   updateId.value = manufacturerId;
-   manuLogo.src = "/assets/images/logos/"+button.dataset.manufacturerName+".webp";
-   btnAddComputerManu.textContent = "Update";
+  computerManufacturerName.value = button.dataset.manufacturerName;
+  updateId.value = manufacturerId;
+  manuLogo.src = "/assets/images/logos/" + button.dataset.manufacturerName + ".webp";
+  btnAddComputerManu.textContent = "Update";
 
-   form.action = `/updateComputerManufacturer/${manufacturerId}`;
+  form.action = `/updateComputerManufacturer/${manufacturerId}`;
 }
 
 
 function saveAddComputerFormState() {
-    const form = document.querySelector("#computerForm");
-    const data = Object.fromEntries(new FormData(form));
+  const form = document.querySelector("#computerForm");
+  const data = Object.fromEntries(new FormData(form));
 
-    sessionStorage.setItem("computerForm", JSON.stringify(data));
+  sessionStorage.setItem("computerForm", JSON.stringify(data));
 }
 
 
+function restoreForm() {
+  const saved = document.querySelector("#computerForm");
+  if (!saved) return;
+
+  const data = JSON.parse(saved);
+
+  Object.entries(data).forEach(([name, value]) => {
+    const field = document.querySelector(`[name="${name}"]`);
+    if (!field) return;
+
+    if (field.tagName === "SELECT") {
+      field.value = value;
+      field.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    else if (field.type === "checkbox") {
+      field.checked = value === "on" || value === true;
+    }
+    else if (field.type === "radio") {
+      const radio = document.querySelector(
+        `input[name="${name}"][value="${value}"]`
+      );
+      if (radio) radio.checked = true;
+    }
+    else if (field.type !== "file") {
+      field.value = value;
+    }
+  });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
-    const saved = sessionStorage.getItem("computerForm");
-    if (!saved) return;
-
-    const data = JSON.parse(saved);
-
-    Object.entries(data).forEach(([name, value]) => {
-        const field = document.querySelector(`[name="${name}"]`);
-        if (field) field.value = value;
-    });
+  requestAnimationFrame(restoreForm);
 });
+
+//On submit clear form data
+document
+  .querySelector("#computerForm")
+  .addEventListener("submit", () => {
+    clearAddComputerFormState();
+  });
+
+  //Clear form stored data
+  function clearAddComputerFormState() {
+    sessionStorage.removeItem("computerForm");
+}
 
 
 function treatImages() {
@@ -281,33 +316,33 @@ function treatImages() {
       }
     });
   }
-  
 
-    if (computerProfileImage) {
-  computerProfileImage.addEventListener("click", () => {
-    uploadImageComputer.click();
-  });
 
-  uploadImageComputer.addEventListener("change", () => {
-    const files = Array.from(uploadImageComputer.files);
+  if (computerProfileImage) {
+    computerProfileImage.addEventListener("click", () => {
+      uploadImageComputer.click();
+    });
 
-    //No files selected
-    if (!files.length) return;
+    uploadImageComputer.addEventListener("change", () => {
+      const files = Array.from(uploadImageComputer.files);
 
-    const value = computer.value?.trim();
+      //No files selected
+      if (!files.length) return;
 
-    if (value) { //Test if a user name has been given
-      fileName = computer.value;
-      loadImage(files, "Computer", fileName, "#computerPhoto");
-    }
+      const value = computer.value?.trim();
 
-    else {
-      document.querySelector("#computerNameErrors").textContent = "Please enter a computer name";
-    }
-  });
+      if (value) { //Test if a user name has been given
+        fileName = computer.value;
+        loadImage(files, "Computer", fileName, "#computerPhoto");
+      }
 
-}
+      else {
+        document.querySelector("#computerNameErrors").textContent = "Please enter a computer name";
+      }
+    });
+
   }
+}
 
 
 
@@ -323,13 +358,13 @@ if (rarity) {
 }
 
 
-function computerManufacturerLogoClick(){
+function computerManufacturerLogoClick() {
   const logoPath = document.querySelector("#logoPath");
   logoPath.click();
 
   logoPath.addEventListener("change", () => {
     const files = Array.from(logoPath.files);
-   
+
     //No files selected
     if (!files.length) return;
 
@@ -339,9 +374,9 @@ function computerManufacturerLogoClick(){
 
     if (value) { //Test if a computer manufacturer name has been given
       fileName = value;
-       
-       loadImage(files, "Manufactuer", fileName, "#manuLogo");
-     // loadImage(files, "Logo", fileName, "#manuLogo");
+
+      loadImage(files, "Manufactuer", fileName, "#manuLogo");
+      // loadImage(files, "Logo", fileName, "#manuLogo");
     }
 
     else {
@@ -491,8 +526,8 @@ function addRole() {
 async function loadRoleList() {
 
   const response = await fetch('/listUserRoles');
-  const selectedId =   document.querySelector("#previousRole").value
-  
+  const selectedId = document.querySelector("#previousRole").value
+
   const data = await response.json();
 
   if (!data.success) return;
@@ -512,21 +547,21 @@ async function loadRoleList() {
     select.appendChild(option);
   });
 
-  
-  
+
+
 }
 
 function openUserRole() {
-  
+
   document.getElementById('userRoleForm').showModal();
   openedDialog = addUserRole;
 }
 
 function updateRoleSelect(roles) {
 
- 
+
   const select = document.querySelector("#userRole");
-  const selectedId =   document.querySelector("#previousRole").value
+  const selectedId = document.querySelector("#previousRole").value
 
   // Clear existing options
   select.innerHTML = "";
@@ -553,7 +588,7 @@ function updateRoleSelect(roles) {
   });
 
   // if nothing was selected
-  if (selectedId === null)  {
+  if (selectedId === null) {
     select.selectedIndex = 0; // ensures placeholder is shown
   }
 }
@@ -581,9 +616,9 @@ async function loadManufacturerList() {
 }
 
 function updateManufacturerSelect(manufacturers) {
- 
+
   const select = document.querySelector("#computerManufacturerSelect");
-  const selectedId =   document.querySelector("#previousManufacturer").value
+  const selectedId = document.querySelector("#previousManufacturer").value
 
   // Clear existing options
   select.innerHTML = "";
@@ -610,7 +645,7 @@ function updateManufacturerSelect(manufacturers) {
   });
 
   // if nothing was selected
-  if (selectedId === null)  {
+  if (selectedId === null) {
     select.selectedIndex = 0; // ensures placeholder is shown
   }
 }
@@ -703,7 +738,7 @@ function slideLeft() {
 document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
- 
+
   const manuImage = document.querySelector('.manuImage');
   const computerProfileImage = document.querySelector('#computerPhoto'); // or whatever the ID is
   const uploadImageComputer = document.querySelector('#uploadImageComputer'); // adjust if needed
@@ -751,8 +786,8 @@ async function init() {
 
   const btnModify = document.querySelector("#btnModify");
   const updateId = document.querySelector("#updateId");
-  if (btnModify){
-      updateId = btnModify.value;
+  if (btnModify) {
+    updateId = btnModify.value;
   }
   console.log("All relevant data loaded successfully!");
 }

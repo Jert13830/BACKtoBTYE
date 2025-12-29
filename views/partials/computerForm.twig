@@ -3,7 +3,7 @@
 {% endblock %}
 <div class="formBk1">
 	<div class="formBk2 {{bkgClass}}">
-		<form id="computerForm" action="/addComputer" method="post">
+		<form id="computerForm" action="{{ transaction == 'update' ? '/updateComputer/' ~ data.id_ordinateur ~ '?bg='~ bkgClass : '/addComputer' }}" method="post">
 			<input type="text" id="originInput" hidden value="{{ origin|default('computerList')}}">
 			<div id="formDiv">
 				<div id="formLeft">
@@ -179,7 +179,7 @@
 				<!-- END OF computerProfileImage -->
 				<div id="computerInformation">
 					<div class="textBk1">
-						<textarea {{ origin ? 'readonly' : '' }} id="computerInfo" name="computerInfo" rows="10" cols="50" placeholder="Computer Information" value="{{ data.info|default('') }}"></textarea>
+						<textarea {{ origin ? 'readonly' : '' }} id="computerInfo" name="computerInfo" rows="10" cols="50" placeholder="Computer Information">{{ data.info|default('') }}</textarea>
 					</div>
 				</div>
 				{% if user %}
@@ -220,7 +220,11 @@
 				<!-- END OF scoringBtn-->
 						<div class="formBtnDiv">
 							<div>
+							{% if transaction == 'update' %}
+								<button class="btnForm" type="submit" id="updateComputerSubmit" name="updateComputerSubmit">Update</button>
+							{% else %}
 								<button class="btnForm" type="submit" id="addComputerSubmit" name="addComputerSubmit">Add</button>
+							{% endif %}
 							</div>
 							<div>
 								<button class="btnForm" type="reset" id="btnReset" value="reset">Reset</button>
