@@ -1,4 +1,4 @@
-#computerManufacturerForm{
+#manufacturerForm{
     
     display:flex;
     flex-direction: column;
@@ -22,7 +22,7 @@
     font-weight: 700;
 }
 
-#computerManufacturerFormContent{
+#manufacturerFormContent{
     display: flex;
     align-content: center !important;
     justify-content: center;

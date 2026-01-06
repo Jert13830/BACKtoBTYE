@@ -2,7 +2,7 @@
 
 {% block style %}
 	<link rel="stylesheet" href="/assets/css/computerList.css">
-	<title>Computer List</title>
+	<title>Software List</title>
 {% endblock %}
 {% block main %}
 	<main>
@@ -11,10 +11,10 @@
 				<div id="computerList">
 					{% embed '/partials/window.twig' with {
 						windowType: 'largeWindow',
-						title: 'Computers',
+						title: 'Software',
 						showPlus: 1,
 						showSearch: 1,
-						pageId: 'computerList'
+						pageId: 'softwareList'
 						} %}
 						{% block content %}
 							{% include '/partials/computerListGrid.twig' %}

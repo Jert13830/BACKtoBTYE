@@ -125,10 +125,13 @@ exports.postComputer = async (req, res) => {
 
   console.log(data);
 
-  const name = req.body.computer.trim();
+  
   const bkgClass = "bg-1";
 
   try {
+
+    const name = req.body.computer.trim();
+    
     const exists = await prisma.ordinateur.findFirst({
       where: { nom: name }
     });
@@ -333,7 +336,7 @@ exports.updateComputerList = async (req, res) => {
 
   const user = req.session.user;
 
-  //Delete the role
+  //Delete the computer
   if (action.startsWith("delete-")) {
     let toDelete = action.split("-")[1];
     toDelete = parseInt(toDelete);

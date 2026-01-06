@@ -12,7 +12,7 @@ let openedDialog;
 const btnSearch = document.querySelector('.btnSearch');
 
 const computerName = document.querySelector('#computer');
-const computerManufacturerName = document.querySelector('#computerManufacturerName');
+const manufacturerName = document.querySelector('#manufacturerName');
 
 const computerPhoto = document.querySelector('#computerPhoto');
 const computerImage = document.querySelector('.computerImage');
@@ -22,7 +22,7 @@ const manuImage = document.querySelector('.manuImage');
 
 const addComputerManu = document.querySelector('#addComputerManu');
 
-const computerManuDialog = document.querySelector('#addComputerManufacturer');
+const manuDialog = document.querySelector('#addManufacturer');
 const searchComputerBar = document.querySelector("#searchComputerBar");
 
 const profileImage = document.querySelector("#profileImage");
@@ -137,6 +137,10 @@ if (roundBtn) {
       window.open("/addComputer", "_self")
     }
 
+    if (page === "softwareList") {
+      window.open("/addSoftware", "_self")
+    }
+
   });
 }
 
@@ -152,7 +156,7 @@ if (squareBtnClose) {
 
     if (page === 'addComputer') {
       //Clear form data
-      clearAddComputerFormState();
+      clearFormState("computerForm");
       const origin = "/" + document.querySelector("#originInput").value;
       window.location.href = origin;
     }
@@ -221,40 +225,56 @@ function updateRole(button) {
 
 }
 
-function updateComputerManufacturer(button) {
-  const computerManufacturerName = document.querySelector("#computerManufacturerName");
+function updateManufacturer(button, mode) {
+  const manufacturerName = document.querySelector("#manufacturerName");
+  const nameBeforeChange = document.querySelector("#nameBeforeChange");
   const manuLogo = document.querySelector("#manuLogo");
-  const btnAddComputerManu = document.querySelector("#btnAddComputerManu");
+  const btnAddManu = document.querySelector("#btnAddManu");
   const updateId = document.querySelector("#updateId");
   const form = document.getElementById("newManufactureForm");
   const manufacturerId = button.dataset.manufacturerId;
 
+  manufacturerName.value = button.dataset.manufacturerName;
+  nameBeforeChange.value = button.dataset.manufacturerName;
 
-  computerManufacturerName.value = button.dataset.manufacturerName;
   updateId.value = manufacturerId;
   manuLogo.src = "/assets/images/logos/" + button.dataset.manufacturerName + ".webp";
-  btnAddComputerManu.textContent = "Update";
+  btnAddManu.textContent = "Update";
 
-  form.action = `/updateComputerManufacturer/${manufacturerId}`;
+  if (mode == 'computer'){
+
+     form.action = `/updateComputerManufacturer/${manufacturerId}`;
+  }
+  else if (mode == 'software'){
+     form.action = `/updateSoftwareManufacturer/${manufacturerId}`;
+  }
+  else {
+     form.action = `/updateEmulatorManufacturer/${manufacturerId}`;
+  }
+
 }
 
+// Save form data when opening the manufacturers page
+function saveFormState(formSelector, storageKey) {
+  const form = document.querySelector(formSelector);
+  if (!form) return;
 
-function saveAddComputerFormState() {
-  const form = document.querySelector("#computerForm");
   const data = Object.fromEntries(new FormData(form));
-
-  sessionStorage.setItem("computerForm", JSON.stringify(data));
+  sessionStorage.setItem(storageKey, JSON.stringify(data));
 }
 
+//Restore form data when going back to add computer - software - emulator pages
+function restoreFormState(formSelector, storageKey) {
+  const form = document.querySelector(formSelector);
+  if (!form) return;
 
-function restoreForm() {
-  const saved = document.querySelector("#computerForm");
-  if (!saved) return;
+  const raw = sessionStorage.getItem(storageKey);
+  if (!raw) return;
 
-  const data = JSON.parse(saved);
+  const data = JSON.parse(raw);
 
   Object.entries(data).forEach(([name, value]) => {
-    const field = document.querySelector(`[name="${name}"]`);
+    const field = form.querySelector(`[name="${name}"]`);
     if (!field) return;
 
     if (field.tagName === "SELECT") {
@@ -265,7 +285,7 @@ function restoreForm() {
       field.checked = value === "on" || value === true;
     }
     else if (field.type === "radio") {
-      const radio = document.querySelector(
+      const radio = form.querySelector(
         `input[name="${name}"][value="${value}"]`
       );
       if (radio) radio.checked = true;
@@ -276,21 +296,22 @@ function restoreForm() {
   });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  requestAnimationFrame(restoreForm);
-});
 
-//On submit clear form data
-document
-  .querySelector("#computerForm")
-  .addEventListener("submit", () => {
-    clearAddComputerFormState();
+//Clear form stored data
+function clearFormState(storageKey) {
+  sessionStorage.removeItem(storageKey);
+}
+
+//On submit clear computer form data
+document.querySelector("#computerForm")?.addEventListener("submit", () => {
+    clearFormState("computerForm");
   });
 
-  //Clear form stored data
-  function clearAddComputerFormState() {
-    sessionStorage.removeItem("computerForm");
-}
+//Retore computer form data when loaded
+document.addEventListener("DOMContentLoaded", () => {
+  restoreFormState("#computerForm", "computerForm");
+});
+
 
 
 function treatImages() {
@@ -300,10 +321,10 @@ function treatImages() {
       //No files selected
       if (!files.length) return;
 
-      const value = computerManufacturerName.value?.trim();
+      const value = manufacturerName.value?.trim();
       if (value) { //Test if a manufacturer name has been given
 
-        fileName = computerManufacturerName.value;
+        fileName = manufacturerName.value;
 
         loadImage(files, "Manufactuer", fileName, "#manuLogo");
 
@@ -311,7 +332,7 @@ function treatImages() {
 
       }
       else {
-        document.querySelector("#errorComputerManufacturer").textContent = "Please enter a manfacturer's name";
+        document.querySelector("#errorManufacturer").textContent = "Please enter a manfacturer's name";
 
       }
     });
@@ -358,7 +379,7 @@ if (rarity) {
 }
 
 
-function computerManufacturerLogoClick() {
+function manufacturerLogoClick() {
   const logoPath = document.querySelector("#logoPath");
   logoPath.click();
 
@@ -368,9 +389,9 @@ function computerManufacturerLogoClick() {
     //No files selected
     if (!files.length) return;
 
-    const computerManufacturerName = document.querySelector("#computerManufacturerName");
+    const manufacturerName = document.querySelector("#manufacturerName");
 
-    const value = computerManufacturerName.value?.trim();
+    const value = manufacturerName.value?.trim();
 
     if (value) { //Test if a computer manufacturer name has been given
       fileName = value;
@@ -380,7 +401,7 @@ function computerManufacturerLogoClick() {
     }
 
     else {
-      document.querySelector("#computerManufacturerNameErrors").textContent = "Please enter a computer manufacturer's name";
+      document.querySelector("#manufacturerNameErrors").textContent = "Please enter a computer manufacturer's name";
     }
   });
 
@@ -523,6 +544,9 @@ function addRole() {
   });
 }
 
+
+/** Update user role list **/
+
 async function loadRoleList() {
 
   const response = await fetch('/listUserRoles');
@@ -593,6 +617,8 @@ function updateRoleSelect(roles) {
   }
 }
 
+/** Update computer manufacturer list **/
+
 async function loadManufacturerList() {
   const errorBox = document.getElementById("manufacturerErrors");
 
@@ -650,6 +676,8 @@ function updateManufacturerSelect(manufacturers) {
   }
 }
 
+/** Update computer list **/
+
 async function loadComputerList() {
 
   const errorBox = document.getElementById("successorErrors");
@@ -701,6 +729,7 @@ function updateComputerSelect(computers) {
   });
 }
 
+/** Change computer manufacturers logo **/
 
 function changeLogo() {
 
@@ -742,6 +771,7 @@ async function init() {
   const manuImage = document.querySelector('.manuImage');
   const computerProfileImage = document.querySelector('#computerPhoto'); // or whatever the ID is
   const uploadImageComputer = document.querySelector('#uploadImageComputer'); // adjust if needed
+   let manufacturers = [];
 
   if (manuImage || computerProfileImage || uploadImageComputer) {
     treatImages();  // only call if at least one file input might exist
@@ -757,7 +787,7 @@ async function init() {
     addRole();
   }
 
-  const manufacturerSelect = document.querySelector("#computerManufacturerSelect");
+  manufacturerSelect = document.querySelector("#computerManufacturerSelect");
   if (manufacturerSelect) {
     await loadManufacturerList().catch(err => {
       console.error("Failed to load manufacturers:", err);

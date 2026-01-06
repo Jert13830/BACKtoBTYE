@@ -1,37 +1,39 @@
-
 /**********************/
 /*Window Sizes - Start*/
 /**********************/
 
-.largeWindow, .mediumWindow, .smallWindow{
+.largeWindow,
+.mediumWindow,
+.smallWindow {
     margin: 1.5rem;
     filter: drop-shadow(#b8b8b9 0.4rem 0.4rem 2px);
     background-color: #D9D9D9;
     border-radius: 10px;
-     justify-self:center;
+    justify-self: center;
 
-     
+
 }
 
-.largeWindow{
-    width:calc(100vw - 3rem);
-   
+.largeWindow {
+    width: calc(100vw - 3rem);
+
 }
 
 .mediumWindow {
-    width:60vw;
-    
+    width: 60vw;
+
 }
 
-.smallWindow .windowTitle .titleP{
-    
-    font-size:medium;
+.smallWindow .windowTitle .titleP {
+
+    font-size: medium;
     font-weight: 600;
     text-align: center;
 
 }
-.smallWindow{
-    width:30vw;
+
+.smallWindow {
+    width: 30vw;
 }
 
 
@@ -40,28 +42,24 @@
 /*Window Sizes - End*/
 /********************/
 
-
-
-
-
 /*Resize the window title*/
 
 @media (max-width: 970px) {
-   .mediumWindow .windowTitle .titleP {
-        font-size:medium;
+    .mediumWindow .windowTitle .titleP {
+        font-size: medium;
         font-weight: 600;
         text-align: center;
     }
 
     .smallWindow {
-        width:40vw !important;
+        width: 40vw !important;
     }
 }
 
 @media (max-width: 870px) {
     .smallWindow {
-        width:50vw !important;
-    } 
+        width: 50vw !important;
+    }
 }
 
 @media (max-width: 630px) {
@@ -72,13 +70,13 @@
     }
 
     .smallWindow {
-        width:60vw !important;
-    } 
+        width: 60vw !important;
+    }
 }
 
 @media (max-width: 450px) {
     .smallWindow {
-        width:70vw !important;
+        width: 70vw !important;
     }
 }
 
@@ -106,7 +104,7 @@
 
 .titleP {
     margin: 0;
-  pointer-events: none;
+    pointer-events: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -114,7 +112,8 @@
     color: #3C3C43;
 }
 
-.squareBtnReduce, .squareBtnClose .btnSearch{
+.squareBtnReduce,
+.squareBtnClose .btnSearch {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -124,23 +123,27 @@
     width: 18px;
     border-radius: 3px;
     align-self: center;
-    
+
 }
+
 .squareBtnReduce {
- margin-left: 10px;
+    margin-left: 10px;
 }
 
-.squareBtnClose , .btnSearch{
- margin-right: 10px;
- cursor: pointer;
+.squareBtnClose,
+.btnSearch {
+    margin-right: 10px;
+    cursor: pointer;
 }
 
-.btnSearch{
+.btnSearch {
     margin-top: 5px;
 }
 
 
-.minusBtn, .plusBtn, .closeBtn {
+.minusBtn,
+.plusBtn,
+.closeBtn {
     text-align: center;
     font-size: 1.5rem;
     line-height: 1rem;
@@ -162,32 +165,36 @@
 }
 
 
-.leftLines, .rightLines{
+.leftLines,
+.rightLines {
     display: flex;
     flex-direction: column;
 
     gap: 3px;
-    width: 25%;     
-    padding: 0 5px;  
+    width: 25%;
+    padding: 0 5px;
     justify-content: center;
 }
 
 .hl {
     display: block;
-   
+
     height: 1px;
-    background: #3C3C43;;
+    background: #3C3C43;
+    ;
     margin: 1px 0;
 }
 
-.squareBtnClose{
-    display:none;
+.squareBtnClose {
+    display: none;
 }
 
 dialog .squareBtnClose,
 dialog[open] .squareBtnClose {
-    display: flex !important;   /* Make it visible inside dialogs */
+    display: flex !important;
+    /* Make it visible inside dialogs */
 }
+
 /*********************/
 /*Window Header - End*/
 /*********************/
@@ -200,8 +207,9 @@ dialog[open] .squareBtnClose {
     height: 65vh;
     border-radius: 0px 0px 10px 10px;
     padding: 2%;
-    
+
 }
+
 /************************/
 /*Window Content - Start*/
 /***********************/
@@ -213,95 +221,126 @@ dialog[open] .squareBtnClose {
     height:450px;
 }*/
 
-#addUserRole{
+#addUserRole {
     background-color: transparent;
-    border:0;
+    border: 0;
     overflow: hidden;
 }
 
-#addUserRole .content{ 
-  
-    height:20vh;
+#addUserRole .content {
+
+    height: 20vh;
 }
 
-#addComputerManufacturer{
+#addComputerManufacturer {
     background-color: transparent;
-    border:0;
+    border: 0;
     overflow: hidden;
 }
 
-#updatePasswordDialog{
+#addManufacturer {
     background-color: transparent;
-    border:0;
+    border: 0;
     overflow: hidden;
 }
 
-#registration .content{
+#updatePasswordDialog {
+    background-color: transparent;
+    border: 0;
+    overflow: hidden;
+}
+
+#registration .content {
     position: relative;
     overflow-y: auto;
+    height: auto;
+}
+
+#addComputerManufacturer .content {
+    display: flex;
+    justify-content: center;
+    height: 30vh;
+
+}
+
+#addManufacturer .content {
+    display: flex;
+    justify-content: center;
+    height: 30vh;
+
+}
+
+#addSoftware .content {
     height: 70vh;
 }
 
-#addComputerManufacturer .content{
-    display:flex;
-    justify-content: center;
-    height:30vh;
-
-}
-
-#connect .titleP{
+#connect .titleP {
     font-size: 1.5rem;
     color: #3C3C43;
     font-weight: normal;
 }
 
-#about .titleP{
+#about .titleP {
     font-size: 1.5rem;
     color: #3C3C43;
     font-weight: normal;
 }
 
-#connect .content{
-   height:auto;
+#connect .content {
+    height: auto;
 
 }
 
-#computerList .content{
-   height:66vh;
-   overflow: hidden;
+#computerList .content {
+    height: 66vh;
+    overflow: hidden;
 }
 
-#about .content{
-   height:auto;
+#about .content {
+    height: auto;
 
 }
 
-#roleList .content{
-    height:auto;
+#roleList .content {
+    height: auto;
     overflow-y: auto;
 }
 
-#computerManufacturerList .content{
-    height:auto;
+#computerManufacturerList .content {
+    height: auto;
+    overflow-y: auto;
+}
+
+#manufacturerList .content {
+    height: auto;
     overflow-y: auto;
 }
 
 dialog[open] {
-  position: fixed;
-  top: 0; bottom: 0; left: 0; right: 0;   
-  margin: auto;                        
-  max-width: 100vw;
-  max-height: 45vh;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    max-width: 100vw;
+    max-height: 45vh;
 }
 
-#about{
-    justify-self:center;
+#about {
+    justify-self: center;
     background-color: transparent;
-    border:0;
-overflow: hidden;
-    
+    border: 0;
+    overflow: hidden;
+
 }
 
-#aboutDialog .content{
-    height:50vh;
+#aboutDialog .content {
+    height: 50vh;
+}
+
+@media (max-width: 1000px) {
+    #addSoftware .content {
+        height: 72vh;
+    }
 }

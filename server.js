@@ -6,6 +6,7 @@ const computerRouter = require ("./routers/computerRouter.js");
 const uploadRouter = require ("./routers/uploadRouter.js");
 const computerManufacturerRouter = require ("./routers/computerManufacturerRouter.js");
 const userRouter = require ("./routers/userRouter.js");
+const softwareRouter = require ("./routers/softwareRouter.js");
 
 const app= express();
 
@@ -41,6 +42,7 @@ app.use("/", uploadRouter);
 app.use(computerRouter);
 app.use(computerManufacturerRouter);
 app.use(userRouter);
+app.use(softwareRouter);
 
 
 app.listen(process.env.PORT, () =>{

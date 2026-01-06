@@ -9,13 +9,13 @@
 	<main>
 		<div id="pageContainer">
 			<section id="sectionAdd">
-				<div id="addComputer">
+				<div id="addSoftware">
 					{% embed '/partials/window.twig' with {
-   					 	windowType: 'largeWindow',
+   					 	windowType: 'mediumWindow',
     					title:  title ,
     					showPlus: 0,
 						showClose : 1,
-						pageId: 'addComputer'
+						pageId: 'addSoftware'
 					} %}
 						{% block content %}
 							{% include '/partials/softwareForm.twig' %}
@@ -24,38 +24,5 @@
 				</div>
 			</section>
 		</div>
-
-		{% if reopenDialog %}
-			<script>
-				document.addEventListener("DOMContentLoaded", () => {
-					document.querySelector("#addComputerManufacturer").showModal();
-				});
-			</script>
-		{% endif %}
-
-		{% if closeDialog %}
-			<script>
-				document.addEventListener("DOMContentLoaded", () => {
-					document.querySelector("#addComputerManufacturer").close();
-				});
-			</script>
-		{% endif %}
-
-		<section id="addComputerManuSection">
-			<dialog id="addComputerManufacturer" class="dialog">
-				{% embed '/partials/window.twig' with {
-   					 	windowType: 'smallWindow',
-    					title: 'Computer Manufacturer',
-    					showPlus: 0,
-						showClose : 1,
-						pageId: 'addComputerManufacturer'
-					} %}
-					{% block content %}
-						{% include '/partials/softwareManufacturerForm.twig' %}
-					{% endblock %}
-				{% endembed %}
-
-			</dialog>
-		</section>
 	</main>
 {% endblock %}

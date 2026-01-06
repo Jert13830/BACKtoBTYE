@@ -1,39 +1,89 @@
 const { PrismaClient } = require('@prisma/client');
+const validateSoftwarerManufacturer = require("../middleware/extensions/validateManufacturer");
 
-const validateComputerManufacturer = require("../middleware/extensions/validateManufacturer");
+const prisma = new PrismaClient().$extends(validateSoftwarerManufacturer);
 
-const prisma = new PrismaClient().$extends(validateComputerManufacturer);
 
-//const errors = {}
+const errors = {};
+
 const fs = require('fs');
 const fsPromises = require("fs/promises");
 
 const path = require("path");
 
+//Show add software page
+exports.addSoftware = (req, res) => {
+    res.render("pages/addSoftware.twig", {
+        title: "Add Software",
+        error: null,
+    })
+}
 
-//Get the list of Computer Manufacturers
-exports.listComputerManufacturer = async (req, res) => {
-    let manufacturers = [];
+exports.displaySoftwareList = async (req, res) => {
     try {
-        manufacturers = await prisma.fabricantOrdinateur.findMany();
+        const software = await prisma.logiciel.findMany({
+            include: {
+                photos: true,
+                fabricantLogiciel: true,
+                versions: {
+                    include: {
+                        ordinateur: true,
+                    },
+                },
+            },
+        })
 
-        return res.json({
-            success: true,
-            manufacturers,
+        console.log("Software : ", software);
+
+        res.render("pages/softwareList.twig", {
+            title: "Software",
+            software,
+            error: null,
         });
 
     } catch (error) {
-        console.error("Error retrieving manufacturers:", error);
+        if (error.details) {
+            return res.render("pages/home.twig", {
+                errors: error.details,
+                software
+            });
+        }
 
-        return res.status(500).json({
-            success: false,
-            error: "Unexpected error while retrieving manufacturers."
+        // Unknown error
+        errors.softwareName = "An unexpected error occurred.";
+        console.error(error);
+
+        return res.render("pages/home.twig", {
+            errors,
         });
+    }
+
+}
+
+exports.showSoftwareManufacturers = async (req, res) => {
+    let manufacturers = [];
+    try {
+
+        manufacturers = await prisma.fabricantLogiciel.findMany({
+            include:
+            {
+                photos: true,
+            },
+        });
+
+        res.render("pages/manufacturerList.twig", {
+            manufacturers,
+            mode: "software",
+            title: "Software Manufacturer"
+        });
+    } catch (error) {
+        req.session.errorRequest = "Error loading list";
+        res.redirect("/error");
     }
 };
 
-//Add a Computer Manufacturer
-exports.addComputerManufacturer = async (req, res) => {
+//Add a Software Manufacturer
+exports.addSoftwareManufacturer = async (req, res) => {
     const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
     const logoDir = path.join(__dirname, "../public/assets/images/logos");
@@ -44,7 +94,7 @@ exports.addComputerManufacturer = async (req, res) => {
     try {
 
         //send this data back to fill table if there is an error
-        manufacturers = await prisma.fabricantOrdinateur.findMany({
+        manufacturers = await prisma.fabricantLogiciel.findMany({
             include:
             {
                 photos: true,
@@ -55,47 +105,37 @@ exports.addComputerManufacturer = async (req, res) => {
             errors.manufacturerName = "Invalid manufacturer name";
             return res.render("pages/manufacturerList.twig", {
                 manufacturers,
-                mode: "computer",
-                 title: "Computer Manufacturer",
+                mode: "software",
+                 title: "Software Manufacturer",
                 errors,
             });
         }
 
         const name = req.body.manufacturerName.trim();
-
-        if (!name) {
-            errors.manufacturerName = "Manufacturer name cannot be empty";
-            return res.render("pages/manufacturerList.twig", {
-                manufacturers,
-                mode: "computer",
-                title: "Computer Manufacturer",
-                errors,
-            });
-        }
         const logoPath = path.join(logoDir, `${name}.webp`);
 
-        const exists = await prisma.fabricantOrdinateur.findFirst({
+        const exists = await prisma.fabricantLogiciel.findFirst({
             where: { nom: name }
         });
 
         if (exists) {
-            //The computer manufacturer already exists
+            //The software manufacturer already exists
             errors.manufacturerName = "The manufacturer already exists"
             return res.render("pages/manufacturerList.twig", {
                 manufacturers,
-                mode: "computer",
-                title: "Computer Manufacturer",
+                mode: "software",
+                title: "Software Manufacturer",
                 errors,
             });
         }
 
-        //Create the Computer manufacturer
-        const manufacturer = await prisma.fabricantOrdinateur.create({
+        //Create the software manufacturer
+        const manufacturer = await prisma.fabricantLogiciel.create({
             data: { nom: name }
         });
 
 
-        // Create computer manufacturer logo photo
+        // Create software manufacturer logo photo
         if (!fs.existsSync(logoPath)) {
             await fsPromises.copyFile(defaultLogo, logoPath);
         }
@@ -103,17 +143,17 @@ exports.addComputerManufacturer = async (req, res) => {
 
         await prisma.photo.create({
             data: {
-                id_fab_ordinateur: manufacturer.id_fab_ordinateur,
+                id_fab_logiciel: manufacturer.id_fab_logiciel,
                 alt: `${manufacturer.nom}'s company logo`,
                 path: `/assets/images/logos/${manufacturer.nom}.webp`,
 
             },
         });
 
-        res.redirect("/showComputerManufacturers");
+        res.redirect("/showSoftwareManufacturers");
 
     } catch (error) {
-        console.error("Add Computer Manufacturer Error:", error);
+        console.error("Add Software Manufacturer Error:", error);
 
         // Prisma unique constraint
         if (error.code === "P2002") {
@@ -122,8 +162,8 @@ exports.addComputerManufacturer = async (req, res) => {
             return res.render("pages/manufacturerList.twig", {
                 manufacturers,
                 errors,
-                mode: "computer",
-                 title: "Computer Manufacturer",
+                mode: "software",
+                title: "Software Manufacturer",
             });
         }
 
@@ -131,9 +171,9 @@ exports.addComputerManufacturer = async (req, res) => {
         if (error.details?.manufacturerName) {
             return res.render("pages/manufacturerList.twig", {
                 manufacturers,
-            errors: error.details,
-            mode: "computer",
-            title: "Computer Manufacturer",
+                errors: error.details,
+                mode: "software",
+                title: "Software Manufacturer",
             });
         }
 
@@ -143,14 +183,13 @@ exports.addComputerManufacturer = async (req, res) => {
         return res.status(500).render("pages/manufacturerList.twig", {
             manufacturers,
             errors,
-            mode: "computer",
-            title: "Computer Manufacturer",
+            mode: "software",
+            title: "Software Manufacturer",
         });
     }
 }
 
-
-exports.updateComputerManufacturerList = async (req, res) => {
+exports.updateSoftwareManufacturerList = async (req, res) => {
     const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
     const action = req.body.buttons; // "delete-123" or "modify-123"
@@ -164,71 +203,73 @@ exports.updateComputerManufacturerList = async (req, res) => {
         try {
 
             //send this data back to fill table if there is an error
-            manufacturers = await prisma.fabricantOrdinateur.findMany({
+            manufacturers = await prisma.fabricantLogiciel.findMany({
                 include:
                 {
                     photos: true,
                 },
             });
 
-            //Is the computer manufacturer associated with any computer, if so we can't delete it
-            const manufacturerExists = await prisma.fabricantOrdinateur.findFirst({
-                where: { id_fab_ordinateur: toDelete }
+            //Is the software manufacturer associated with any software, if so we can't delete it
+            const manufacturerExists = await prisma.fabricantLogiciel.findFirst({
+                where: { id_fab_logiciel: toDelete }
             });
 
             if (!manufacturerExists) {
                 errors.manufacturerName = "Manufacturer not found";
                 return res.render("pages/manufacturerList.twig", {
                     errors,
-                    mode: "computer"
+                    mode: "software",
+                    manufacturers,
+                    title: "Software Manufacturer",
                 });
             }
 
-            const exists = await prisma.ordinateur.findFirst({
-                where: { id_fab_ordinateur: manufacturerExists.id_fab_ordinateur }
+            const exists = await prisma.logiciel.findFirst({
+                where: { id_fab_logiciel: manufacturerExists.id_fab_logiciel }
             });
 
 
             if (exists) {
-                //The computer manufacturer is associated with at least one computer an can not to deleted
-                errors.manufacturerName = "The manufacturer is associated with at least one computer and can not be deleted"
+                //The software manufacturer is associated with at least one software an can not to deleted
+                errors.manufacturerName = "The manufacturer is associated with at least one software and can not be deleted"
                 return res.render("pages/manufacturerList.twig", {
                     manufacturers,
                     errors,
-                    mode: "computer",
-                    title: "Computer Manufacturer",
+                    mode: "software",
+                    title: "Software Manufacturer",
                 });
             }
 
             console.log("Deleting photo ", toDelete);
 
-            //Delete the computer manufacturer logo
+            //Delete the software manufacturer logo
             await prisma.photo.deleteMany({
                 where: {
-                    id_fab_ordinateur: toDelete,
+                    id_fab_logiciel: toDelete,
                 },
             });
 
             console.log("Deleting manu");
-            //Delete the computer manufacturer
-            await prisma.fabricantOrdinateur.delete({
+            //Delete the software manufacturer
+            await prisma.fabricantLogiciel.delete({
                 where: {
-                    id_fab_ordinateur: toDelete
+                    id_fab_logiciel: toDelete
                 }
             });
 
             console.log("Manu deleted returning");
 
-            //Return to the list of computer manufacturers
-            res.redirect("/showComputerManufacturers");
+            //Return to the list of software manufacturers
+            res.redirect("/showSoftwareManufacturers");
 
         } catch (error) {
 
-            errors.manufacturerName = "The computer manufacturer could not be deleted"
+            errors.manufacturerName = "The software manufacturer could not be deleted"
             res.render("pages/manufacturerList.twig", {
                 errors,
-                mode: "computer",
-                title: "Computer Manufacturer",
+                mode: "software",
+                title: "Software Manufacturer",
             });
 
         }
@@ -239,13 +280,13 @@ exports.updateComputerManufacturerList = async (req, res) => {
         id = parseInt(id);
         // handle modify
 
-        res.redirect("/updateComputerManufacturer/" + id);
+        res.redirect("/updateSoftwareManufacturer/" + id);
 
     }
 };
 
 
-exports.updateComputerManufacturer = async (req, res) => {
+exports.updateSoftwareManufacturer = async (req, res) => {
 
     const manufacturerName = req.body.manufacturerName;
     const nameBeforeChange = req.body.nameBeforeChange;
@@ -263,14 +304,14 @@ exports.updateComputerManufacturer = async (req, res) => {
     const newLogoFs = path.join(logoDir, `${manufacturerName}.webp`);
 
     const logoUrl = `/assets/images/logos/${manufacturerName}.webp`;
-    let manufacturers = [];
 
+    let manufacturers = [];
     console.log("Data : ", req.body);
 
     try {
 
         //send this data back to fill table if there is an error
-        manufacturers = await prisma.fabricantOrdinateur.findMany({
+        manufacturers = await prisma.fabricantLogiciel.findMany({
             include:
             {
                 photos: true,
@@ -278,19 +319,19 @@ exports.updateComputerManufacturer = async (req, res) => {
         });
 
         //Find if a manufacturer has the same name
-        const manufacturerNameExists = await prisma.fabricantOrdinateur.findFirst({
+        const manufacturerNameExists = await prisma.fabricantLogiciel.findFirst({
             where: { nom: manufacturerName }
         });
 
         //Check if the id number is the same as the current one we are changing
-        if (manufacturerNameExists && manufacturerId !== manufacturerNameExists.id_fab_ordinateur) {
+        if (manufacturerNameExists && manufacturerId !== manufacturerNameExists.id_fab_logiciel) {
             //The name already exists
             errors.manufacturerName = "The manufacturer already exists"
             return res.render("pages/manufacturerList.twig", {
                 manufacturers,
                 errors,
-                mode: "computer",
-                title: "Computer Manufacturer",
+                mode: "software",
+                title: "Software Manufacturer",
             });
         }
 
@@ -316,14 +357,14 @@ exports.updateComputerManufacturer = async (req, res) => {
         //Update database
         await prisma.$transaction([
             prisma.photo.updateMany({
-                where: { id_fab_ordinateur: manufacturerId },
+                where: { id_fab_logiciel: manufacturerId },
                 data: {
                     alt: `${manufacturerName} logo`,
                     path: logoUrl,
                 },
             }),
-            prisma.fabricantOrdinateur.update({
-                where: { id_fab_ordinateur: manufacturerId },
+            prisma.fabricantLogiciel.update({
+                where: { id_fab_logiciel: manufacturerId },
                 data: { nom: manufacturerName },
             }),
         ]);
@@ -333,11 +374,11 @@ exports.updateComputerManufacturer = async (req, res) => {
             await fsPromises.unlink(oldLogoFs);
         }
 
-        //Return to the list of computer manufacturers
-        res.redirect("/showComputerManufacturers");
+        //Return to the list of software manufacturers
+        res.redirect("/showSoftwareManufacturers");
 
     } catch (error) {
-        console.error("Update Computer Manufacturer Error:", error);
+        console.error("Update Software Manufacturer Error:", error);
 
         // Prisma unique constraint
         if (error.code === "P2002") {
@@ -346,8 +387,8 @@ exports.updateComputerManufacturer = async (req, res) => {
             return res.render("pages/manufacturerList.twig", {
                 manufacturers,
                 errors,
-                mode: "computer",
-                title: "Computer Manufacturer",
+                mode: "software",
+                title: "Software Manufacturer",
             });
         }
 
@@ -356,8 +397,8 @@ exports.updateComputerManufacturer = async (req, res) => {
             return res.render("pages/manufacturerList.twig", {
                 manufacturers,
                 errors: error.details,
-                mode: "computer",
-                title: "Computer Manufacturer",
+                mode: "software",
+                title: "Software Manufacturer",
             });
         }
 
@@ -367,31 +408,8 @@ exports.updateComputerManufacturer = async (req, res) => {
         return res.status(500).render("pages/manufacturerList.twig", {
             manufacturers,
             errors,
-            mode: "computer",
-            title: "Computer Manufacturer",
+            mode: "software",
+            title: "Software Manufacturer",
         });
     }
 }
-
-exports.showComputerManufacturers = async (req, res) => {
-    let manufacturers = [];
-    try {
-
-        manufacturers = await prisma.fabricantOrdinateur.findMany({
-            include:
-            {
-                photos: true,
-            },
-        });
-
-        res.render("pages/manufacturerList.twig", {
-            manufacturers,
-            mode: "computer",
-            title: "Computer Manufacturer"
-
-        });
-    } catch (error) {
-        req.session.errorRequest = "Error loading list";
-        res.redirect("/error");
-    }
-};

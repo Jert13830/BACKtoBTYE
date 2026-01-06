@@ -1,0 +1,110 @@
+<section>
+	<div class="table-container" id="roleDetailsList">
+		<table>
+			<thead>
+				<tr>
+					<th>Logo</th>
+					<th>Name</th>
+					<th class="role-column">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for manufacturer in manufacturers%}
+					<tr class="roleLine">
+						<td>
+							{% if manufacturer.photos|length > 0 %}
+								{% for photo in manufacturer.photos %}
+									<img src="{{ photo.path }}" alt="{{ manufacturer.nom }}" width="80">
+								{% endfor %}
+							{% else %}
+								<img src="/assets/images/logos/defaultLogo.webp" alt="{{ manufacturer.nom }}" width="80">
+							{% endif %}
+						</td>
+						<td>{{manufacturer.nom}}</td>
+						<td
+							class="role-column">
+							<!-- This deals with the three different updates computers / software / emulators -->
+							<form method="post" action="
+								{% if mode == 'computer' %}
+									/updateComputerManufacturerList
+								{% elseif mode == 'software' %}
+									/updateSoftwareManufacturerList
+								{% else %}
+									/updateEmulatorManufacturerList
+								{% endif %}
+							">
+
+								{% if mode == 'computer' %}
+									{% set manufacturerId = manufacturer.id_fab_ordinateur %}
+								{% elseif mode == 'software' %}
+									{% set manufacturerId = manufacturer.id_fab_logiciel %}
+								{% else %}
+									{% set manufacturerId = manufacturer.id_fab_emulator %}
+								{% endif %}
+
+								<button type="button" class="btnForm" data-manufacturer-id="{{ manufacturerId }}" data-manufacturer-name="{{ manufacturer.nom }}" onclick="updateManufacturer(this, '{{ mode }}')">
+									✏️
+								</button>
+
+								<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{ manufacturerId }}">
+									🗑️
+								</button>
+
+
+							</form>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	</div>
+
+	<div id="addDiv">
+		<form id="newManufactureForm" name="newManufactureForm" method="post" action="
+												{% if mode == 'computer' %}
+													/addComputerManufacturer
+												{% elseif mode == 'software' %}
+													/addSoftwareManufacturer
+												{% else %}
+													/addEmulatorManufacturer
+												{% endif %}
+											">
+			<div id="formLine">
+				<div id="logoName">
+					<div id="manufacturerLogoImage" onclick="manufacturerLogoClick()">
+						<img id="manuLogo" src="/assets/images/logos/defaultLogo.webp" alt="Computer Manufacturer's logo">
+					</div>
+					<input hidden type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="logoPath" id="logoPath" class="manuImage" hidden>
+					<label for="manufacturerName">Name :
+					</label>
+					<input type="text" id="manufacturerName" name="manufacturerName" required minlength="3" maxlength="30">
+					<input type="text" hidden id="updateId" value="">
+				</div>
+				<div id="manuBtn">
+					<input type="text" hidden id="updateId" value="" name="updateId">
+					<button class="btnForm" id="btnAddManu" name="btnAddManu">Add</button>
+					<button type="button" class="btnForm" onclick="
+																				{% if mode == 'computer' %}
+																					window.location.href='/addComputer'
+																				{% elseif mode == 'software' %}
+																					window.location.href='/addSoftware'
+																				{% else %}
+																					window.location.href='/addEmulator'
+																				{% endif %}
+																			">
+						Close
+					</button>
+				</div>
+			</div>
+			<input id="nameBeforeChange" name="nameBeforeChange" hidden>
+			<p id="manufacturerNameErrors"></p>
+			{% if errors.manufacturerName %}
+				<p>{{ errors.manufacturerName }}
+				</p>
+			{% endif %}
+
+
+		</form>
+	</div>
+</section>
