@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
-const validateSoftwarerManufacturer = require("../middleware/extensions/validateManufacturer");
+const validateSoftwarer = require("../middleware/extensions/validateSofware");
 
-const prisma = new PrismaClient().$extends(validateSoftwarerManufacturer);
+const prisma = new PrismaClient().$extends(validateSoftwarer);
 
 
 const errors = {};
@@ -82,6 +82,26 @@ exports.showSoftwareManufacturers = async (req, res) => {
     }
 };
 
+//Get the list of Computer Manufacturers
+exports.listSoftwareManufacturer = async (req, res) => {
+    let manufacturers = [];
+    try {
+        manufacturers = await prisma.fabricantLogiciel.findMany();
+        return res.json({
+            success: true,
+            manufacturers,
+        });
+
+    } catch (error) {
+        console.error("Error retrieving manufacturers:", error);
+
+        return res.status(500).json({
+            success: false,
+            error: "Unexpected error while retrieving manufacturers."
+        });
+    }
+};
+
 //Add a Software Manufacturer
 exports.addSoftwareManufacturer = async (req, res) => {
     const errors = {};  //Safer to create errors{} each time, no errors from other controllers
@@ -106,7 +126,7 @@ exports.addSoftwareManufacturer = async (req, res) => {
             return res.render("pages/manufacturerList.twig", {
                 manufacturers,
                 mode: "software",
-                 title: "Software Manufacturer",
+                title: "Software Manufacturer",
                 errors,
             });
         }
@@ -412,4 +432,96 @@ exports.updateSoftwareManufacturer = async (req, res) => {
             title: "Software Manufacturer",
         });
     }
+}
+
+//Create software
+exports.postSoftware = async (req, res) => {
+    const data = req.body;
+
+    console.log(data);
+
+    try {
+
+        const name = req.body.softwareName.trim();
+        const exists = await prisma.logiciel.findFirst({
+            where: { nom: name }
+        });
+
+        if (exists) {
+            errors.softwareName = "Software title already exists";
+
+            return res.render("pages/addSoftware.twig", {
+                errors,
+                data,
+                mode: "software",
+            });
+        }
+
+        // Create software
+        const software = await prisma.Logiciel.create({
+            data: {
+                nom: name,
+                annee: Number(data.manufacturerYear),
+                lien: data.softwareLink,
+                details: data.detailsInfo,
+                langue: data.language,
+                id_fab_logiciel: Number(data.manufacturerSelect),
+            }
+        });
+
+
+        let filePath = fs.existsSync(`./public/assets/images/software/${name}.webp`);
+        console.log(`${name}.webp exists:`, filePath);
+
+        if (filePath) {
+            filePath = `/assets/images/software/${name}.webp`;
+        } else {
+            filePath = "/assets/images/software/defaultSoftware.webp";
+            console.log("Software does not exist:", filePath);
+        }
+
+        //Save computer photo
+        await prisma.photo.create({
+            data: {
+                id_logiciel: software.id_logiciel,
+                alt: `${name} software`,
+                path: filePath,
+            },
+        });
+
+        //Create different version enteries for each computer
+        data.computerSelect.forEach(async (computer) => {
+            await prisma.version.create({
+                data: {
+                    id_logiciel :  software.id_logiciel,
+                    id_ordinateur : Number(computer),
+                },
+            });
+        });
+
+        res.render("pages/softwareList.twig", {
+            title: "Software",
+            software,
+            error: null,
+        });
+
+    } catch (error) {
+        // Custom validation extension
+        if (error.details) {
+            return res.render("pages/addSoftware.twig", {
+                errors: error.details,
+                data,
+            });
+        }
+
+        // Unknown error
+        errors.softwareName = "An unexpected error occurred.";
+        console.error(error);
+
+        return res.render("pages/addSoftware.twig", {
+            errors,
+            data,
+        });
+    }
+
 }

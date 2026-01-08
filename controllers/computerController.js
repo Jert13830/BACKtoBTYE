@@ -87,8 +87,6 @@ exports.displayComputerList = async (req, res) => {
 
 }
 
-
-
 //Show add computer screen
 exports.displayAddComputer = (req, res) => {
   const bkgClass = "bg-1";
@@ -129,9 +127,8 @@ exports.postComputer = async (req, res) => {
   const bkgClass = "bg-1";
 
   try {
-
-    const name = req.body.computer.trim();
     
+    const name = req.body.computer.trim();
     const exists = await prisma.ordinateur.findFirst({
       where: { nom: name }
     });
@@ -493,23 +490,20 @@ exports.updateComputer = async (req, res) => {
       console.log("Computer does not exist:", filePath);
     }
 
-    console.log("Saving photo");
+    console.log("Saving photo ",computerId);
 
-    const existingPhoto = prisma.photo.findFirst({
+    const existingPhoto = await prisma.photo.findFirst({
       where: {
         id_ordinateur: computerId,
       }
     });
 
-    //Save computer photo
-    const photoId = comput.photos?.[0]?.id_photo;
-
-    if (!photoId) {
+    if (!existingPhoto) {
       console.log("No photo found for this computer");
     } else {
       await prisma.photo.update({
         where: {
-          id_photo: photoId,
+          id_photo: existingPhoto.id_photo,
         },
         data: {
           alt: `${comput.nom} computer`,

@@ -35,20 +35,20 @@
     text-align: center;
 }
 
-#computerPhotoHolder {
+#softwarePhotoHolder {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-#computerProfileImage {
+#softwareProfileImage {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#computerPhoto {
+#softwarePhoto {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
@@ -126,11 +126,29 @@ div {
   align-self: center;
 }
 
-input{
+input, select{
     border-radius: 5px;
 }
 
-@media (max-width: 885px) {
+
+#addSoftware .squareBtnClose{
+    display: block;
+}
+
+.manufacturerErrors {
+     color: #1A1A1A;
+    font-weight: 700;
+    
+}
+
+#softwareManufacturerLogo{
+    display: block;
+  
+    
+}
+
+
+@media (max-width: 920px) {
     #softwareForm {
 
         overflow-y: auto;
@@ -142,10 +160,13 @@ input{
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 590px) {
    
     #details {
         grid-template-columns: 1fr;
         gap: 0.2rem;
+    }
+    #plusBtn{
+        flex-direction: column;
     }
 }

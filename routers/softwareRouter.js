@@ -9,9 +9,10 @@ const authGuard = require('../middleware/services/authguard');
 const requireAdmin = require('../middleware/services/requireAdmin');
 
 softwareRouter.get('/addSoftware', softwareController.addSoftware);
+softwareRouter.post('/addSoftware', requireAdmin, softwareController.postSoftware);
 
 softwareRouter.get('/displaySoftwareList', softwareController.displaySoftwareList);
-
+softwareRouter.get('/listSoftwareManufacturer', upload.none(), softwareController.listSoftwareManufacturer);
 softwareRouter.get('/showSoftwareManufacturers', authGuard,requireAdmin,softwareController.showSoftwareManufacturers);
 softwareRouter.post("/addSoftwareManufacturer", upload.single("logoPath"), softwareController.addSoftwareManufacturer);
 
