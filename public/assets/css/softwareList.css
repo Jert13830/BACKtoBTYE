@@ -1,0 +1,194 @@
+#pageContent {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  gap: 5px;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+#sidebar {
+  min-width: 100px;
+
+
+
+  overflow-y: auto;
+}
+
+.softwareListGrid {
+  flex: 1;
+  height: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, max-content));
+  justify-content: center;
+  gap: 20px;
+
+  padding: 10px;
+  background-color: #CFCFCF;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.softwareCardDiv {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* space content vertically */
+  align-items: center;
+
+ height: 420px;
+  
+  padding: 1rem;
+
+  border: 1px solid #9B9B9B;
+  border-radius: 10px;
+  background: #D9D9D9;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 4px solid #9B9B9B;
+}
+
+/*raises the card as the mouse moves over*/
+.softwareCardDiv:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.16),
+    0 4px 6px rgba(0, 0, 0, 0.12);
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  
+  text-align: center;
+  width: 100%;
+}
+
+.squareBtnClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 28px;
+  width: 28px;
+  border-radius: 6px;
+
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.softwareCardButtons{
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+
+  display: flex;
+  gap: 0.5rem;
+
+  z-index: 10;
+
+  bottom: clamp(0.5rem, 2vw, 1rem);
+  right: clamp(0.5rem, 2vw, 1rem);
+
+   background: rgba(0, 0, 0, 0.4);
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.softwareCardButtons button{
+  border-radius: 6px;
+ 
+}
+
+.softwareCardButtons button:hover{
+background-color: #7c7c7d;
+    color: #fff;
+}
+
+.softwareCardButtons {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.softwareCardDiv:hover .softwareCardButtons {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#softwaResearchbar {
+  border-radius: 6px;
+}
+
+#softwareSearchBarDiv {
+  display: flex;
+  gap: 2px;
+  padding: 5px;
+}
+
+.softwareCardButtons {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.cardImage img {
+  border-radius: 10px;
+}
+
+
+
+@media (max-width: 550px) {
+  #pageContent {
+    flex-direction: column;
+  }
+
+  .softwareListGrid {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+  }
+
+  .softwareCardDiv {
+    min-height: 220px;
+    max-width: 100%;
+    padding: 0.75rem;
+    border-radius: 10px;
+  }
+
+  .cardContent {
+    gap: 0.5rem;
+  }
+
+  .cardContent div {
+    font-size: 0.9rem;
+  }
+
+  .cardContent img {
+    height: 110px;
+  }
+
+
+  #sidebar {
+    height: 100px;
+    border-bottom: 1px solid #000;
+    border-radius: 6px;
+  }
+}

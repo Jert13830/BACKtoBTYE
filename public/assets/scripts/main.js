@@ -47,6 +47,8 @@ const uploadImageComputer = document.querySelector('#uploadImageComputer');
 const softwareProfileImage = document.querySelector('#softwarePhoto');
 const uploadImageSoftware = document.querySelector('#uploadImageSoftware');
 
+const sideBarComputerList = document.querySelector("#sideBarComputerList");
+
 let manufacturers = [];
 
 
@@ -90,8 +92,8 @@ async function loadImage(files, imageType, fileName, sourcePhoto) {
     formData.append("filename", fileName);
     formData.append("phototype", "software");
     //The required size of the photo
-    formData.append("photoWidth", 133);
-    formData.append("photoHeight", 200);
+    formData.append("photoWidth", 166);
+    formData.append("photoHeight", 250);
   }
   else if (imageType === "Manufactuer") { // manufacturer logos
     formData.append("filename", fileName);
@@ -426,7 +428,7 @@ function treatImages() {
 
   }
 
- 
+
   if (softwareProfileImage) {
     softwareProfileImage.addEventListener("click", () => {
       uploadImageSoftware.click();
@@ -435,12 +437,12 @@ function treatImages() {
     uploadImageSoftware.addEventListener("change", () => {
       const files = Array.from(uploadImageSoftware.files);
 
-      
+
 
       //No files selected
       if (!files.length) return;
 
-      
+
       const value = softwareName.value?.trim();
 
       if (value) { //Test if a user name has been given
@@ -811,7 +813,6 @@ function updateManufacturerSelect(manufacturers) {
   select.selectedIndex = selectedId === null ? 0 : select.selectedIndex;
 }
 
-
 /** Update computer list **/
 
 async function loadComputerList() {
@@ -945,11 +946,54 @@ function slideLeft() {
 }
 
 
+async function loadSystemList() {
+
+  const errorBox = document.querySelector("#systemLoadErrors");
+
+  try {
+    const response = await fetch("/listComputer", {
+      method: "GET"
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      errorBox.textContent = data.error;
+      return;
+    }
+
+    // Add all computers
+    data.computers.forEach(computer => {
+      let para = document.createElement('p');
+      sideBarComputerList.appendChild(para);
+
+
+
+      const name = computer.nom;
+
+      const link = document.createElement("a");
+      link.href = `/filterByComputer/${encodeURIComponent(name)}`;
+      link.textContent = name;
+
+      para.appendChild(link);
+
+
+
+    });
+
+  } catch (err) {
+    errorBox.textContent = "Failed to load computer list.";
+  }
+}
+
+
 document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
 
-
+  if (sideBarComputerList) {
+    loadSystemList();
+  }
 
   if (manuImage || computerProfileImage || uploadImageComputer) {
     treatImages();  // only call if at least one file input might exist
@@ -1017,11 +1061,10 @@ async function init() {
     console.log("No userRole select on this page — skipping loadRoleList");
   }
 
-  const btnModify = document.querySelector("#btnModify");
-  const updateId = document.querySelector("#updateId");
+  let btnModify = document.querySelector("#btnModify");
+  let updateId = document.querySelector("#updateId");
   if (btnModify) {
     updateId = btnModify.value;
   }
   console.log("All relevant data loaded successfully!");
 }
-

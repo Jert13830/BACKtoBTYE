@@ -1,0 +1,41 @@
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/softwareList.css">
+{% endblock %}
+
+<div id="pageContent">
+	<aside id="sidebar">
+	<form id="searchSoftwareForm" method="post" action="/filterSoftware" >
+		<div id="softwareSearchBarDiv">
+			<input type="search" id="softwaResearchbar" name="softwaResearchbar"/>
+			<button id="btnResearch"><img src="/assets/images/magnifying-glass.png"</button>
+		</div>
+	</form>
+		<!-- filter list -->
+		<p><h3>Systems</h3></p>
+		<div id="sideBarComputerList">
+			<div id="#systemLoadErrors"></div>
+			
+		</div>
+	</aside>
+	<section class="softwareListGrid">
+		{% for software in softwares %}
+			<div class="softwareCardDiv">
+				<a class="softwareListGridA" href="/softwareDetailSelect/{{ software.id_logiciel }}?origin=softwareList">
+					<div class="cardContent">
+						<div class="cardImage"><img src="{{software.photos[0].path}}" alt="Photo of {{software.nom}}"></div>
+						<div>{{software.nom}}</div>
+						<div>{{software.fabricantLogiciel.nom}}</div>
+					</div>
+				</a>
+				{% if user.role == "administrator" %}
+					<div class="softwareCardButtons">
+						<form method="post" action="/updateSoftwareList">
+							<button class="btnForm" id="btnModify" name="buttons" value="modify-{{software.id_logiciel }}">✏️</button>
+							<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{software.id_logiciel }}">🗑️</button>
+						</form>
+					</div>
+				{% endif %}
+			</div>
+		{% endfor %}
+	</section>
+</div>

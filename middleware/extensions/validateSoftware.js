@@ -3,20 +3,20 @@ const { Prisma } = require('@prisma/client');
 module.exports = Prisma.defineExtension({
     name: "softwareValidateExtension",
     query: {
-        ordinateur: {
+        logiciel: {
             create: async ({ args, query }) => {
                 const errors = { }
                 //Software title
-                if (!/^[A-Za-z0-9][A-Za-z0-9 ./_+-]*$/.test(args.data.nom)) {
-                    errors.computerName = "Invalid or empty computer name"
+                if (!/^[A-Za-z0-9][A-Za-z0-9 _+\-:.()]{0,29}$/.test(args.data.nom)) {
+                    errors.software = "Invalid or empty software title"
                 }
                 // Software Information text consisting entirely of letters, numbers, and whitespace.  Can be empty.
-                if (!/^[\p{L}\p{N}\s]*$/u.test(args.data.info)) {
-                    errors.computerInfo = "Invalid text has been entered"
+                if (!/^[\p{L}\p{N}\s]*$/u.test(args.data.details)) {
+                    errors.software = "Software information - Invalid text has been entered"
                 }
                 //Software Link
-                if (!/^[A-Za-z0-9][A-Za-z0-9\s\-.+]*[A-Za-z0-9.+]$|^[A-Za-z0-9]+$/i.test(args.data.cpu)) {
-                errors.cpu = "CPU - Invalid characters have been entered"
+                if (!/^(?:$|(https?:\/\/)(?!javascript:)(?!data:)[^\s<>"'`]{1,2048})$/i.test(args.data.lien)) {
+                errors.software = "Link - Invalid characters have been entered"
                 }
                 
                 if (Object.keys(errors).length > 0) {
@@ -30,25 +30,17 @@ module.exports = Prisma.defineExtension({
             },
             update: async ({ args, query }) => {
                 const errors = { }
-                //First character must be a letter or number (no leading +, space, -, etc.) With at least 1 character (not null)
-                if (!/^[A-Za-z0-9][A-Za-z0-9 ./_+-]*$/.test(args.data.nom)) {
-                    errors.computerName = "Invalid or empty computer name"
+                //Software title
+                if (!/^[A-Za-z0-9][A-Za-z0-9 _+\-:.()]{0,29}$/.test(args.data.nom)) {
+                    errors.software = "Invalid or empty software title"
                 }
-                // Computer Information text consisting entirely of letters, numbers, and whitespace.  Can be empty.
-                if (!/^[\p{L}\p{N}\s]*$/u.test(args.data.info)) {
-                    errors.computerInfo = "Invalid text has been entered"
+                // Software Information text consisting entirely of letters, numbers, and whitespace.  Can be empty.
+                if (!/^[\p{L}\p{N}\s]*$/u.test(args.data.details)) {
+                    errors.software = "Software information - Invalid text has been entered"
                 }
-
-                if (!/^[A-Za-z0-9][A-Za-z0-9\s\-.+]*[A-Za-z0-9.+]$|^[A-Za-z0-9]+$/i.test(args.data.cpu)) {
-                errors.cpu = "CPU - Invalid characters have been entered"
-                }
-
-                if (!/^[A-Za-z0-9][A-Za-z0-9\s\-.+*/]*[A-Za-z0-9]$|^[A-Za-z0-9]+$/i.test(args.data.graphique)) {
-                errors.graphics = "Graphics - Invalid characters have been entered"
-                }
-
-                if (!/^[A-Za-z0-9][A-Za-z0-9\s\-.+*/]*[A-Za-z0-9]$|^[A-Za-z0-9]+$/i.test(args.data.son)) {
-                errors.sound = "Sound - Invalid characters have been entered"
+                //Software Link
+                if (!/^(?:$|(https?:\/\/)(?!javascript:)(?!data:)[^\s<>"'`]{1,2048})$/i.test(args.data.lien)) {
+                errors.software = "Link - Invalid characters have been entered"
                 }
                 
                 if (Object.keys(errors).length > 0) {

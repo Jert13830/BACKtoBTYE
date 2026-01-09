@@ -272,6 +272,7 @@ dialog[open] .squareBtnClose {
 
 #addSoftware .content {
     height: 70vh;
+    overflow: hidden; 
 }
 
 #connect .titleP {
@@ -292,6 +293,11 @@ dialog[open] .squareBtnClose {
 }
 
 #computerList .content {
+    height: 66vh;
+    overflow: hidden;
+}
+
+#softwareList .content {
     height: 66vh;
     overflow: hidden;
 }

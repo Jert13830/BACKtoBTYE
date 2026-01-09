@@ -4,6 +4,7 @@
 <div class="formBk1">
 	<div class="formBk2 {{bkgClass}}">
 		<form id="computerForm" action="{{ transaction == 'update' ? '/updateComputer/' ~ data.id_ordinateur ~ '?bg='~ bkgClass : '/addComputer' }}" method="post">
+			<input type="text" name="id_ordinateur" id="id_ordinateur" hidden value="{{ data.id_ordinateur  }}">
 			<input type="text" id="originInput" hidden value="{{ origin|default('computerList')}}">
 			<div id="formDiv">
 				<div id="formLeft">
@@ -16,7 +17,7 @@
 							</div>
 							<!-- END OF fomanuLogoHolder -->
 							<div>
-								<input {{ origin ? 'readonly' : '' }} type="text" name="computer" maxlength="15" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (15 max)" required value="{{data.nom|default('') }}"/>
+								<input {{ origin ? 'readonly' : '' }} type="text" name="nom" maxlength="15" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (15 max)" required value="{{data.nom|default('') }}"/>
 							</div>
 						</div>
 						<p id="computerNameErrors">{{errors.computerName}}</p>
@@ -52,11 +53,11 @@
 
 					<div class="formInputLine">
 						<div>
-							<label for="manufacturerYear">Year :
+							<label for="annee">Year :
 							</label>
 						</div>
 						<div>
-							<input {{ origin ? 'readonly' : '' }} type="number" min="1970" max="2000" step="1" id="manufacturerYear" name="manufacturerYear" required value="{{ data.annee|default('1980') }}"/>
+							<input {{ origin ? 'readonly' : '' }} type="number" min="1970" max="2000" step="1" id="annee" name="annee" required value="{{ data.annee|default('1980') }}"/>
 						</div>
 					</div>
 
@@ -123,11 +124,11 @@
 					<div class="errNinput">
 						<div class="formInputLine">
 							<div>
-								<label for="graphics">Graphics :
+								<label for="graphique">Graphics :
 								</label>
 							</div>
 							<div>
-								<input {{ origin ? 'readonly' : '' }} type="text" name="graphics" id="graphics" required value="{{data.graphique|default('') }}"/>
+								<input {{ origin ? 'readonly' : '' }} type="text" name="graphique" id="graphique" required value="{{data.graphique|default('') }}"/>
 
 							</div>
 						</div>
@@ -148,11 +149,11 @@
 					<div class="errNinput">
 						<div class="formInputLine">
 							<div>
-								<label for="sound">Sound :
+								<label for="son">Sound :
 								</label>
 							</div>
 							<div>
-								<input {{ origin ? 'readonly' : '' }} type="text" name="sound" id="sound" required value="{{ data.son|default('') }}"/>
+								<input {{ origin ? 'readonly' : '' }} type="text" name="son" id="son" required value="{{ data.son|default('') }}"/>
 
 							</div>
 						</div>
@@ -190,7 +191,7 @@
 					<!-- END OF computerProfileImage -->
 					<div id="computerInformation">
 						<div class="textBk1">
-							<textarea {{ origin ? 'readonly' : '' }} id="computerInfo" name="computerInfo" rows="10" cols="50" placeholder="Computer Information">{{ data.info|default('') }}</textarea>
+							<textarea {{ origin ? 'readonly' : '' }} id="computerInfo" name="info" rows="10" cols="50" placeholder="Computer Information">{{ data.info|default('') }}</textarea>
 						</div>
 					</div>
 					{% if user %}

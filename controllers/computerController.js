@@ -128,7 +128,7 @@ exports.postComputer = async (req, res) => {
 
   try {
     
-    const name = req.body.computer.trim();
+    const name = req.body.nom.trim();
     const exists = await prisma.ordinateur.findFirst({
       where: { nom: name }
     });
@@ -147,16 +147,16 @@ exports.postComputer = async (req, res) => {
     const comput = await prisma.ordinateur.create({
       data: {
         nom: name,
-        annee: Number(req.body.manufacturerYear),
+        annee: Number(req.body.annee),
         cpuType: Number(req.body.cpuType),
         cpu: req.body.cpu,
         vitesseHorloge: Number(req.body.clockSpeed),
         ram: Number(req.body.ram),
         rom: Number(req.body.rom),
-        graphique: req.body.graphics,
+        graphique: req.body.graphique,
         nbCouleurs: Number(req.body.nbColours),
-        info: req.body.computerInfo,
-        son: req.body.sound,
+        info: req.body.info,
+        son: req.body.son,
         successeur: Number(req.body.successor),
         id_fab_ordinateur: Number(req.body.fabricantId)
       }
@@ -432,10 +432,12 @@ exports.showUpdateComputer = async (req, res) => {
 exports.updateComputer = async (req, res) => {
   const data = req.body;
   const computerId = Number(req.params.id);
-  const bkgClass = "bg-" + Number(req.params.bg);
   console.log(data);
+  console.log("Computer ID : ",computerId);
 
-  const name = req.body.computer.trim();
+  const name = req.body.nom.trim();
+
+  const bkgClass =  req.query.bg;
 
   try {
 
@@ -451,6 +453,7 @@ exports.updateComputer = async (req, res) => {
 
       return res.render("pages/addComputer.twig", {
         errors,
+        transaction: "update",
         data,
         bkgClass,
       });
@@ -463,16 +466,16 @@ exports.updateComputer = async (req, res) => {
       where: { id_ordinateur: computerId },
       data: {
         nom: name,
-        annee: Number(req.body.manufacturerYear),
+        annee: Number(req.body.annee),
         cpuType: Number(req.body.cpuType),
         cpu: req.body.cpu,
         vitesseHorloge: Number(req.body.clockSpeed),
         ram: Number(req.body.ram),
         rom: Number(req.body.rom),
-        graphique: req.body.graphics,
+        graphique: req.body.graphique,
         nbCouleurs: Number(req.body.nbColours),
-        info: req.body.computerInfo,
-        son: req.body.sound,
+        info: req.body.info,
+        son: req.body.son,
         successeur: Number(req.body.successor),
         id_fab_ordinateur: Number(req.body.fabricantId)
       }
@@ -520,8 +523,10 @@ exports.updateComputer = async (req, res) => {
   } catch (error) {
     // Custom validation extension
     if (error.details) {
+      console.log("Crashing out 1 BKG : ", bkgClass);
       return res.render("pages/addComputer.twig", {
         errors: error.details,
+        transaction: "update",
         data,
         bkgClass,
       });
@@ -530,9 +535,10 @@ exports.updateComputer = async (req, res) => {
     // Unknown error
     errors.computerName = "An unexpected error occurred.";
     console.error(error);
-
+    console.log("Crashing out 2 ");
     return res.render("pages/addComputer.twig", {
       errors,
+      transaction: "update",
       data,
       bkgClass,
     });

@@ -9,14 +9,17 @@ const authGuard = require('../middleware/services/authguard');
 const requireAdmin = require('../middleware/services/requireAdmin');
 
 softwareRouter.get('/addSoftware', softwareController.addSoftware);
-softwareRouter.post('/addSoftware', requireAdmin, softwareController.postSoftware);
+softwareRouter.post('/addSoftware', authGuard,requireAdmin, softwareController.postSoftware);
 
 softwareRouter.get('/displaySoftwareList', softwareController.displaySoftwareList);
-softwareRouter.get('/listSoftwareManufacturer', upload.none(), softwareController.listSoftwareManufacturer);
-softwareRouter.get('/showSoftwareManufacturers', authGuard,requireAdmin,softwareController.showSoftwareManufacturers);
-softwareRouter.post("/addSoftwareManufacturer", upload.single("logoPath"), softwareController.addSoftwareManufacturer);
+softwareRouter.post('/filterSoftware', softwareController.filterSoftwareList);
 
-softwareRouter.post('/updateSoftwareManufacturerList',authGuard,softwareController.updateSoftwareManufacturerList);
-softwareRouter.post('/updateSoftwareManufacturer/:id', authGuard, softwareController.updateSoftwareManufacturer);
+softwareRouter.get('/filterByComputer/:id', softwareController.filterByComputer);
+softwareRouter.post('/updateSoftwareList', authGuard, requireAdmin, softwareController.updateSoftwareList);
+
+softwareRouter.get('/softwareDetailSelect/:id_logiciel', softwareController.softwareDetailSelect);
+
+softwareRouter.get("/showUpdateSoftware/:id", authGuard, requireAdmin, softwareController.showUpdateSoftware);
+softwareRouter.post('/updateSoftware/:id', authGuard, requireAdmin, softwareController.updateSoftware);
 
 module.exports = softwareRouter;

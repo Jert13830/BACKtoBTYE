@@ -8,16 +8,16 @@
 	<main>
 		<div id="pageContainer">
 			<section>
-				<div id="computerList">
+				<div id="softwareList">
 					{% embed '/partials/window.twig' with {
 						windowType: 'largeWindow',
 						title: 'Software',
 						showPlus: 1,
-						showSearch: 1,
+						showSearch: 0,
 						pageId: 'softwareList'
 						} %}
 						{% block content %}
-							{% include '/partials/computerListGrid.twig' %}
+							{% include '/partials/softwareListGrid.twig' %}
 						{% endblock %}
 					{% endembed %}
 				</div>
