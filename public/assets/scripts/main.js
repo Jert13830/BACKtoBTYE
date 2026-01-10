@@ -155,7 +155,7 @@ if (roundBtn) {
     const page = roundBtn.dataset.page; // get which page the button was clicked in
 
     if (page === "computerList") {
-      localStorage.setItem('mode', 'computer');
+      //localStorage.setItem('mode', 'computer');
       window.open("/addComputer", "_self")
     }
 
@@ -759,7 +759,7 @@ function updateManufacturerSelect(manufacturers) {
     select = document.querySelector("#computerManufacturerSelect")
   }
   else {
-    select = document.querySelector("#manufacturerSelect");
+    select = document.querySelector("#softwareManufacturerSelect");
   }
 
   if (!select) {
@@ -834,7 +834,7 @@ async function loadComputerList() {
     updateComputerSelect(data.computers);
 
   } catch (err) {
-    errorBox.textContent = "Failed to load computer list.";
+   // errorBox.textContent = "Failed to load computer list.";
   }
 }
 
@@ -905,7 +905,7 @@ function changeLogo() {
     select = document.querySelector("#computerManufacturerSelect");
   }
   else {
-    select = document.querySelector("#manufacturerSelect");
+    select = document.querySelector("#softwareManufacturerSelect");
   }
 
   const label = select.options[select.selectedIndex].text;
@@ -985,7 +985,7 @@ async function loadSystemList() {
     });
 
   } catch (err) {
-    errorBox.textContent = "Failed to load computer list.";
+    errorBox.textContent = "Failed to load computer system list.";
   }
 }
 
@@ -1023,10 +1023,10 @@ async function init() {
     manufacturerSelect = document.querySelector("#computerManufacturerSelect");
   }
   else if (manufacturerMode === "software") {
-    manufacturerSelect = document.querySelector("#manufacturerSelect");
+    manufacturerSelect = document.querySelector("#softwareManufacturerSelect");
   }
   else {
-    manufacturerSelect = document.querySelector("#manufacturerSelect");
+    manufacturerSelect = document.querySelector("#softwareManufacturerSelect");
   }
 
   if (manufacturerSelect) {
@@ -1072,6 +1072,7 @@ async function init() {
   console.log("All relevant data loaded successfully!");
 }
 
+//Get the multi selected computer system for the software
 function applyPreselection() {
   const ids = new Set(window.PRESELECTED_COMPUTERS.map(String));
   const select = document.getElementById("computerSelect");

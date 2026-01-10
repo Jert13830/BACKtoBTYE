@@ -92,7 +92,7 @@ exports.postSoftware = async (req, res) => {
         lien: data.softwareLink,
         details: data.detailsInfo,
         langue: data.language,
-        id_fab_logiciel: Number(data.manufacturerSelect),
+        id_fab_logiciel: Number(data.softwareManufacturerSelect),
       }
     });
 
@@ -381,128 +381,179 @@ exports.updateSoftwareList = async (req, res) => {
 
 exports.updateSoftware = async (req, res) => {
 
-  const manufacturerName = req.body.manufacturerName;
-  const nameBeforeChange = req.body.nameBeforeChange;
-  const manufacturerId = parseInt(req.params.id);
+  const softwareName = req.body.softwareName;
+  const softwareNameBeforeChange = req.body.softwareNameBeforeChange;
+  const softwareId = parseInt(req.params.id);
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const data = req.body;
+  const imageDir = path.join(__dirname, "../public/assets/images/software");
 
+  const nameChanged = softwareName !== softwareNameBeforeChange;
+  const newImageUploaded = !!req.file;
 
+  const oldImageFs = path.join(imageDir, `${softwareNameBeforeChange}.webp`);
+  const newImageFs = path.join(imageDir, `${softwareName}.webp`);
 
-  const logoDir = path.join(__dirname, "../public/assets/images/logos");
+  const imageUrl = `/assets/images/software/${softwareName}.webp`;
+  let softwares = [];
 
-  const nameChanged = manufacturerName !== nameBeforeChange;
-  const newLogoUploaded = !!req.file;
-
-  const oldLogoFs = path.join(logoDir, `${nameBeforeChange}.webp`);
-  const newLogoFs = path.join(logoDir, `${manufacturerName}.webp`);
-
-  const logoUrl = `/assets/images/logos/${manufacturerName}.webp`;
-  let manufacturers = [];
-
-  console.log("Data : ", req.body);
+  console.log("Data to be UPDATED: ", req.body);
 
   try {
 
     //send this data back to fill table if there is an error
-    manufacturers = await prisma.fabricantOrdinateur.findMany({
-      include:
-      {
+    const softwares = await prisma.logiciel.findMany({
+      include: {
         photos: true,
+        fabricantLogiciel: true,
+        versions: {
+          include: {
+            ordinateur: true,
+          },
+        },
       },
+    })
+
+    //Find if a software has the same name
+    const softwareNameExists = await prisma.logiciel.findFirst({
+      where: { nom: softwareName }
     });
 
-    //Find if a manufacturer has the same name
-    const manufacturerNameExists = await prisma.fabricantOrdinateur.findFirst({
-      where: { nom: manufacturerName }
-    });
+    console.log("UPDATING : check if software exists");
 
     //Check if the id number is the same as the current one we are changing
-    if (manufacturerNameExists && manufacturerId !== manufacturerNameExists.id_fab_ordinateur) {
+    if (softwareNameExists && softwareId !== softwareNameExists.id_logiciel) {
       //The name already exists
-      errors.manufacturerName = "The manufacturer already exists"
-      return res.render("pages/manufacturerList.twig", {
-        manufacturers,
+      console.log("Software : ", softwareName);
+      console.log("UPDATING : Error with name or ID ", softwareNameExists.id_logiciel, softwareId);
+      errors.softwareName = "The software title already exists"
+      return res.render("pages/softwareList.twig", {
+        softwares,
         errors,
-        mode: "computer",
-        title: "Computer Manufacturer",
+        mode: "software",
+        title: "Software",
+        tranaction: "update",
       });
     }
 
     //Update photo
-
+    console.log("UPDATING : updating photo");
     //Handle filesystem
-    if (nameChanged && !newLogoUploaded && fs.existsSync(oldLogoFs)) {
-      //Name changed only  - copy old logo
-      await fsPromises.copyFile(oldLogoFs, newLogoFs);
+    if (nameChanged && !newImageUploaded && fs.existsSync(oldImageFs)) {
+      //Name changed only  - copy old image
+      await fsPromises.copyFile(oldImageFs, newImageFs);
     }
 
-    if (newLogoUploaded) {
-      //New logo uploaded - save logo
-      await fsPromises.writeFile(newLogoFs, req.file.buffer);
+    if (newImageUploaded) {
+      //New image uploaded - save image
+      await fsPromises.writeFile(newImageFs, req.file.buffer);
     }
 
-    if (!fs.existsSync(newLogoFs)) {
-      //No logo - use dfault logo
-      const defaultLogo = path.join(logoDir, "defaultLogo.webp");
-      await fsPromises.copyFile(defaultLogo, newLogoFs);
+    if (!fs.existsSync(newImageFs)) {
+      //No image - use default image
+      const defaultImage = path.join(imageDir, "defaultSoftware.webp");
+      await fsPromises.copyFile(defaultImage, newImageFs);
     }
 
-    //Update database
-    await prisma.$transaction([
-      prisma.photo.updateMany({
-        where: { id_fab_ordinateur: manufacturerId },
+    console.log("UPDATING : updated photo");
+    //Delete all versions of software
+    await prisma.version.deleteMany({
+      where: { id_logiciel: softwareId }
+    });
+
+    console.log("UPDATING : deleted versions");
+    //Recreate versions
+    //Make sure that computerSelect is an array even if one item selected
+    const computers = Array.isArray(data.computerSelect)
+      ? data.computerSelect
+      : [data.computerSelect];
+
+
+    for (const computer of computers) {
+      await prisma.version.create({
         data: {
-          alt: `${manufacturerName} logo`,
-          path: logoUrl,
+          id_logiciel: softwareId,
+          id_ordinateur: Number(computer),
         },
-      }),
-      prisma.fabricantOrdinateur.update({
-        where: { id_fab_ordinateur: manufacturerId },
-        data: { nom: manufacturerName },
-      }),
-    ]);
-
-    //Cleanup old logo file ONLY if name changed
-    if (nameChanged && fs.existsSync(oldLogoFs)) {
-      await fsPromises.unlink(oldLogoFs);
+      });
     }
 
-    //Return to the list of computer manufacturers
-    res.redirect("/showComputerManufacturers");
+    console.log("UPDATING : added version");
+
+    const photo = await prisma.photo.findFirst({
+      where: { id_logiciel: softwareId },
+    });
+
+    if (photo) {
+      await prisma.photo.update({
+        where: { id_photo: photo.id_photo },
+        data: {
+          alt: `${softwareName} image`,
+          path: imageUrl,
+        },
+      });
+    }
+
+    console.log("UPDATING :software");
+    await prisma.logiciel.update({
+      where: { id_logiciel: softwareId },
+      data: {
+        nom: softwareName,
+        annee: Number(data.annee),
+        lien: data.softwareLink,
+        details: data.detailsInfo,
+        langue: data.language,
+        id_fab_logiciel: Number(data.softwareManufacturerSelect),
+      },
+    });
+
+
+    console.log("UPDATING : updated database");
+
+    //Cleanup old image file ONLY if name changed
+    if (nameChanged && fs.existsSync(oldImageFs)) {
+      await fsPromises.unlink(oldImageFs);
+    }
+
+    //Return to the list of software
+    res.redirect("/displaySoftwareList");
 
   } catch (error) {
-    console.error("Update Computer Manufacturer Error:", error);
+    console.error("Update software Error:", error);
 
     // Prisma unique constraint
     if (error.code === "P2002") {
-      errors.manufacturerName = "The manufacturer already exists";
+      errors.manufacturerName = "The software title already exists";
 
-      return res.render("pages/manufacturerList.twig", {
-        manufacturers,
+      return res.render("pages/softwareList.twig", {
+        softwares,
         errors,
-        mode: "computer",
-        title: "Computer Manufacturer",
+        mode: "software",
+        title: "Software",
+        tranaction: "update",
       });
     }
 
     // Prisma extension validation error
-    if (error.details?.manufacturerName) {
-      return res.render("pages/manufacturerList.twig", {
-        manufacturers,
+    if (error.details?.softwareName) {
+      return res.render("pages/softwareList.twig", {
+        softwares,
         errors: error.details,
-        mode: "computer",
-        title: "Computer Manufacturer",
+        mode: "software",
+        title: "Software",
+        tranaction: "update",
       });
     }
 
     // Fallback
     errors.global = "An unexpected error occurred. Please try again.";
 
-    return res.status(500).render("pages/manufacturerList.twig", {
-      manufacturers,
+    return res.status(500).render("pages/softwareList.twig", {
+      softwares,
       errors,
-      mode: "computer",
-      title: "Computer Manufacturer",
+      mode: "software",
+      title: "Software",
+      tranaction: "update",
     });
   }
 }
@@ -539,13 +590,13 @@ exports.softwareDetailSelect = async (req, res) => {
     ];
 
     const computerIds = [
-  ...new Map(
-    data.versions.flatMap(v => v.ordinateur)
-      .map(o => [o.id_ordinateur, o])
-  ).keys()
-];
+      ...new Map(
+        data.versions.flatMap(v => v.ordinateur)
+          .map(o => [o.id_ordinateur, o])
+      ).keys()
+    ];
 
-  //  console.log("Computers : ", computers);
+    //  console.log("Computers : ", computers);
     console.log("Computer Ids : ", computerIds);
 
     res.render("pages/addSoftware.twig", {

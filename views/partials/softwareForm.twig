@@ -5,7 +5,7 @@
 	</script>
 {% endblock %}
 <div class="softwareFormDiv">
-	<form id="softwareForm" action="/addSoftware" method="post">
+	<form id="softwareForm" action="{{ transaction == 'update' ? '/updateSoftware/' ~ data.id_logiciel : '/addSoftware' }}" method="post">
 		<div id="formContent">
 			<div id="detailsContent">
 				<div id="details">
@@ -14,13 +14,14 @@
 					</div>
 					<div id="softwareNameDiv">
 						<input {{ origin ? 'readonly' : '' }} type="text" name="softwareName" id="softwareName" required pattern="[A-Za-z0-9][A-Za-z0-9 _+\-:.()]{0,29}" placeholder="Software title" value="{{data.nom|default('') }}">
+						<input ype="text" name="softwareNameBeforeChange" id="softwareNameBeforeChange" value="{{data.nom|default('') }}" hidden>
 					</div>
 					<div>
 						Company :
 					</div>
 					<div id="plusBtn">
 						{% if not origin %}
-							<select id="manufacturerSelect" name="manufacturerSelect" aria-label="Select manufacturer" onchange="changeLogo();" required></select>
+							<select id="softwareManufacturerSelect" name="softwareManufacturerSelect" aria-label="Select manufacturer" onchange="changeLogo();" required></select>
 						{% else %}
 							<input id="previousChosenManufacturer" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.fabricantLogiciel.nom }}">
 						{% endif %}
@@ -83,11 +84,11 @@
 							</select>
 							<script>
 								const langue = "{{ data.langue }}";
-if (langue) {
-document.getElementById("softwareLanguageSelect").value = langue;
-} else {
-document.getElementById("softwareLanguageSelect").value = "English";
-}
+								if (langue) {
+									document.getElementById("softwareLanguageSelect").value = langue;
+								} else {
+									document.getElementById("softwareLanguageSelect").value = "English";
+								}
 							</script>
 						{% else %}
 							<input id="previousChoosenLanguage" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.langue }}">

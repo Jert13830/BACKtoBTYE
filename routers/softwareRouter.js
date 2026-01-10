@@ -20,6 +20,8 @@ softwareRouter.post('/updateSoftwareList', authGuard, requireAdmin, softwareCont
 softwareRouter.get('/softwareDetailSelect/:id_logiciel', softwareController.softwareDetailSelect);
 
 softwareRouter.get("/showUpdateSoftware/:id", authGuard, requireAdmin, softwareController.showUpdateSoftware);
+
 softwareRouter.post('/updateSoftware/:id', authGuard, requireAdmin, softwareController.updateSoftware);
+
 
 module.exports = softwareRouter;

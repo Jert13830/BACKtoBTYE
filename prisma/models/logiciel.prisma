@@ -6,7 +6,9 @@ model Logiciel {
   details           String
   langue            String            @db.VarChar(30)
   id_fab_logiciel   Int
+  
   fabricantLogiciel FabricantLogiciel @relation(fields: [id_fab_logiciel], references: [id_fab_logiciel])
+  
   photos            Photo[]
   versions          Version[]
 

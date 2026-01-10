@@ -50,8 +50,11 @@ exports.displayHome = async (req, res) => {
 // Show computer list page
 
 exports.displayComputerList = async (req, res) => {
+
+   let computers = [];
+
   try {
-    const computers = await prisma.ordinateur.findMany({
+    computers = await prisma.ordinateur.findMany({
       include:
       {
         photos: true,
