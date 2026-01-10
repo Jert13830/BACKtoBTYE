@@ -406,7 +406,7 @@ exports.showUpdateComputer = async (req, res) => {
       },
     })
 
-    console.log("Data for updating : ", data);
+    //console.log("Data for updating : ", data);
 
     const successeur = await prisma.ordinateur.findUnique({
       where: {

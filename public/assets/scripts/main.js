@@ -890,6 +890,9 @@ function updateComputerSelect(computers) {
   });
   //The selected index is equal 0 if NULL else the value selected
   select.selectedIndex = selectedId === null ? 0 : select.selectedIndex;
+
+  // NOW apply preselection
+    applyPreselection();
 }
 
 /** Change manufacturers logo **/
@@ -1004,7 +1007,7 @@ async function init() {
     treatImages();  // only call if at least one file input might exist
   }
 
-  const manufacturerForm = document.getElementById("computerManufacturerForm");
+  let manufacturerForm = document.getElementById("computerManufacturerForm");
   if (manufacturerForm) {
     addComputer();
   }
@@ -1067,4 +1070,15 @@ async function init() {
     updateId = btnModify.value;
   }
   console.log("All relevant data loaded successfully!");
+}
+
+function applyPreselection() {
+  const ids = new Set(window.PRESELECTED_COMPUTERS.map(String));
+  const select = document.getElementById("computerSelect");
+
+  [...select.options].forEach(opt => {
+    if (ids.has(opt.value)) {
+      opt.selected = true;
+    }
+  });
 }

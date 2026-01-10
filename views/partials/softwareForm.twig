@@ -1,5 +1,8 @@
 {% block style %}
 	<link rel="stylesheet" href="/assets/css/softwareForm.css">
+	<script>
+		window.PRESELECTED_COMPUTERS = {{ computerIds|json_encode|raw }};
+	</script>
 {% endblock %}
 <div class="softwareFormDiv">
 	<form id="softwareForm" action="/addSoftware" method="post">
@@ -43,8 +46,15 @@
 					</div>
 					<div>
 						{% if not origin %}
+
 							<select id="computerSelect" name="computerSelect" aria-label="Select computers" multiple maxlength="30" required>
-								
+								{% for item in options %}
+
+									<option value="{{ item.id }}" {% if item.id in computerIds %} selected {% endif %}>
+										{{ item.name }}
+									</option>
+
+								{% endfor %}
 							</select>
 						{% else %}
 							<div class="chosenComputerList">
@@ -73,13 +83,11 @@
 							</select>
 							<script>
 								const langue = "{{ data.langue }}";
-								if (langue){
-									document.getElementById("softwareLanguageSelect").value = langue;
-								}
-								else{
-									document.getElementById("softwareLanguageSelect").value = "English";
-								}
-								
+if (langue) {
+document.getElementById("softwareLanguageSelect").value = langue;
+} else {
+document.getElementById("softwareLanguageSelect").value = "English";
+}
 							</script>
 						{% else %}
 							<input id="previousChoosenLanguage" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.langue }}">

@@ -538,13 +538,22 @@ exports.softwareDetailSelect = async (req, res) => {
       ).values()
     ];
 
-    console.log("Computers : ", computers);
+    const computerIds = [
+  ...new Map(
+    data.versions.flatMap(v => v.ordinateur)
+      .map(o => [o.id_ordinateur, o])
+  ).keys()
+];
+
+  //  console.log("Computers : ", computers);
+    console.log("Computer Ids : ", computerIds);
 
     res.render("pages/addSoftware.twig", {
       title: "Software Details",
       data,
       origin,
       computers,
+      computerIds,
     });
   }
   catch (error) {
@@ -578,7 +587,7 @@ exports.showUpdateSoftware = async (req, res) => {
       },
     })
 
-    console.log("Data for updating : ", data);
+    //console.log("Data for updating : ", data);
 
     const computers = [
       ...new Map(
@@ -587,9 +596,12 @@ exports.showUpdateSoftware = async (req, res) => {
       ).values()
     ];
 
-    const computerIds = computers.map(c => c.id_ordinateur);
+    //Change values to numbers
+    const computerIds = computers.map(c => Number(c.id_ordinateur));
 
-    console.log("COMPUTERS : ", computers);
+    //console.log("COMPUTERS : ", computers);
+
+    console.log("COMPUTERS IDs: ", computerIds);
 
     res.render("pages/addSoftware.twig", {
       title: "Software Details",
