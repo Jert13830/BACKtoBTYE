@@ -8,7 +8,8 @@ const computerManufacturerRouter = require ("./routers/computerManufacturerRoute
 const userRouter = require ("./routers/userRouter.js");
 const softwareRouter = require ("./routers/softwareRouter.js");
 const softwareManufacturerRouter = require ("./routers/softwareManufacturerRouter.js");
-
+const emulatorRouter = require ("./routers/emulatorRouter.js");
+const emulatorManufacturerRouter = require ("./routers/emulatorManufacturerRouter.js");
 
 const app= express();
 
@@ -46,7 +47,8 @@ app.use(computerManufacturerRouter);
 app.use(userRouter);
 app.use(softwareRouter);
 app.use(softwareManufacturerRouter);
-
+app.use(emulatorRouter);
+app.use(emulatorManufacturerRouter);
 
 app.listen(process.env.PORT, () =>{
     console.log("Listening on port 3000");

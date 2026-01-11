@@ -270,10 +270,12 @@ dialog[open] .squareBtnClose {
 
 }
 
-#addSoftware .content {
+#addSoftware .content,
+#addEmulator .content {
     height: 70vh;
     overflow: hidden; 
 }
+
 
 #connect .titleP {
     font-size: 1.5rem;
@@ -297,6 +299,7 @@ dialog[open] .squareBtnClose {
     overflow: hidden;
 }
 
+#softwareList .content,
 #softwareList .content {
     height: 66vh;
     overflow: hidden;
@@ -346,7 +349,8 @@ dialog[open] {
 }
 
 @media (max-width: 1000px) {
-    #addSoftware .content {
+    #addSoftware .content,
+    #addEmulator .content  {
         height: 72vh;
     }
 }

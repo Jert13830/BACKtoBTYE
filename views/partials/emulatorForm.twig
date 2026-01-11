@@ -1,0 +1,123 @@
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/softwareForm.css">
+	<script>
+		window.PRESELECTED_COMPUTERS = {{ computerIds|json_encode|raw }};
+	</script>
+{% endblock %}
+<div class="emulatorFormDiv">
+	<form id="emulatorForm" action="{{ transaction == 'update' ? '/updateEmulator/' ~ data.id_emulateur : '/addEmulator' }}" method="post">
+		<div id="formContent">
+			<div id="detailsContent">
+				<div id="details">
+					<div id="photo">
+						<img id="emulatorManufacturerLogo" name="emulatorManufacturerLogo" src="/assets/images/logos/{{data.fabricantEmulateur.nom}}.webp" alt="Logo" onerror="this.src='/assets/images/logos/defaultLogo.webp'" width="80">
+					</div>
+					<div id="emulatorNameDiv">
+						<input {{ origin ? 'readonly' : '' }} type="text" name="emulatorName" id="emulatorName" required pattern="[A-Za-z0-9][A-Za-z0-9 _+\-:.()]{0,29}" placeholder="Emulator title" value="{{data.nom|default('') }}">
+						<input ype="text" name="emulatorNameBeforeChange" id="emulatorNameBeforeChange" value="{{data.nom|default('') }}" hidden>
+					</div>
+					<div>
+						Company :
+					</div>
+					<div id="plusBtn">
+						{% if not origin %}
+							<select id="emulatorManufacturerSelect" name="emulatorManufacturerSelect" aria-label="Select manufacturer" onchange="changeLogo();" required></select>
+						{% else %}
+							<input id="previousEmulatorManufacturerName" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.fabricantEmulateur.nom }}">
+						{% endif %}
+						<input id="previousEmulatorManufacturer" type="text" hidden value="{{ data.id_fab_emulateur|default('0') }}">
+						{% if not origin %}
+							<a onclick="saveFormState('#emulatorForm', 'emulatorForm'); window.location.href='/showEmulatorManufacturers'">
+								<span class="plus-label" id="addSEmulatorManu">
+									<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+								</span>
+							</a>
+						{% endif %}
+					</div>
+
+
+					<div>
+						Year :
+					</div>
+					<div>
+						<input {{ origin ? 'readonly' : '' }} type="number" min="1970" max="{{ "now"|date("Y") }}" step="1" id="annee" name="annee" required value="{{ data.annee|default('1980') }}"/>
+					</div>
+					<div>
+						Computers :
+					</div>
+					<div>
+						<input hidden id="previousComputer" type="text" value="{{ data.ordinateur.id_ordinateur|default('0') }}">
+						{% if not origin %}
+							<select id="computerSelect" name="computerSelect" aria-label="Select computers" maxlength="30" required value="{{ data.ordinateur.id_ordinateur|default('0') }}"></select>
+						{% else %}
+            					<input id="previousComputerSelect" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.ordinateur.nom }}">
+						{% endif %}
+						
+					</div>
+					<div>
+						Language :
+					</div>
+					<div>
+						{% if not origin %}
+							<select id="emulatorLanguageSelect" name="language" aria-label="Select language" required value="{{ data.langue|default('0') }}">
+
+								<option value="English">English</option>
+								<option value="Français">Français</option>
+								<option value="Deutsch">Deutsch</option>
+								<option value="Español">Español</option>
+								<option value="Italiano">Italiano</option>
+								<option value="Português">Português</option>
+							</select>
+							<script>
+								const langue = "{{ data.langue }}";
+								if (langue) {
+									document.getElementById("emulatorLanguageSelect").value = langue;
+								} else {
+									document.getElementById("emulatorLanguageSelect").value = "English";
+								}
+							</script>
+						{% else %}
+							<input id="previousChoosenLanguage" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.langue }}">
+						{% endif %}
+						<input id="previousLanguage" type="text" hidden value="{{ data.laguage|default('0') }}">
+						<p id="languageErrors"></p>
+					</div>
+
+				</div>
+				<div id="emulatorPhotoHolder">
+					<div id="emulatorProfileImage">
+						<img id="emulatorPhoto" src="/assets/images/emulator/{{data.nom}}.webp" alt="Emulator image" onerror="this.src='/assets/images/emulator/defaultEmulator.webp'">
+					</div>
+
+					<input {{ origin ? 'disabled' : '' }} id="uploadImageEmulator" type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="uploadImageEmulator" class="sofwareImage" hidden>
+				</div>
+			</div>
+			<div id="info">
+				<textarea {{ origin ? 'readonly' : '' }} id="detailsInfo" name="detailsInfo" rows="4" cols="60" placeholder="Emulator Information">{{ data.details|default('') }}</textarea>
+			</div>
+			<div id="link">
+				<input {{ origin ? 'readonly' : '' }} type="url" name="emulatorLink" id="emulatorLink" placeholder="Enter link URL" value="{{data.lien|default('') }}">
+			</div>
+			{% if not origin %}
+				<div class="formBtnDiv">
+					<div>
+						{% if transaction == 'update' %}
+							<button class="btnForm" type="submit" id="updateEmulatorSubmit" name="updateEmulatorSubmit">Update</button>
+						{% else %}
+							<button class="btnForm" type="submit" id="addEmulatorSubmit" name="addEmulatorSubmit">Add</button>
+						{% endif %}
+					</div>
+					<div>
+						<button class="btnForm" type="reset" id="btnReset" value="reset">Reset</button>
+
+					</div>
+				</div>
+			{% endif %}
+		</form>
+		{% if errors.emulator %}
+			<p>{{errors.emulator}}</p>
+		{% endif %}
+		<div>
+			<p class="manufacturerErrors"></p>
+		</div>
+	</div>

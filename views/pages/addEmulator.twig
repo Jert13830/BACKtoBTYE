@@ -1,0 +1,28 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section id="sectionAdd">
+				<div id="addEmulator">
+					{% embed '/partials/window.twig' with {
+   					 	windowType: 'mediumWindow',
+    					title:  title ,
+    					showPlus: 0,
+						showClose : 1,
+						pageId: 'addEmulator'
+					} %}
+						{% block content %}
+							{% include '/partials/emulatorForm.twig' %}
+						{% endblock %}
+					{% endembed %}
+				</div>
+			</section>
+		</div>
+	</main>
+{% endblock %}

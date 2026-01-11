@@ -1,0 +1,41 @@
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/softwareList.css">
+{% endblock %}
+
+<div id="pageContent">
+	<aside id="sidebar">
+	<form id="searchEmulatorForm" method="post" action="/filterEmulator" >
+		<div id="emulatorSearchBarDiv">
+			<input type="search" id="emulatorResearchbar" name="emulatorResearchbar"/>
+			<button id="btnResearch"><img src="/assets/images/magnifying-glass.png"</button>
+		</div>
+	</form>
+		<!-- filter list -->
+		<p><h3>Systems</h3></p>
+		<div id="sideBarComputerList">
+			<div id="#systemLoadErrors"></div>
+			
+		</div>
+	</aside>
+	<section class="emulatorListGrid">
+		{% for emulator in emulators %}
+			<div class="emulatorCardDiv">
+				<a class="emulatorListGridA" href="/emulatorDetailSelect/{{emulator.id_emulateur}}?origin=emulatorList">
+					<div class="cardContent">
+						<div class="cardImage"><img src="{{emulator.photos[0].path}}" alt="Photo of {{emulator.nom}}"></div>
+						<div>{{emulator.nom}}</div>
+						<div>{{emulator.fabricantLogiciel.nom}}</div>
+					</div>
+				</a>
+				{% if user.role == "administrator" %}
+					<div class="emulatorCardButtons">
+						<form method="post" action="/updateEmulatorList">
+							<button class="btnForm" id="btnModify" name="buttons" value="modify-{{emulator.id_emulateur }}">✏️</button>
+							<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{emulator.id_emulateur}}">🗑️</button>
+						</form>
+					</div>
+				{% endif %}
+			</div>
+		{% endfor %}
+	</section>
+</div>

@@ -1,10 +1,12 @@
-.softwareFormDiv {
+.softwareFormDiv,
+.emulatorFormDiv {
     display: flex;
     justify-content: center;
     padding: 1rem;
 }
 
-#softwareForm {
+#softwareForm,
+#emulatorForm {
     width: 100%;
     max-height: 70vh;
 
@@ -35,20 +37,23 @@
     text-align: center;
 }
 
-#softwarePhotoHolder {
+#softwarePhotoHolder,
+#emulatorPhotoHolder {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-#softwareProfileImage {
+#softwareProfileImage,
+#emulatorProfileImage {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#softwarePhoto {
+#softwarePhoto, 
+#emulatorPhoto{
     max-height: 250px;
     width: auto;
     border-radius: 8px;
@@ -78,7 +83,8 @@
     justify-content: center;
 }
 
-#softwareLink {
+#softwareLink,
+#emulatorLink {
     width: 100%;
     max-width: 600px;
     box-sizing: border-box;
@@ -131,7 +137,8 @@ input, select{
 }
 
 
-#addSoftware .squareBtnClose{
+#addSoftware .squareBtnClose,
+#addEmulator .squareBtnClose{
     display: block;
 }
 
@@ -141,7 +148,8 @@ input, select{
     
 }
 
-#softwareManufacturerLogo{
+#softwareManufacturerLogo,
+#emulatorManufacturerLogo{
     display: block;
   
     
@@ -173,7 +181,8 @@ input, select{
 
 
 @media (max-width: 920px) {
-    #softwareForm {
+    #softwareForm,
+    #emulatorForm {
 
         overflow-y: auto;
         overflow-x: hidden;

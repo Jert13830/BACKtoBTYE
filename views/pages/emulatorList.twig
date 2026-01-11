@@ -2,23 +2,23 @@
 
 {% block style %}
 	<link rel="stylesheet" href="/assets/css/computerList.css">
-	<title>Software List</title>
-	<script>localStorage.setItem('mode', 'software');</script>
+	<title>Emulator List</title>
+	<script>localStorage.setItem('mode', 'emulator');</script>
 {% endblock %}
 {% block main %}
 	<main>
 		<div id="pageContainer">
 			<section>
-				<div id="softwareList">
+				<div id="emulatorList">
 					{% embed '/partials/window.twig' with {
 						windowType: 'largeWindow',
-						title: 'Software',
+						title: 'Emulator',
 						showPlus: 1,
 						showSearch: 0,
-						pageId: 'softwareList'
+						pageId: 'emulatorList'
 						} %}
 						{% block content %}
-							{% include '/partials/softwareListGrid.twig' %}
+							{% include '/partials/emulatorListGrid.twig' %}
 						{% endblock %}
 					{% endembed %}
 				</div>

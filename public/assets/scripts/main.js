@@ -16,6 +16,7 @@ const manufacturerName = document.querySelector('#manufacturerName');
 
 const computerPhoto = document.querySelector('#computerPhoto');
 const softwarePhoto = document.querySelector('#softwarePhoto');
+const emulatorPhoto = document.querySelector('#emulatorPhoto');
 const computerImage = document.querySelector('.computerImage');
 
 const manuLogo = document.querySelector('#manuLogo');
@@ -46,6 +47,8 @@ const computerProfileImage = document.querySelector('#computerPhoto');
 const uploadImageComputer = document.querySelector('#uploadImageComputer');
 const softwareProfileImage = document.querySelector('#softwarePhoto');
 const uploadImageSoftware = document.querySelector('#uploadImageSoftware');
+const emulatorProfileImage = document.querySelector('#emulatorPhoto');
+const uploadImageEmulator = document.querySelector('#uploadImageEmulator');
 
 const sideBarComputerList = document.querySelector("#sideBarComputerList");
 
@@ -94,6 +97,13 @@ async function loadImage(files, imageType, fileName, sourcePhoto) {
     //The required size of the photo
     formData.append("photoWidth", 166);
     formData.append("photoHeight", 250);
+  }
+  else if (imageType === "Emulator") { //Emulator Images
+    formData.append("filename", fileName);
+    formData.append("phototype", "emulator");
+    //The required size of the photo
+    formData.append("photoWidth", 300);
+    formData.append("photoHeight", 200);
   }
   else if (imageType === "Manufactuer") { // manufacturer logos
     formData.append("filename", fileName);
@@ -164,6 +174,11 @@ if (roundBtn) {
       window.open("/addSoftware", "_self")
     }
 
+    if (page === "emulatorList") {
+      localStorage.setItem('mode', 'emulator');
+      window.open("/addEmulator", "_self")
+    }
+
   });
 }
 
@@ -189,6 +204,12 @@ if (squareBtnClose) {
       clearFormState("softwareForm");
       //const origin = "/" + document.querySelector("#originInput").value;
       window.location.href = "/displaySoftwareList";
+    }
+
+    if (page === 'addEmulator') {
+      //Clear form data
+      clearFormState("emulatorForm");
+      window.location.href = "/displayEmulatorList";
     }
 
     // Find if we're inside an open dialog
@@ -366,6 +387,11 @@ document.querySelector("#softwareForm")?.addEventListener("submit", () => {
   clearFormState("softwareForm");
 });
 
+//On submit clear emulator form data
+document.querySelector("#emulatorForm")?.addEventListener("submit", () => {
+  clearFormState("emulatorForm");
+});
+
 //Retore computer form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -375,6 +401,11 @@ document.addEventListener("DOMContentLoaded", () => {
 //Retore software form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
   restoreFormState("#softwareForm", "softwareForm");
+});
+
+//Retore emulator form data when loaded
+document.addEventListener("DOMContentLoaded", () => {
+  restoreFormState("#emulatorForm", "emulatorForm");
 });
 
 function treatImages() {
@@ -451,6 +482,30 @@ function treatImages() {
       }
       else {
         document.querySelector(".manufacturerErrors").textContent = "Please enter a software title";
+      }
+    });
+
+  }
+
+  if (emulatorProfileImage) {
+    emulatorProfileImage.addEventListener("click", () => {
+      uploadImageEmulator.click();
+    });
+
+    uploadImageEmulator.addEventListener("change", () => {
+      const files = Array.from(uploadImageEmulator.files);
+
+      //No files selected
+      if (!files.length) return;
+
+      const value = emulatorName.value?.trim();
+
+      if (value) { //Test if a user name has been given
+        fileName = value;
+        loadImage(files, "Emulator", fileName, "#emulatorPhoto");
+      }
+      else {
+        document.querySelector(".manufacturerErrors").textContent = "Please enter a emulator title";
       }
     });
 
@@ -747,7 +802,7 @@ async function loadManufacturerList() {
     updateManufacturerSelect(data.manufacturers);
 
   } catch (err) {
-    errorBox.textContent = "Failed to load manufacturer list.";
+    //errorBox.textContent = "Failed to load manufacturer list.";
   }
 }
 
@@ -758,8 +813,11 @@ function updateManufacturerSelect(manufacturers) {
   if (manufacturerMode === "computer") {
     select = document.querySelector("#computerManufacturerSelect")
   }
-  else {
+  else if (manufacturerMode === "software") {
     select = document.querySelector("#softwareManufacturerSelect");
+  }
+  else {
+    select = document.querySelector("#emulatorManufacturerSelect");
   }
 
   if (!select) {
@@ -773,8 +831,11 @@ function updateManufacturerSelect(manufacturers) {
   if (manufacturerMode === "computer") {
     previousChoice = document.querySelector("#previousComputerManufacturer");
   }
-  else {
+  else if (manufacturerMode === "software") {
     previousChoice = document.querySelector("#previousManufacturer");
+  }
+  else {
+    previousChoice = document.querySelector("#previousEmulatorManufacturer");
   }
 
   if (previousChoice) {
@@ -797,7 +858,7 @@ function updateManufacturerSelect(manufacturers) {
     } else if (manufacturerMode === "software") {
       opt.value = m.id_fab_logiciel;
     } else {
-      opt.value = m.id_fab_emulator;
+      opt.value = m.id_fab_emulateur;
     }
 
     opt.textContent = m.nom;
@@ -834,7 +895,7 @@ async function loadComputerList() {
     updateComputerSelect(data.computers);
 
   } catch (err) {
-   // errorBox.textContent = "Failed to load computer list.";
+    // errorBox.textContent = "Failed to load computer list.";
   }
 }
 
@@ -891,8 +952,18 @@ function updateComputerSelect(computers) {
   //The selected index is equal 0 if NULL else the value selected
   select.selectedIndex = selectedId === null ? 0 : select.selectedIndex;
 
-  // NOW apply preselection
+  if (manufacturerMode === "emulator") {
+    const prevId = document.querySelector("#previousComputerSelect")?.value;
+    if (prevId) {
+      const select = document.querySelector("#computerSelect");
+      select.value = String(prevId);
+    }
+  }
+
+  if (manufacturerMode === "software") {
+    // NOW apply preselection
     applyPreselection();
+  }
 }
 
 /** Change manufacturers logo **/
@@ -904,8 +975,11 @@ function changeLogo() {
   if (manufacturerMode === "computer") {
     select = document.querySelector("#computerManufacturerSelect");
   }
-  else {
+  else if (manufacturerMode === "software") {
     select = document.querySelector("#softwareManufacturerSelect");
+  }
+  else {
+    select = document.querySelector("#emulatorManufacturerSelect");
   }
 
   const label = select.options[select.selectedIndex].text;
@@ -914,16 +988,22 @@ function changeLogo() {
     if (manufacturerMode === "computer") {
       document.querySelector("#computerManuLogo").src = "/assets/images/logos/defaultLogo.png";
     }
-    else {
+    else if (manufacturerMode === "software") {
       document.querySelector("#softwareManufacturerLogo").src = "/assets/images/logos/defaultLogo.png";
+    }
+    else {
+      document.querySelector("#emulatorManufacturerLogo").src = "/assets/images/logos/defaultLogo.png";
     }
   }
   else {
     if (manufacturerMode === "computer") {
       document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + label + ".webp";
     }
-    else {
+    else if (manufacturerMode === "software") {
       document.querySelector("#softwareManufacturerLogo").src = "/assets/images/logos/" + label + ".webp";
+    }
+    else {
+      document.querySelector("#emulatorManufacturerLogo").src = "/assets/images/logos/" + label + ".webp";
     }
   }
 }
@@ -975,7 +1055,13 @@ async function loadSystemList() {
       const name = computer.nom;
 
       const link = document.createElement("a");
-      link.href = `/filterByComputer/${encodeURIComponent(name)}`;
+      if (manufacturerMode == "software") {
+        link.href = `/filterByComputer/${encodeURIComponent(name)}`;
+      }
+      else if (manufacturerMode == "emulator") {
+        link.href = `/filterEmulatorByComputer/${encodeURIComponent(name)}`;
+      }
+      
       link.textContent = name;
 
       para.appendChild(link);
@@ -1007,6 +1093,11 @@ async function init() {
     treatImages();  // only call if at least one file input might exist
   }
 
+  if (emulatorProfileImage || uploadImageEmulator) {
+
+    treatImages();  // only call if at least one file input might exist
+  }
+
   let manufacturerForm = document.getElementById("computerManufacturerForm");
   if (manufacturerForm) {
     addComputer();
@@ -1026,7 +1117,7 @@ async function init() {
     manufacturerSelect = document.querySelector("#softwareManufacturerSelect");
   }
   else {
-    manufacturerSelect = document.querySelector("#softwareManufacturerSelect");
+    manufacturerSelect = document.querySelector("#emulatorManufacturerSelect");
   }
 
   if (manufacturerSelect) {

@@ -18,7 +18,8 @@ a {
   overflow-y: auto;
 }
 
-.softwareListGrid {
+.softwareListGrid,
+.emulatorListGrid{
   flex: 1;
   height: 100%;
 
@@ -34,9 +35,9 @@ a {
   overflow-x: hidden;
 }
 
-.softwareCardDiv {
+.softwareCardDiv,
+.emulatorCardDiv{
   position: relative;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,7 +59,8 @@ a {
 }
 
 /*raises the card as the mouse moves over*/
-.softwareCardDiv:hover {
+.softwareCardDiv:hover,
+.emulatorCardDiv:hover{
   transform: translateY(-3px);
   box-shadow:
     0 8px 16px rgba(0, 0, 0, 0.16),
@@ -95,7 +97,8 @@ a {
   cursor: pointer;
 }
 
-.softwareCardButtons{
+.softwareCardButtons,
+.emulatorCardButtons{
   position: absolute;
   bottom: 1rem;
   right: 1rem;
@@ -113,38 +116,47 @@ a {
   border-radius: 0.5rem;
 }
 
-.softwareCardButtons button{
+.softwareCardButtons button,
+.emulatorCardButtons button {
   border-radius: 6px;
  
 }
 
-.softwareCardButtons button:hover{
+.softwareCardButtons button:hover,
+.emulatorCardButtons button:hover{
 background-color: #7c7c7d;
     color: #fff;
 }
 
-.softwareCardButtons {
+.softwareCardButtons,
+.emulatorCardButtons{
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
 }
 
-.softwareCardDiv:hover .softwareCardButtons {
+.softwareCardDiv:hover
+.softwareCardButtons,
+.emulatorCardDiv:hover
+.emulatorCardButtons  {
   opacity: 1;
   pointer-events: auto;
 }
 
-#softwaResearchbar {
+#softwareResearchbar,
+#emulatorResearchbar{
   border-radius: 6px;
 }
 
-#softwareSearchBarDiv {
+#softwareSearchBarDiv,
+#emulatorSearchBarDiv{
   display: flex;
   gap: 2px;
   padding: 5px;
 }
 
-.softwareCardButtons {
+.softwareCardButtons,
+.emulatorCardButtons{
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
@@ -161,12 +173,14 @@ background-color: #7c7c7d;
     flex-direction: column;
   }
 
-  .softwareListGrid {
+  .softwareListGrid,
+  .emulatorListGrid {
     grid-template-columns: 1fr;
     padding-top: 0;
   }
 
-  .softwareCardDiv {
+  .softwareCardDiv
+  .emulatorCardDiv{
     min-height: 220px;
     max-width: 100%;
     padding: 0.75rem;

@@ -160,21 +160,21 @@ exports.postSoftware = async (req, res) => {
 
 exports.filterSoftwareList = async (req, res) => {
   try {
-    const { softwaResearchbar, selection } = req.body;
+    const { softwareResearchbar, selection } = req.body;
 
     // WHERE the searchBar the software title, software manufacturer's name or is
-    const where = softwaResearchbar
+    const where = softwareResearchbar
       ? {
         OR: [
           {
             nom: {
-              contains: softwaResearchbar,
+              contains: softwareResearchbar,
             },
           },
           {
             fabricantLogiciel: {
               nom: {
-                contains: softwaResearchbar,
+                contains: softwareResearchbar,
               },
             },
           },
