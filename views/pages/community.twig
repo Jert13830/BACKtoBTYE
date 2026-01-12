@@ -1,0 +1,28 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section>
+				<div id="community">
+					{% embed '/partials/window.twig' with {
+   					 	windowType: 'largeWindow',
+    					title:  title ,
+    					showPlus: 0,
+						showClose : 1,
+						pageId:'community'
+					} %}
+						{% block content %}
+							{% include '/partials/messageList.twig' %}
+						{% endblock %}
+					{% endembed %}
+				</div>
+			</section>
+		</div>
+		</main>
+{% endblock %}

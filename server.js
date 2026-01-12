@@ -10,6 +10,8 @@ const softwareRouter = require ("./routers/softwareRouter.js");
 const softwareManufacturerRouter = require ("./routers/softwareManufacturerRouter.js");
 const emulatorRouter = require ("./routers/emulatorRouter.js");
 const emulatorManufacturerRouter = require ("./routers/emulatorManufacturerRouter.js");
+const communityRouter = require ("./routers/communityRouter.js");
+
 
 const app= express();
 
@@ -49,6 +51,7 @@ app.use(softwareRouter);
 app.use(softwareManufacturerRouter);
 app.use(emulatorRouter);
 app.use(emulatorManufacturerRouter);
+app.use(communityRouter);
 
 app.listen(process.env.PORT, () =>{
     console.log("Listening on port 3000");

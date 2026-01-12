@@ -167,7 +167,6 @@ background-color: #7c7c7d;
 }
 
 
-
 @media (max-width: 550px) {
   #pageContent {
     flex-direction: column;
