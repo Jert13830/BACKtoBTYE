@@ -10,4 +10,14 @@ const requireAdmin = require('../middleware/services/requireAdmin');
 
 communityRouter.get('/displayCommunity', communityController.displayCommunity);
 
+communityRouter.get('/addPost', authGuard, communityController.showAddPost);
+communityRouter.post('/addPost', authGuard, communityController.addPost);
+communityRouter.get('/readPost',authGuard, communityController.readPost);
+
+communityRouter.get('/deletePost', authGuard, communityController.deletePost);
+communityRouter.post('/updatePost', authGuard, communityController.updatePost);
+
+communityRouter.post('/commentPost', authGuard, communityController.commentPost);
+communityRouter.post('/likePost', authGuard, communityController.likePost);
+
 module.exports = communityRouter;

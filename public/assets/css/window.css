@@ -16,7 +16,6 @@
 
 .largeWindow {
     width: calc(100vw - 3rem);
-
 }
 
 .mediumWindow {
@@ -323,6 +322,16 @@ dialog[open] .squareBtnClose {
 #manufacturerList .content {
     height: auto;
     overflow-y: auto;
+}
+
+#writeMessage .content {
+    
+    overflow-y: auto;
+    height: 67vh;
+}
+
+#writeMessage .largeWindow{
+    height:76vh;
 }
 
 dialog[open] {

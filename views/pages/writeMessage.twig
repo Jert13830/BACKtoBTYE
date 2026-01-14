@@ -6,20 +6,18 @@
 {% endblock %}
 
 {% block main %}
-
 	<main>
 		<div id="pageContainer">
 			<section>
-				<div id="community">
+				<div id="writeMessage">
 					{% embed '/partials/window.twig' with {
    					 	windowType: 'largeWindow',
     					title:  title ,
-    					showPlus: 0,
-						showClose : 0,
-						pageId:'community'
+						showClose: 1,
+						pageId:'writeMessage'
 					} %}
 						{% block content %}
-							{% include '/partials/messageList.twig' %}
+							{% include '/partials/message.twig' %}
 						{% endblock %}
 					{% endembed %}
 				</div>

@@ -41,3 +41,29 @@ exports.displayCommunity = async (req, res) => {
 
 }}
 
+exports.showAddPost = async (req, res) => {
+   const user =  req.session.user;
+   res.render("pages/writeMessage.twig", {
+      title: "New post",
+     user,
+      error: null,
+    });
+}
+
+exports.addPost = async (req, res) => {
+}
+
+exports.readPost = async (req, res) => {
+}
+
+exports.deletePost = async (req, res) => {
+}
+
+exports.updatePost = async (req, res) => {
+}
+
+exports.commentPost = async (req, res) => {
+}
+
+exports.likePost = async (req, res) => {
+}

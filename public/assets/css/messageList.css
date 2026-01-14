@@ -1,7 +1,9 @@
 
 #pageContent {
   display: flex;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
+  gap: 5px;
 }
 
 #openAside {
@@ -13,64 +15,64 @@
     display: none;
 }
 
+.sidebar {
+  min-width: 100px;
+  height:100%;
+  overflow-y: auto;
+  padding:5px;
+}
+
+#newPostDiv{
+    display:flex;
+    align-items:center;
+    gap: 5px;
+}
+
 a {
   text-decoration: none;
-  color: #3C3C43;
+  color: #000;
 }
 
-#sidebar {
-  min-width: 100px;
-  overflow-y: auto;
+.errNinput {
+    color: #1A1A1A;
+    font-weight: 700;
 }
 
-#softwareResearchbar{
-  border-radius: 6px;
+.plus-label svg path {
+    fill: #000;
 }
 
-#softwareSearchBarDiv{
-  display: flex;
-  gap: 2px;
-  padding: 5px;
+.plus-label {
+    cursor: pointer;
 }
 
-#btnResearch {
-    border-radius: 6px;
-    background-color: #D3CBCB;
-    color: #3C3C43;
-
-
-    border: 1px #b2afaf solid;
-
-    padding: 5px;
-
-    width: 5rem;
-    font-size: 1rem;
-
+#sideBarCategoryList{
+    display: flex;
+    flex-direction: column;
 }
 
-#btnResearch:hover {
-    background-color: #7c7c7d;
-    color: #fff;
+#sideBarCategoryList ul{
+    list-style: none;
+    padding:0;
+    margin:0;
+    
 }
 
-#filterSidebar {
-  height: 66%;
-  overflow-y: auto;
-
+#sideBarCategoryList li{
+   padding:10px;
+    
 }
 
-a {
-        text-decoration: none;
-        color: #3C3C43;
-    }
+#sideBarCategoryList a {
+    text-decoration: none;
+}
 
-    a:hover {
-        color: #5A5A65;
-    }
-
-    a:active {
-        color: #1F1F25;
-    }
+#addNewCategoryDiv{
+    display:flex;
+    align-items: center;
+    gap:5px;
+    margin-top: 15px;
+}
 
 @media (max-width: 690px) {
 
@@ -110,7 +112,7 @@ a {
         background: #3C3C43;
     }
 
-    #filterSidebar {
+    .sidebar {
         position: fixed;
         top: 0;
         right: 0;
@@ -142,7 +144,7 @@ a {
 
     }
 
-    #filterSidebar.aside-visible {
+    .sidebar.aside-visible {
         transform: translateX(0);
         /* shown */
     }
@@ -180,6 +182,4 @@ a {
         filter: brightness(0) saturate(100%) invert(60%);
     }
 
-    
-
-}
+  }

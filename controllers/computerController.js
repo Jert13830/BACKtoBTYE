@@ -10,6 +10,7 @@ const fs = require('fs');
 
 // Show homepage
 exports.displayHome = async (req, res) => {
+
   try {
     const computers = await prisma.ordinateur.findMany({
       include:
@@ -31,7 +32,7 @@ exports.displayHome = async (req, res) => {
     if (error.details) {
       return res.render("pages/home.twig", {
         errors: error.details,
-        computers
+        computers:[],
       });
     }
 
@@ -41,7 +42,7 @@ exports.displayHome = async (req, res) => {
 
     return res.render("pages/home.twig", {
       errors,
-      computers
+      computers,
     });
   }
 

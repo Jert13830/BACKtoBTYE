@@ -3,8 +3,28 @@
 {% endblock %}
 
 <div id="pageContent">
+<button id="openAside">☰ Filters</button>
 	<aside id="sidebar">
 	<form id="searchSoftwareForm" method="post" action="/filterSoftware" >
+	<div id="filterHeader">
+
+				<div id="filterHeaderLeftLines">
+					<span class="hl"></span>
+					<span class="hl"></span>
+					<span class="hl"></span>
+					<span class="hl"></span>
+					<span class="hl"></span>
+				</div>
+				<div id="filterTitle">Filters</div>
+
+				<div id="filterHeaderRightLines">
+					<span class="hl"></span>
+					<span class="hl"></span>
+					<span class="hl"></span>
+					<span class="hl"></span>
+					<span class="hl"></span>
+				</div>
+			</div>
 		<div id="softwareSearchBarDiv">
 			<input type="search" id="softwareResearchbar" name="softwareResearchbar"/>
 			<button id="btnResearch"><img src="/assets/images/magnifying-glass.png"/></button>
@@ -39,3 +59,11 @@
 		{% endfor %}
 	</section>
 </div>
+<script>
+	const btn = document.getElementById("openAside");
+const aside = document.getElementById("sidebar");
+
+btn.addEventListener("click", () => {
+aside.classList.toggle("aside-visible");
+});
+</script>

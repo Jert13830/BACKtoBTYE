@@ -48,7 +48,7 @@
 					<div>
 						{% if not origin %}
 
-							<select id="computerSelect" name="computerSelect" aria-label="Select computers" multiple maxlength="30" required>
+							<select class="computerSelect" name="computerSelect" aria-label="Select computers" multiple maxlength="30" required>
 								{% for item in options %}
 
 									<option value="{{ item.id }}" {% if item.id in computerIds %} selected {% endif %}>

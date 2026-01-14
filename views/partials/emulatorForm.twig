@@ -48,7 +48,7 @@
 					<div>
 						<input hidden id="previousComputer" type="text" value="{{ data.ordinateur.id_ordinateur|default('0') }}">
 						{% if not origin %}
-							<select id="computerSelect" name="computerSelect" aria-label="Select computers" maxlength="30" required value="{{ data.ordinateur.id_ordinateur|default('0') }}"></select>
+							<select class="computerSelect" name="computerSelect" aria-label="Select computers" maxlength="30" required value="{{ data.ordinateur.id_ordinateur|default('0') }}"></select>
 						{% else %}
             					<input id="previousComputerSelect" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.ordinateur.nom }}">
 						{% endif %}

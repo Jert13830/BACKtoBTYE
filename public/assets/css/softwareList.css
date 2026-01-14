@@ -5,18 +5,25 @@
   gap: 5px;
 }
 
+#openAside {
+    display: none;
+}
+
+#filterHeaderLeftLines,
+#filterHeaderRightLines {
+    display: none;
+}
+
+#sidebar {
+  min-width: 100px;
+  overflow-y: auto;
+}
+
 a {
   text-decoration: none;
   color: #000;
 }
 
-#sidebar {
-  min-width: 100px;
-
-
-
-  overflow-y: auto;
-}
 
 .softwareListGrid,
 .emulatorListGrid{
@@ -167,6 +174,116 @@ background-color: #7c7c7d;
 }
 
 
+@media (max-width: 690px) {
+
+    #openAside {
+        height:30px;
+        border-radius: 6px;;
+        display: block;
+    }
+
+    #filterHeaderLeftLines,
+    #filterHeaderRightLines {
+        display: block;
+    }
+
+    #filterHeader {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 10px;
+    }
+
+    #filterHeaderLeftLines,
+    #filterHeaderRightLines {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    #filterHeaderLeftLines .hl,
+    #filterHeaderRightLines .hl {
+        display: block;
+        /* important */
+        height: 1px;
+        margin: 0.5px 0;
+        width: 60px;
+        background: #3C3C43;
+    }
+
+    #sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 200px;
+        height: 70vh;
+        z-index: 1000;
+
+        padding: 10px;
+        margin: 0;
+        gap: 6px;
+        align-items: center;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        background-color: #D3CBCB;
+        border-top-left-radius: 10px;
+        fill: #bdb5b5;
+
+        border-color: #9E9696;
+        box-shadow:
+            inset 0 2px 2px rgba(255, 255, 255, 0.3),
+            0 1px 3px rgba(0, 0, 0, 0.2);
+        filter:
+            drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+
+        transform: translateX(110%);
+        transition: transform 0.3s ease;
+
+    }
+
+    #sidebar.aside-visible {
+        transform: translateX(0);
+        /* shown */
+    }
+
+    #softwareSearchBarDiv {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    #softwareSearchBarDiv button {
+        width: 30px;
+        height: 30px;
+        border-radius: 6px;
+
+        display: flex;
+        align-items: center;
+        /* vertical centering */
+        justify-content: center;
+        /* horizontal centering */
+        padding: 0;
+        /* optional, depends on your design */
+        transition: filter 0.2s ease;
+    }
+
+    #softwareSearchBarDiv button img {
+        width: 20px;
+        height: 20px;
+
+        display: block;
+
+    }
+
+    #softwareSearchBarDiv:hover img {
+        filter: brightness(0) saturate(100%) invert(60%);
+    }
+
+  }
+
 @media (max-width: 550px) {
   #pageContent {
     flex-direction: column;
@@ -199,9 +316,4 @@ background-color: #7c7c7d;
   }
 
 
-  #sidebar {
-    height: 100px;
-    border-bottom: 1px solid #000;
-    border-radius: 6px;
-  }
 }

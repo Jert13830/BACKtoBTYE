@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
-const validateEmulatorrManufacturer = require("../middleware/extensions/validateManufacturer");
+const validateEmulatorManufacturer = require("../middleware/extensions/validateManufacturer");
 
-const prisma = new PrismaClient().$extends(validateEmulatorrManufacturer);
+const prisma = new PrismaClient().$extends(validateEmulatorManufacturer);
 
 
 const errors = {};

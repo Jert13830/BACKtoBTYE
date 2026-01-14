@@ -1,0 +1,283 @@
+#pageContent {
+  height: 72vh;
+  
+}
+
+#formContent {
+  display: flex;
+  padding: 10px;
+  border: 1px solid #000;
+  height: 63vh;
+  border-radius: 6px;
+}
+
+/* Post text and title*/
+#messageContent {
+  display: flex;
+  flex-direction: column;
+  width: 70vw;
+  height: 63vh;
+  gap: 10px;
+  justify-self: center;
+  align-items: center;
+}
+
+#postTitle,
+#postText {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+#postMessage {
+  padding: 10px;
+  max-width: 100%;
+  line-height: 1.5;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px #999;
+}
+
+#postTitle {
+  display: block;
+  margin-bottom: 10px;
+}
+
+
+/*User profile photo */
+
+#profile {
+  display: flex;
+  flex-direction: column;   
+  align-items: center;     
+  justify-content: flex-start;
+ 
+  gap: 8px;   
+}
+
+#photoId {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  background-size: cover;
+  background-position: center;
+  border: 3px dashed #aaa;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: opacity 0.2s;
+}
+
+#photoId img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+
+}
+
+#userPhoto {
+  justify-content: center;
+  align-content: center;
+}
+
+#name{
+  text-align: center;
+}
+
+/*Category and button section*/
+#classContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#photoPost,
+#selecteSystem,
+#selectCategory,
+.formBtnDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#selecteSystem > div,
+#selectCategory > div {
+  display: flex;
+  justify-content: center;
+}
+
+label {
+  text-align: center;
+}
+
+select,
+input,
+button {
+  text-align: center;
+  width: auto;       
+}
+
+.btnForm {
+    width: 5rem;
+    padding: 0.4rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    background-color: #D3CBCB;
+    color: #3C3C43;
+    border: 1px solid #b2afaf;
+}
+
+.btnForm:hover {
+    background-color: #7c7c7d;
+    color: #fff;
+}
+
+#postProfileImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formBtnDiv {
+  flex-direction: row;
+  gap: 1rem;
+}
+/******************************/
+/* For smaller screen modles */
+/****************************/
+
+@media (max-width: 1110px) {
+  #formContent {
+    gap: 10px;
+  }
+
+  #messageContent {
+    width: 60vw;
+  }
+
+  #photoId {
+    width: 120px;
+    height: 120px;
+  }
+
+  #postMessage {
+    font-size: 0.75rem;
+  }
+
+  .btnForm {
+    width: 4.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/*******************/
+
+@media (max-width: 1000px) {
+  #messageContent {
+    width: 55vw;
+  }
+
+  #photoId {
+    width: 100px;
+    height: 100px;
+  }
+
+  #postMessage {
+    font-size: 0.7rem;
+  }
+
+  textarea {
+    /* 14 columns */ 
+    width: 14em;
+    
+  }
+
+  .btnForm {
+    width: 4rem;
+    font-size: 0.85rem;
+  }
+}
+
+/******************/
+
+@media (max-width: 500px) {
+  #formContent {
+    flex-direction: column;
+    height: auto;
+    align-items: center;
+  }
+
+  #profile,
+  #messageContent,
+  #classContent {
+    width: 100%;
+    max-width: 95%;
+  }
+
+  #messageContent {
+    height: auto;
+  }
+
+  #photoId {
+    width: 90px;
+    height: 90px;
+  }
+
+  #postTitle,
+  #postMessage {
+    width: 100%;
+  }
+
+  textarea {
+     width: 12em;
+   
+  }
+
+
+  .btnForm {
+    width: 100%;
+  }
+
+   #pageContent {
+    height: 100vh;
+  }
+
+  #formContent {
+    height: auto;         
+  }
+
+}
+
+/*************************/
+
+@media (max-width: 375px) {
+  #photoId {
+    width: 75px;
+    height: 75px;
+  }
+
+  #name {
+    font-size: 0.85rem;
+  }
+
+  #postMessage {
+    font-size: 0.65rem;
+  }
+
+  label,
+  select,
+  input,
+  button {
+    font-size: 0.75rem;
+  }
+
+  textarea {
+    
+     width: 10em;
+  }
+}

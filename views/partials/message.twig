@@ -1,0 +1,73 @@
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/message.css">
+{% endblock %}
+
+<div id="pageContent">
+<form action="">
+	<div id="formContent">
+	<section id="profile">
+		<div id="photoId">
+			<img id="userPhoto" names="userPhoto" src="/assets/images/users/{{user.pseudo}}.webp" alt="{{user.pseudo}}">
+		</div>
+		<div id="username">
+			<label id="name">{{user.pseudo}}</label>
+		</div>
+	</section>
+
+	<section id="messageContent">
+		<div id="title">
+			<input type="text" name="postTitle" id="postTitle" placeholder="Title"></div>
+		<div id="postText">
+			<textarea id="postMessage" placeholder="Post text" rows="18" cols="75"></textarea>
+		</div>
+	</section>
+
+	<section id="classContent">
+		<div id="photoPost">
+			<div id="postProfileImage">
+				<img id="postPhoto" src="/assets/images/post/{{data.titre}}.webp" alt="Post image" onerror="this.src='/assets/images/post/defaultPost.webp'">
+			</div>
+			<input type="file" id="uploadImagePost" name="uploadImagePost" class="postImage" accept="image/jpeg, image/png, image/jpg, image/webp" {{ origin ? 'disabled hidden' : 'hidden' }}>
+
+		</div>
+		<div id="selecteSystem">
+			<div>
+				<label for="previousComputer">Computer :
+				</label>
+			</div>
+			<div>
+				<input hidden id="previousComputer" type="text" value="{{ data.ordinateur.id_ordinateur|default('0') }}">
+				{% if not origin %}
+					<select class="computerSelect" name="computerSelect" aria-label="Select computer" maxlength="30" required value="{{ data.ordinateur.id_ordinateur|default('0') }}"></select>
+				{% else %}
+					<input id="previousComputerSelect" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.ordinateur.nom }}">
+				{% endif %}
+			</div>
+		</div>
+
+		<div id="selectCategory">
+				<div>
+					<label for="previousCategory">Category :</label>
+				</div>
+			<div>
+				<input hidden id="previousCategory" name="previousCategory" type="text" value="{{ data.categorie.id_categorie|default('0') }}">
+				{% if not origin %}
+					<select id="categorySelect" name="categorySelect" aria-label="Select category" maxlength="30" required value="{{ data.categorie.id_categorie|default('0') }}"></select>
+				{% else %}
+					<input id="previousCategorySelect" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.category.categorie }}">
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="formBtnDiv">
+			<div>
+				<button class="btnForm" type="submit" id="addPostSubmit" name="addPostSubmit">Post</button>
+			</div>
+			<div>
+				<button class="btnForm" type="reset" id="btnReset" value="reset">Reset</button>
+			</div>
+		</div>
+	</section>
+	</div>
+</form>
+</div>

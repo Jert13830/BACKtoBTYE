@@ -112,6 +112,13 @@ async function loadImage(files, imageType, fileName, sourcePhoto) {
     formData.append("photoWidth", 80);
     formData.append("photoHeight", 53);
   }
+  else if (imageType === "Post") { //Post Images
+    formData.append("filename", fileName);
+    formData.append("phototype", "post");
+    //The required size of the photo
+    formData.append("photoWidth", 300);
+    formData.append("photoHeight", 200);
+  }
 
   try {
     const res = await fetch("/upload", { method: "POST", body: formData });
@@ -212,6 +219,10 @@ if (squareBtnClose) {
       window.location.href = "/displayEmulatorList";
     }
 
+     if (page === 'addPost') {
+      window.location.href = "/community";
+    }
+
     // Find if we're inside an open dialog
     const dialog = closeBtn.closest('dialog');
     if (dialog && dialog.open) {
@@ -289,18 +300,23 @@ function updateManufacturer(button, mode) {
   nameBeforeChange.value = button.dataset.manufacturerName;
 
   updateId.value = manufacturerId;
-  manuLogo.src = "/assets/images/logos/" + button.dataset.manufacturerName + ".webp";
+if (mode != 'category') {
+    manuLogo.src = "/assets/images/logos/" + button.dataset.manufacturerName + ".webp";
+}
   btnAddManu.textContent = "Update";
 
   if (mode == 'computer') {
-
     form.action = `/updateComputerManufacturer/${manufacturerId}`;
   }
   else if (mode == 'software') {
     form.action = `/updateSoftwareManufacturer/${manufacturerId}`;
   }
-  else {
+  else if (mode == 'emulator') {
     form.action = `/updateEmulatorManufacturer/${manufacturerId}`;
+    
+  }
+  else {
+    form.action = `/updateCategory/${manufacturerId}`;
   }
 
 }
@@ -717,7 +733,31 @@ async function loadRoleList() {
     }
     select.appendChild(option);
   });
+}
 
+  async function loadCategoryList() {
+
+  const response = await fetch('/listCategory');
+  const selectedId = document.querySelector("#previousCategory").value
+
+  const data = await response.json();
+
+  if (!data.success) return;
+
+  const select = document.querySelector('#categorySelect');
+  select.innerHTML = '';
+
+   data.manufacturers.forEach(m => {
+    const option = document.createElement('option');
+    option.value = m.id_categorie;
+    option.textContent = m.categorie;
+
+    // Pre-select if this matches the previous value
+    if (selectedId !== null && String(m.categorie) === String(selectedId)) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  });
 
 
 }
@@ -907,7 +947,7 @@ function updateComputerSelect(computers) {
     select = document.querySelector("#successor");
   }
   else {
-    select = document.querySelector("#computerSelect");
+    select = document.querySelector(".computerSelect");
   }
 
   if (!select) {
@@ -955,7 +995,7 @@ function updateComputerSelect(computers) {
   if (manufacturerMode === "emulator") {
     const prevId = document.querySelector("#previousComputerSelect")?.value;
     if (prevId) {
-      const select = document.querySelector("#computerSelect");
+      const select = document.querySelector(".computerSelect");
       select.value = String(prevId);
     }
   }
@@ -1137,13 +1177,22 @@ async function init() {
     console.log("No successor select on this page — skipping loadComputerList");
   }
 
-  const computerSelect = document.querySelector("#computerSelect");
+  const computerSelect = document.querySelector(".computerSelect");
   if (computerSelect) {
     await loadComputerList().catch(err => {
       console.error("Failed to load computers:", err);
     });
   } else {
     console.log("No computer select on this page — skipping loadComputerList");
+  }
+
+const categorySelect = document.querySelector("#categorySelect");
+  if (categorySelect) {
+    await loadCategoryList().catch(err => {
+      console.error("Failed to load categories:", err);
+    });
+  } else {
+    console.log("No category select on this page — skipping loadCategoryList");
   }
 
   const roleSelect = document.getElementById("userRole");
@@ -1166,7 +1215,7 @@ async function init() {
 //Get the multi selected computer system for the software
 function applyPreselection() {
   const ids = new Set(window.PRESELECTED_COMPUTERS.map(String));
-  const select = document.getElementById("computerSelect");
+  const select = document.querySelector(".computerSelect");
 
   [...select.options].forEach(opt => {
     if (ids.has(opt.value)) {
