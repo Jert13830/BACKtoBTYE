@@ -649,6 +649,8 @@ exports.updateUser = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const userId = parseInt(req.params.id);
 
+  console.log("COMING THROUGH !!!");
+
   try {
     const user = await prisma.utilisateur.findFirst({
       where: { id_utilisateur: userId },
@@ -816,6 +818,7 @@ exports.postRole = async (req, res) => {
 }
 
 exports.updatePassword = async (req, res) => {
+
   console.log(req.body);
   const data = req.body;
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
@@ -840,7 +843,8 @@ exports.updatePassword = async (req, res) => {
         //Hash the password
         const hashedPassword = bcrypt.hashSync(data.newPassword, 12);
         data.newPassword = hashedPassword;
-
+        console.log ("We are back from hashing",userId);
+        
         // change the password.
         await prisma.utilisateur.update({
           where: {
@@ -903,9 +907,17 @@ exports.updatePassword = async (req, res) => {
 }
 
 exports.resetPassword = async (req, res) => {
+
+  console.log("Me FIRST !!");
+
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
-  console.log("Ready to start");
+
+  let data = req.body;
+
+  console.log("Req Body: ", req.body);
+
   const userId = parseInt(req.params.id); //User to be reset
+
 
   try {
 
@@ -915,21 +927,21 @@ exports.resetPassword = async (req, res) => {
     if (req.session.user.role !== "administrator") {
       errors.passwordReset = "You are not authorised to reset this password";
 
-      //get user details from session
+      //get user to be changed details
+      data = await prisma.utilisateur.findUnique({
+        where: {
+          //id_utilisateur: req.session.user.id,
+          id_utilisateur: userId,
+        }
+      })
 
-      const userData = await prisma.utilisateur.findUnique({
-      where: {
-        id_utilisateur: req.session.user.id,
-      }
-    })
+      /*const data = {
+      id:userData.id_utilisateur,   
+      usernameProfile: userData.pseudo,
+      email: userData.email,
+      }*/
 
-    const data = {
-    id:userData.id_utilisateur,   
-    usernameProfile: userData.pseudo,
-    email: userData.email,
-    }
-
-    console.log("The user is : ",data);
+      console.log("The user is : ", data);
 
       return res.render("pages/registry.twig", {
         errors,
@@ -938,25 +950,25 @@ exports.resetPassword = async (req, res) => {
       });
     }
 
-
+    // if adminstrator
 
     console.log("Administrator : ", req.session.user.nom)
     console.log("User : ", userId);
 
+    // find the user to be updated
     const userToChange = await prisma.utilisateur.findUnique({
       where: { id_utilisateur: userId }
     });
 
+    // if the user doesn't exist return
     if (!userToChange) {
       errors.passwordReset = "User not found";
       return res.redirect("/updateUser/" + userId);
     }
 
-    //Hash the password
+    //Hash the temporary password and save it 
     const hashedPassword = bcrypt.hashSync("Reset123", 12);
     const newPassword = hashedPassword;
-
-
 
     // change the password.
     await prisma.utilisateur.update({

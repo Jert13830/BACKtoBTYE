@@ -72,7 +72,7 @@
 						<td>{{ post.date|date('d/m/Y - H:i') }}</td>
 						<td>{{post.utilisateur.pseudo}}</td>
 						<td>{{post.ordinateur.nom}}</td>
-						<td>0</td>
+						<td>{{post.articleLikes|length }}</td>
 						<td class="action-column">
 							<form id="postListform" method="post" action="/updateUserList">
 								<button class="btnForm" id="btnModify" name="buttons" value="modify-{{user.id_utilisateur}}">✏️</button>

@@ -6,12 +6,12 @@
 }
 
 #openAside {
-    display: none;
+  display: none;
 }
 
 #filterHeaderLeftLines,
 #filterHeaderRightLines {
-    display: none;
+  display: none;
 }
 
 #sidebar {
@@ -26,7 +26,7 @@ a {
 
 
 .softwareListGrid,
-.emulatorListGrid{
+.emulatorListGrid {
   flex: 1;
   height: 100%;
 
@@ -43,7 +43,7 @@ a {
 }
 
 .softwareCardDiv,
-.emulatorCardDiv{
+.emulatorCardDiv {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -51,8 +51,8 @@ a {
   /* space content vertically */
   align-items: center;
 
- height: 420px;
-  
+  height: 54vh;
+
   padding: 1rem;
 
   border: 1px solid #9B9B9B;
@@ -67,7 +67,7 @@ a {
 
 /*raises the card as the mouse moves over*/
 .softwareCardDiv:hover,
-.emulatorCardDiv:hover{
+.emulatorCardDiv:hover {
   transform: translateY(-3px);
   box-shadow:
     0 8px 16px rgba(0, 0, 0, 0.16),
@@ -79,7 +79,7 @@ a {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  
+
   text-align: center;
   width: 100%;
 }
@@ -105,7 +105,7 @@ a {
 }
 
 .softwareCardButtons,
-.emulatorCardButtons{
+.emulatorCardButtons {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
@@ -118,7 +118,7 @@ a {
   bottom: clamp(0.5rem, 2vw, 1rem);
   right: clamp(0.5rem, 2vw, 1rem);
 
-   background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4);
   padding: 0.25rem;
   border-radius: 0.5rem;
 }
@@ -126,44 +126,42 @@ a {
 .softwareCardButtons button,
 .emulatorCardButtons button {
   border-radius: 6px;
- 
+
 }
 
 .softwareCardButtons button:hover,
-.emulatorCardButtons button:hover{
-background-color: #7c7c7d;
-    color: #fff;
+.emulatorCardButtons button:hover {
+  background-color: #7c7c7d;
+  color: #fff;
 }
 
 .softwareCardButtons,
-.emulatorCardButtons{
+.emulatorCardButtons {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
 }
 
-.softwareCardDiv:hover
-.softwareCardButtons,
-.emulatorCardDiv:hover
-.emulatorCardButtons  {
+.softwareCardDiv:hover .softwareCardButtons,
+.emulatorCardDiv:hover .emulatorCardButtons {
   opacity: 1;
   pointer-events: auto;
 }
 
 #softwareResearchbar,
-#emulatorResearchbar{
+#emulatorResearchbar {
   border-radius: 6px;
 }
 
 #softwareSearchBarDiv,
-#emulatorSearchBarDiv{
+#emulatorSearchBarDiv {
   display: flex;
   gap: 2px;
   padding: 5px;
 }
 
 .softwareCardButtons,
-.emulatorCardButtons{
+.emulatorCardButtons {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
@@ -176,118 +174,122 @@ background-color: #7c7c7d;
 
 @media (max-width: 690px) {
 
-    #openAside {
-        height:30px;
-        border-radius: 6px;;
-        display: block;
-    }
-
-    #filterHeaderLeftLines,
-    #filterHeaderRightLines {
-        display: block;
-    }
-
-    #filterHeader {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        margin-bottom: 10px;
-    }
-
-    #filterHeaderLeftLines,
-    #filterHeaderRightLines {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    #filterHeaderLeftLines .hl,
-    #filterHeaderRightLines .hl {
-        display: block;
-        /* important */
-        height: 1px;
-        margin: 0.5px 0;
-        width: 60px;
-        background: #3C3C43;
-    }
-
-    #sidebar {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 200px;
-        height: 70vh;
-        z-index: 1000;
-
-        padding: 10px;
-        margin: 0;
-        gap: 6px;
-        align-items: center;
-
-        overflow-x: hidden;
-        overflow-y: auto;
-
-        background-color: #D3CBCB;
-        border-top-left-radius: 10px;
-        fill: #bdb5b5;
-
-        border-color: #9E9696;
-        box-shadow:
-            inset 0 2px 2px rgba(255, 255, 255, 0.3),
-            0 1px 3px rgba(0, 0, 0, 0.2);
-        filter:
-            drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
-
-        transform: translateX(110%);
-        transition: transform 0.3s ease;
-
-    }
-
-    #sidebar.aside-visible {
-        transform: translateX(0);
-        /* shown */
-    }
-
-    #softwareSearchBarDiv {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    #softwareSearchBarDiv button {
-        width: 30px;
-        height: 30px;
-        border-radius: 6px;
-
-        display: flex;
-        align-items: center;
-        /* vertical centering */
-        justify-content: center;
-        /* horizontal centering */
-        padding: 0;
-        /* optional, depends on your design */
-        transition: filter 0.2s ease;
-    }
-
-    #softwareSearchBarDiv button img {
-        width: 20px;
-        height: 20px;
-
-        display: block;
-
-    }
-
-    #softwareSearchBarDiv:hover img {
-        filter: brightness(0) saturate(100%) invert(60%);
-    }
-
+  #openAside {
+    display: block;
+    width: 5rem;
+    padding: 0.4rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    background-color: #D3CBCB;
+    color: #3C3C43;
+    border: 1px solid #b2afaf;
   }
 
-@media (max-width: 550px) {
-  #pageContent {
+  #openAside:hover {
+    background-color: #7c7c7d;
+    color: #fff;
+  }
+
+  #filterHeaderLeftLines,
+  #filterHeaderRightLines {
+    display: block;
+  }
+
+  #filterHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  #filterHeaderLeftLines,
+  #filterHeaderRightLines {
+    display: flex;
     flex-direction: column;
+    gap: 4px;
   }
+
+  #filterHeaderLeftLines .hl,
+  #filterHeaderRightLines .hl {
+    display: block;
+    /* important */
+    height: 1px;
+    margin: 0.5px 0;
+    width: 60px;
+    background: #3C3C43;
+  }
+
+  #sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 70vh;
+    z-index: 1000;
+
+    padding: 10px;
+    margin: 0;
+    gap: 6px;
+    align-items: center;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background-color: #D3CBCB;
+    border-top-left-radius: 10px;
+    fill: #bdb5b5;
+
+    border-color: #9E9696;
+    box-shadow:
+      inset 0 2px 2px rgba(255, 255, 255, 0.3),
+      0 1px 3px rgba(0, 0, 0, 0.2);
+    filter:
+      drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+
+    transform: translateX(110%);
+    transition: transform 0.3s ease;
+
+  }
+
+  #sidebar.aside-visible {
+    transform: translateX(0);
+    /* shown */
+  }
+
+  #softwareSearchBarDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  #softwareSearchBarDiv button {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+
+    display: flex;
+    align-items: center;
+    /* vertical centering */
+    justify-content: center;
+    /* horizontal centering */
+    padding: 0;
+    /* optional, depends on your design */
+    transition: filter 0.2s ease;
+  }
+
+  #softwareSearchBarDiv button img {
+    width: 20px;
+    height: 20px;
+
+    display: block;
+
+  }
+
+  #softwareSearchBarDiv:hover img {
+    filter: brightness(0) saturate(100%) invert(60%);
+  }
+
 
   .softwareListGrid,
   .emulatorListGrid {
@@ -295,8 +297,12 @@ background-color: #7c7c7d;
     padding-top: 0;
   }
 
-  .softwareCardDiv
-  .emulatorCardDiv{
+  #pageContent {
+    flex-direction: column;
+  }
+
+
+  .softwareCardDiv .emulatorCardDiv {
     min-height: 220px;
     max-width: 100%;
     padding: 0.75rem;
@@ -312,7 +318,7 @@ background-color: #7c7c7d;
   }
 
   .cardContent img {
-    height: 110px;
+    height: 45vh;
   }
 
 

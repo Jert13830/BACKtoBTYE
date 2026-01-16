@@ -20,6 +20,8 @@ exports.displayCommunity = async (req, res) => {
       },
     });
 
+    console.log("Being Sent back: ",posts);
+    
     res.render("pages/community.twig", {
       title: "Community",
       posts,
