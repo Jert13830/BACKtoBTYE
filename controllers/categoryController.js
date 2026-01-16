@@ -29,15 +29,15 @@ exports.showCategory = async (req, res) => {
 
 //Get the list of categories
 exports.listCategory = async (req, res) => {
-    let manufacturers = [];
+    let categories = [];
 
     console.log("Passed by here");
     
     try {
-        manufacturers = await prisma.categorie.findMany();
+        categories = await prisma.categorie.findMany();
         return res.json({
             success: true,
-            manufacturers,
+            categories,
         });
 
     } catch (error) {
@@ -53,9 +53,6 @@ exports.listCategory = async (req, res) => {
 //Add a category
 exports.addCategory = async (req, res) => {
     const errors = {};  //Safer to create errors{} each time, no errors from other controllers
-
-   
-
 
     let manufacturers = [];
     const name = req.body.manufacturerName.trim();
@@ -294,3 +291,50 @@ exports.updateCategory = async (req, res) => {
         });
     }
 }
+
+exports.filterPostByCategory = async (req, res) => {
+
+    let posts =[];
+
+  try {
+    const categoryName = req.params.id;
+
+    // Find the computer
+    const category = await prisma.categorie.findFirst({
+      where: {
+        categorie: categoryName,
+      },
+    });
+
+    if (!category) {
+      return res.render("pages/community.twig", {
+        posts,
+        message: "Category not found",
+      });
+    }
+
+    // Find post
+    posts = await prisma.article.findMany({
+      where: {
+        id_categorie: category.id_categorie,
+      },
+      include: {
+        utilisateur: true,
+        photos: true,
+        ordinateur: true,
+      },
+    });
+
+    // Render result
+    res.render("pages/community.twig", {
+      posts,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.render("pages/emulatorList.twig", {
+      posts,
+      error: "An error occurred",
+    });
+  }
+};

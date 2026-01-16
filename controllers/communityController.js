@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
-const validateComputer = require("../middleware/extensions/validateComputer");
+const validateCommunity = require("../middleware/extensions/validateCommunity");
 
-const prisma = new PrismaClient().$extends(validateComputer);
+const prisma = new PrismaClient().$extends(validateCommunity);
 
 const errors = {};
 
@@ -28,7 +28,7 @@ exports.displayCommunity = async (req, res) => {
 
   } catch (error) {
 
-    console.log ("ERROR !!!");
+    console.log("ERROR !!!");
 
     if (error.details) {
       return res.render("pages/home.twig", {
@@ -37,20 +37,107 @@ exports.displayCommunity = async (req, res) => {
     }
     // Unknown error
     console.error(error);
-     res.redirect("/home")
+    res.redirect("/home")
 
-}}
+  }
+}
 
 exports.showAddPost = async (req, res) => {
-   const user =  req.session.user;
-   res.render("pages/writeMessage.twig", {
-      title: "New post",
-     user,
-      error: null,
-    });
+  const user = req.session.user;
+  res.render("pages/writeMessage.twig", {
+    title: "New post",
+    user,
+    error: null,
+  });
 }
 
 exports.addPost = async (req, res) => {
+  const data = req.body;
+
+
+  let post = [];
+  const user = req.session.user; //Get the current username
+
+  console.log(data);
+  console.log("The Posting user is : ", user);
+
+  try {
+
+    const title = req.body.postTitle.trim();  //get the post title
+
+    const exists = await prisma.article.findFirst({
+      where: {
+        titre: title,
+        id_utilisateur: user.id_utilisateur
+      }
+    });
+
+    if (exists) {
+      errors.post = "You already have a post with this name.";
+
+      return res.render("pages/writeMessage.twig", {
+        errors,
+        data,
+        post,
+        mode: "post",
+      });
+    }
+
+
+    // Create post
+    post = await prisma.article.create({
+      data: {
+        titre: title,
+        texte: req.body.postMessage,
+        date: new Date(),
+        id_categorie: Number(req.body.categorySelect),
+        id_ordinateur: Number(req.body.computerSelect),
+        id_utilisateur: user.id,
+      },
+
+    });
+
+    //Create post photo
+    let filePath = fs.existsSync(`./public/assets/images/post/${title}.webp`);
+    console.log(`${title}.webp exists:`, filePath);
+
+    if (filePath) {
+      filePath = `/assets/images/post/${title}.webp`;
+    } else {
+      filePath = "/assets/images/post/defaultPost.webp";
+      console.log("Post does not exist:", filePath);
+    }
+
+    //Save post photo
+    await prisma.photo.create({
+      data: {
+        id_article : post.id_article ,
+        alt: `${title} post`,
+        path: filePath,
+      },
+    });
+
+    //Open post list
+    return res.redirect("/displayCommunity");
+
+  } catch (error) {
+    // Custom validation extension
+    if (error.details) {
+      return res.render("pages/writeMessage.twig", {
+        errors: error.details,
+        data,
+      });
+    }
+
+    // Unknown error
+    errors.emulator = "An unexpected error occurred.";
+    console.error(error);
+
+    return res.render("pages/writeMessage.twig", {
+      errors,
+      data,
+    });
+  }
 }
 
 exports.readPost = async (req, res) => {

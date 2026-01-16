@@ -1,5 +1,5 @@
 #pageContent {
-  height: 72vh;
+  height: 67vh;
   
 }
 
@@ -18,14 +18,9 @@
   width: 70vw;
   height: 63vh;
   gap: 10px;
-  justify-self: center;
+  justify-items: center;
   align-items: center;
-}
-
-#postTitle,
-#postText {
-  font-size: 0.8rem;
-  letter-spacing: 1px;
+   border-radius: 5px;
 }
 
 #postMessage {
@@ -40,8 +35,15 @@
 #postTitle {
   display: block;
   margin-bottom: 10px;
+  width: 100%;
+  justify-self: center;
+   border-radius: 5px;
 }
 
+#postTitleDiv {
+   width: 70%;
+    border-radius: 5px;
+}
 
 /*User profile photo */
 
@@ -93,6 +95,7 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  
 }
 
 #photoPost,
@@ -147,11 +150,21 @@ button {
   flex-direction: row;
   gap: 1rem;
 }
+
+#postPhoto{
+  cursor: pointer;
+}
+
+.inputNErrors{
+    color: #1A1A1A;
+    font-weight: 700;
+}
+
 /******************************/
 /* For smaller screen modles */
 /****************************/
 
-@media (max-width: 1110px) {
+@media (max-width: 1130px) {
   #formContent {
     gap: 10px;
   }
@@ -165,14 +178,19 @@ button {
     height: 120px;
   }
 
-  #postMessage {
-    font-size: 0.75rem;
-  }
 
-  .btnForm {
-    width: 4.5rem;
-    font-size: 0.9rem;
+
+  #textarea {
+    /* 14 columns */ 
+    width: 40em;
+    
   }
+}
+/********************/
+@media (max-width: 1020px) {
+    #postPhoto{
+      width:90%;
+    }
 }
 
 /*******************/
@@ -187,25 +205,18 @@ button {
     height: 100px;
   }
 
-  #postMessage {
-    font-size: 0.7rem;
-  }
 
   textarea {
     /* 14 columns */ 
-    width: 14em;
+    width: 30em;
     
   }
 
-  .btnForm {
-    width: 4rem;
-    font-size: 0.85rem;
-  }
 }
 
 /******************/
 
-@media (max-width: 500px) {
+@media (max-width: 830px) {
   #formContent {
     flex-direction: column;
     height: auto;
@@ -215,9 +226,13 @@ button {
   #profile,
   #messageContent,
   #classContent {
-    width: 100%;
+    width: 90%;
     max-width: 95%;
   }
+
+   #postPhoto{
+      width:100%;
+    }
 
   #messageContent {
     height: auto;
@@ -228,7 +243,6 @@ button {
     height: 90px;
   }
 
-  #postTitle,
   #postMessage {
     width: 100%;
   }
@@ -261,20 +275,7 @@ button {
     height: 75px;
   }
 
-  #name {
-    font-size: 0.85rem;
-  }
-
-  #postMessage {
-    font-size: 0.65rem;
-  }
-
-  label,
-  select,
-  input,
-  button {
-    font-size: 0.75rem;
-  }
+  
 
   textarea {
     

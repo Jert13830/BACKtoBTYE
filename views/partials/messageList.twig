@@ -40,23 +40,7 @@
 			<h3>Category</h3>
 		</p>
 		<div id="sideBarCategoryList">
-			<ul>
-				<a>
-					<li>News</li>
-				</a>
-				<a>
-					<li>History / Memories</li>
-				</a>
-				<a>
-					<li>Hardware / Software</li>
-				</a>
-				<a>
-					<li>Aid / Repairs</li>
-				</a>
-				<a>
-					<li>Outings</li>
-				</a>
-			</ul>
+			<div id="categoryLoadErrors"></div>
 		</div>
 		<div id="addNewCategoryDiv">
 			<a href="/showCategory">
@@ -68,7 +52,39 @@
 			</label>
 		</div>
 	</aside>
-	<section class="softwareListGrid"></section>
+	<section class="softwareListGrid">
+	<div class="table-container" id="postList">
+		<table>
+			<thead>
+				<tr>
+					<th>Subject</th>
+					<th>Date</th>
+					<th>Username</th>
+					<th>System</th>
+					<th>Likes</th>
+					<th class="role-column">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for post in posts%}
+					<tr class="postLine">
+						<td>{{post.titre}}</td>
+						<td>{{ post.date|date('d/m/Y - H:i') }}</td>
+						<td>{{post.utilisateur.pseudo}}</td>
+						<td>{{post.ordinateur.nom}}</td>
+						<td>0</td>
+						<td class="action-column">
+							<form id="postListform" method="post" action="/updateUserList">
+								<button class="btnForm" id="btnModify" name="buttons" value="modify-{{user.id_utilisateur}}">✏️</button>
+								<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{user.id_utilisateur}}">🗑️</button>
+							</form>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	</section>
 </div>
 
 <script>

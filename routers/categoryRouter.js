@@ -15,5 +15,6 @@ categoryRouter.post("/addCategory", upload.single("logoPath"), categoryControlle
 categoryRouter.post('/updateCategoryList',authGuard,categoryController.updateCategoryList);
 categoryRouter.post('/updateCategory/:id', authGuard, categoryController.updateCategory);
 
+categoryRouter.get('/filterPostByCategory/:id', categoryController.filterPostByCategory);
 
 module.exports = categoryRouter;

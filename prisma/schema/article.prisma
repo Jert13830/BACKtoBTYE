@@ -1,7 +1,7 @@
 model Article {
   id_article     Int           @id @default(autoincrement())
   titre          String        @db.VarChar(255)
-  texte          String
+  texte          String        @db.Text
   date           DateTime
   id_categorie   Int
   id_ordinateur  Int

@@ -18,6 +18,7 @@ const computerPhoto = document.querySelector('#computerPhoto');
 const softwarePhoto = document.querySelector('#softwarePhoto');
 const emulatorPhoto = document.querySelector('#emulatorPhoto');
 const computerImage = document.querySelector('.computerImage');
+const postImage = document.querySelector('.postImage');
 
 const manuLogo = document.querySelector('#manuLogo');
 const manuImage = document.querySelector('.manuImage');
@@ -49,8 +50,13 @@ const softwareProfileImage = document.querySelector('#softwarePhoto');
 const uploadImageSoftware = document.querySelector('#uploadImageSoftware');
 const emulatorProfileImage = document.querySelector('#emulatorPhoto');
 const uploadImageEmulator = document.querySelector('#uploadImageEmulator');
+const postProfileImage = document.querySelector('#postPhoto');
+const uploadImagePost = document.querySelector('#uploadImagePost');
+
+const postTitle = document.querySelector("#postTitle");
 
 const sideBarComputerList = document.querySelector("#sideBarComputerList");
+const sideBarCategoryList = document.querySelector("#sideBarCategoryList");
 
 let manufacturers = [];
 
@@ -444,7 +450,7 @@ function treatImages() {
       }
       else {
         document.querySelector("#errorManufacturer").textContent = "Please enter a manfacturer's name";
-
+        manuImage.value = ""; // clears file input, user must reselect
       }
     });
   }
@@ -470,6 +476,36 @@ function treatImages() {
 
       else {
         document.querySelector("#computerNameErrors").textContent = "Please enter a computer name";
+         uploadImageComputer.value = ""; // clears file input, user must reselect
+      }
+    });
+
+  }
+
+  if (postProfileImage) {
+    postProfileImage.addEventListener("click", () => {
+      uploadImagePost.click();
+    });
+
+    uploadImagePost.addEventListener("change", () => {
+      const files = Array.from(uploadImagePost.files);
+
+
+      //No files selected
+      if (!files.length) return;
+      const value = postTitle.value?.trim();
+
+    
+      if (value) { //Test if a title has been given
+        
+        fileName = value;
+        loadImage(files, "Post", fileName, "#postPhoto");
+      }
+
+      else {
+      
+        document.querySelector("#postNameErrors").textContent = "Enter a post title";
+        uploadImagePost.value = ""; // clears file input, user must reselect
       }
     });
 
@@ -485,10 +521,8 @@ function treatImages() {
       const files = Array.from(uploadImageSoftware.files);
 
 
-
       //No files selected
       if (!files.length) return;
-
 
       const value = softwareName.value?.trim();
 
@@ -498,6 +532,7 @@ function treatImages() {
       }
       else {
         document.querySelector(".manufacturerErrors").textContent = "Please enter a software title";
+         uploadImageSoftware.value = ""; // clears file input, user must reselect
       }
     });
 
@@ -522,6 +557,7 @@ function treatImages() {
       }
       else {
         document.querySelector(".manufacturerErrors").textContent = "Please enter a emulator title";
+         uploadImageEmulator.value = ""; // clears file input, user must reselect
       }
     });
 
@@ -565,6 +601,7 @@ function manufacturerLogoClick() {
 
     else {
       document.querySelector("#manufacturerNameErrors").textContent = "Please enter a computer manufacturer's name";
+      logoPath.value = ""; // clears file input, user must reselect
     }
   });
 
@@ -603,6 +640,7 @@ if (profileContainer) {
 
     else {
       document.querySelector("#errorUsernameProfile").textContent = "Please enter a username";
+      uploadImageProfile.value = ""; // clears file input, user must reselect
     }
   });
 
@@ -747,13 +785,13 @@ async function loadRoleList() {
   const select = document.querySelector('#categorySelect');
   select.innerHTML = '';
 
-   data.manufacturers.forEach(m => {
+   data.categories.forEach(c => {
     const option = document.createElement('option');
-    option.value = m.id_categorie;
-    option.textContent = m.categorie;
+    option.value = c.id_categorie;
+    option.textContent = c.categorie;
 
     // Pre-select if this matches the previous value
-    if (selectedId !== null && String(m.categorie) === String(selectedId)) {
+    if (selectedId !== null && String(c.categorie) === String(selectedId)) {
       option.selected = true;
     }
     select.appendChild(option);
@@ -1115,6 +1153,46 @@ async function loadSystemList() {
   }
 }
 
+async function loadCategorySideList() {
+
+  const errorBox = document.querySelector("#categoryLoadErrors");
+
+  try {
+    const response = await fetch("/listCategory", {
+      method: "GET"
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      errorBox.textContent = data.error;
+      return;
+    }
+
+    // Add all categories
+    data.categories.forEach(category => {
+      let para = document.createElement('p');
+      sideBarCategoryList.appendChild(para);
+
+
+
+      const categoryName = category.categorie;
+
+      const link = document.createElement("a");
+    
+      link.href = `/filterPostByCategory/${encodeURIComponent(categoryName)}`;
+      
+      
+      link.textContent = categoryName;
+
+      para.appendChild(link);
+
+    });
+
+  } catch (err) {
+    errorBox.textContent = "Failed to load category list.";
+  }
+}
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -1124,11 +1202,15 @@ async function init() {
     loadSystemList();
   }
 
+  if (sideBarCategoryList){
+     loadCategorySideList();
+  }
+
   if (manuImage || computerProfileImage || uploadImageComputer) {
     treatImages();  // only call if at least one file input might exist
   }
 
-  if (softwareProfileImage || uploadImageSoftware) {
+  if (softwareProfileImage || uploadImageSoftware || uploadImagePost) {
 
     treatImages();  // only call if at least one file input might exist
   }
