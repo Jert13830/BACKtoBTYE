@@ -14,7 +14,6 @@ exports.showCategory = async (req, res) => {
 
         manufacturers = await prisma.categorie.findMany();
 
-        console.log("Manufacturers data : ", manufacturers);
 
         res.render("pages/manufacturerList.twig", {
             manufacturers,
@@ -31,7 +30,7 @@ exports.showCategory = async (req, res) => {
 exports.listCategory = async (req, res) => {
     let categories = [];
 
-    console.log("Passed by here");
+ 
     
     try {
         categories = await prisma.categorie.findMany();
@@ -57,7 +56,7 @@ exports.addCategory = async (req, res) => {
     let manufacturers = [];
     const name = req.body.manufacturerName.trim();
 
-     console.log("Adding category. Name : ", name);
+    
 
     try {
 
@@ -171,7 +170,7 @@ exports.updateCategoryList = async (req, res) => {
                 });
             }
 
-            console.log("Deleting category");
+            
             //Delete the category
             await prisma.categorie.delete({
                 where: {
@@ -215,7 +214,7 @@ exports.updateCategory = async (req, res) => {
     const nameChanged = manufacturerName !== nameBeforeChange;
 
     let manufacturers = [];
-    console.log("Data : ", req.body);
+    
 
     try {
 

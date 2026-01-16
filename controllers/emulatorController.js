@@ -59,8 +59,6 @@ exports.displayEmulatorList = async (req, res) => {
 exports.postEmulator = async (req, res) => {
   const data = req.body;
 
-  console.log(data);
-
   try {
 
     const name = req.body.emulatorName.trim();
@@ -94,13 +92,13 @@ exports.postEmulator = async (req, res) => {
     });
 
     let filePath = fs.existsSync(`./public/assets/images/emulator/${name}.webp`);
-    console.log(`${name}.webp exists:`, filePath);
+   
 
     if (filePath) {
       filePath = `/assets/images/emulator/${name}.webp`;
     } else {
       filePath = "/assets/images/emulator/defaultEmulator.webp";
-      console.log("Emulator does not exist:", filePath);
+      
     }
 
     //Save emulator photo
@@ -249,7 +247,6 @@ exports.updateEmulatorList = async (req, res) => {
 
   const action = req.body.buttons; // "delete-123" or "modify-123"
 
-  console.log("ACTION : ",action);
 
   let emulators = [];
 
@@ -269,7 +266,7 @@ exports.updateEmulatorList = async (req, res) => {
         },
       });
 
-      console.log("Deleting photo ", toDelete);
+     
       //Delete the emulator photo logo
       await prisma.photo.deleteMany({
         where: {
@@ -285,26 +282,21 @@ exports.updateEmulatorList = async (req, res) => {
       });
 
       //delete the photo from the folder
-      console.log("Deleting physical photo ");
       let filePath = fs.existsSync(`./public/assets/images/emulator/${emulatorToDelete.nom}.webp`);
-      console.log(`${emulatorToDelete.nom}.webp exists:`, filePath);
+      
 
       if (filePath) {
         fs.unlink(`./public/assets/images/emulator/${emulatorToDelete.nom}.webp`, (err) => {
           if (err) throw err;
-          console.log("File deleted");
         });
       }
 
-      console.log("Deleting emulator");
       //Delete the emulator
       await prisma.emulateur.delete({
         where: {
           id_emulateur: toDelete
         }
       });
-
-      console.log("Emulator deleted returning");
 
       //Return to the list of emulator
       res.redirect("/displayEmulatorList");
@@ -325,7 +317,6 @@ exports.updateEmulatorList = async (req, res) => {
 
     id = parseInt(id);
     // handle modify
-    console.log("ID : ",id);
     res.redirect("/showUpdateEmulator/" + id);
 
   }
@@ -350,7 +341,6 @@ exports.updateEmulator = async (req, res) => {
   const imageUrl = `/assets/images/emulator/${emulatorName}.webp`;
   let emulators = [];
 
-  console.log("Data to be UPDATED: ", req.body);
 
   try {
 
@@ -368,13 +358,12 @@ exports.updateEmulator = async (req, res) => {
       where: { nom: emulatorName }
     });
 
-    console.log("UPDATING : check if emulator exists");
+    
 
     //Check if the id number is the same as the current one we are changing
     if (emulatorNameExists && emulatorId !== emulatorNameExists.id_emulateur) {
       //The name already exists
-      console.log("Emulator : ", emulatorName);
-      console.log("UPDATING : Error with name or ID ", emulatorNameExists.id_emulateur, emulatorId);
+      
       errors.manufacturerName = "The emulator title already exists"
       return res.render("pages/emulatorList.twig", {
         emulators,
@@ -386,7 +375,6 @@ exports.updateEmulator = async (req, res) => {
     }
 
     //Update photo
-    console.log("UPDATING : updating photo");
     //Handle filesystem
     if (nameChanged && !newImageUploaded && fs.existsSync(oldImageFs)) {
       //Name changed only  - copy old image
@@ -418,7 +406,7 @@ exports.updateEmulator = async (req, res) => {
       });
     }
 
-    console.log("UPDATING :emulator");
+    
     await prisma.emulateur.update({
       where: { id_emulateur: emulatorId },
       data: {
@@ -433,7 +421,7 @@ exports.updateEmulator = async (req, res) => {
     });
 
 
-    console.log("UPDATING : updated database");
+    
 
     //Cleanup old image file ONLY if name changed
     if (nameChanged && fs.existsSync(oldImageFs)) {
@@ -499,8 +487,6 @@ exports.emulatorDetailSelect = async (req, res) => {
       },
     })
 
-    console.log("Here is the computer data : ", data);
-
 
     res.render("pages/addEmulator.twig", {
       title: "Emulator Details",
@@ -510,17 +496,13 @@ exports.emulatorDetailSelect = async (req, res) => {
   }
   catch (error) {
     req.session.errorRequest = "Emulator data could not be sent";
-    console.log("Emulator data could not be sent");
     res.redirect("/pages/emulatorList.twig");
   }
 }
 
 exports.showUpdateEmulator = async (req, res) => {
-  console.log("Ready to show");
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const emulatorId = Number(req.params.id);
-
-  console.log("Updating Emulator : ", emulatorId);
 
   try {
     const data = await prisma.emulateur.findUnique({
@@ -536,8 +518,7 @@ exports.showUpdateEmulator = async (req, res) => {
       },
     })
 
-    //console.log("Data for updating : ", data);
-    console.log("Data coming back: ",data);
+    
     res.render("pages/addEmulator.twig", {
       title: "Emulator Details",
       data,

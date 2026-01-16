@@ -8,7 +8,7 @@ const authGuard = require('../middleware/services/authguard');
 //Check if an administrator is connected
 const requireAdmin = require('../middleware/services/requireAdmin');
 
-computerRouter.get('/home', computerController.displayHome);
+computerRouter.get('/', computerController.displayHome);
 
 computerRouter.get('/computerList', computerController.displayComputerList);
 computerRouter.get('/listComputer', upload.none(), computerController.listComputer);

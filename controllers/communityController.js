@@ -20,7 +20,7 @@ exports.displayCommunity = async (req, res) => {
       },
     });
 
-    console.log("Being Sent back: ",posts);
+    
     
     res.render("pages/community.twig", {
       title: "Community",
@@ -30,7 +30,6 @@ exports.displayCommunity = async (req, res) => {
 
   } catch (error) {
 
-    console.log("ERROR !!!");
 
     if (error.details) {
       return res.render("pages/home.twig", {
@@ -39,7 +38,7 @@ exports.displayCommunity = async (req, res) => {
     }
     // Unknown error
     console.error(error);
-    res.redirect("/home")
+    res.redirect("/")
 
   }
 }
@@ -59,9 +58,6 @@ exports.addPost = async (req, res) => {
 
   let post = [];
   const user = req.session.user; //Get the current username
-
-  console.log(data);
-  console.log("The Posting user is : ", user);
 
   try {
 
@@ -101,13 +97,12 @@ exports.addPost = async (req, res) => {
 
     //Create post photo
     let filePath = fs.existsSync(`./public/assets/images/post/${title}.webp`);
-    console.log(`${title}.webp exists:`, filePath);
+  
 
     if (filePath) {
       filePath = `/assets/images/post/${title}.webp`;
     } else {
       filePath = "/assets/images/post/defaultPost.webp";
-      console.log("Post does not exist:", filePath);
     }
 
     //Save post photo

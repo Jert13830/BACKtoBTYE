@@ -33,7 +33,7 @@ exports.displaySoftwareList = async (req, res) => {
       },
     })
 
-    console.log("Software : ", softwares);
+    
 
     res.render("pages/softwareList.twig", {
       title: "Software",
@@ -65,7 +65,7 @@ exports.displaySoftwareList = async (req, res) => {
 exports.postSoftware = async (req, res) => {
   const data = req.body;
 
-  console.log(data);
+  
 
   try {
 
@@ -98,13 +98,13 @@ exports.postSoftware = async (req, res) => {
 
 
     let filePath = fs.existsSync(`./public/assets/images/software/${name}.webp`);
-    console.log(`${name}.webp exists:`, filePath);
+    
 
     if (filePath) {
       filePath = `/assets/images/software/${name}.webp`;
     } else {
       filePath = "/assets/images/software/defaultSoftware.webp";
-      console.log("Software does not exist:", filePath);
+      
     }
 
     //Save computer photo
@@ -307,14 +307,14 @@ exports.updateSoftwareList = async (req, res) => {
         },
       })
 
-      console.log("Deleting versions");
+     
 
       //Delete all versions of software
       await prisma.version.deleteMany({
         where: { id_logiciel: toDelete }
       });
 
-      console.log("Deleting photo ", toDelete);
+   
       //Delete the software photo logo
       await prisma.photo.deleteMany({
         where: {
@@ -330,28 +330,20 @@ exports.updateSoftwareList = async (req, res) => {
       });
 
       //delete the photo from the folder
-      console.log("Deleting physical photo ");
       let filePath = fs.existsSync(`./public/assets/images/software/${softwareToDelete.nom}.webp`);
-      console.log(`${softwareToDelete.nom}.webp exists:`, filePath);
-
+      
       if (filePath) {
         fs.unlink(`./public/assets/images/software/${softwareToDelete.nom}.webp`, (err) => {
           if (err) throw err;
-          console.log("File deleted");
         });
       }
 
-      console.log("Deleting software");
       //Delete the software
       await prisma.logiciel.delete({
         where: {
           id_logiciel: toDelete
         }
       });
-
-
-
-      console.log("Software deleted returning");
 
       //Return to the list of software
       res.redirect("/displaySoftwareList");
@@ -397,7 +389,7 @@ exports.updateSoftware = async (req, res) => {
   const imageUrl = `/assets/images/software/${softwareName}.webp`;
   let softwares = [];
 
-  console.log("Data to be UPDATED: ", req.body);
+ 
 
   try {
 
@@ -419,13 +411,9 @@ exports.updateSoftware = async (req, res) => {
       where: { nom: softwareName }
     });
 
-    console.log("UPDATING : check if software exists");
-
     //Check if the id number is the same as the current one we are changing
     if (softwareNameExists && softwareId !== softwareNameExists.id_logiciel) {
       //The name already exists
-      console.log("Software : ", softwareName);
-      console.log("UPDATING : Error with name or ID ", softwareNameExists.id_logiciel, softwareId);
       errors.softwareName = "The software title already exists"
       return res.render("pages/softwareList.twig", {
         softwares,
@@ -437,7 +425,6 @@ exports.updateSoftware = async (req, res) => {
     }
 
     //Update photo
-    console.log("UPDATING : updating photo");
     //Handle filesystem
     if (nameChanged && !newImageUploaded && fs.existsSync(oldImageFs)) {
       //Name changed only  - copy old image
@@ -455,13 +442,11 @@ exports.updateSoftware = async (req, res) => {
       await fsPromises.copyFile(defaultImage, newImageFs);
     }
 
-    console.log("UPDATING : updated photo");
     //Delete all versions of software
     await prisma.version.deleteMany({
       where: { id_logiciel: softwareId }
     });
 
-    console.log("UPDATING : deleted versions");
     //Recreate versions
     //Make sure that computerSelect is an array even if one item selected
     const computers = Array.isArray(data.computerSelect)
@@ -580,7 +565,7 @@ exports.softwareDetailSelect = async (req, res) => {
       },
     })
 
-    console.log("Here is the computer data : ", data);
+  
 
     const computers = [
       ...new Map(
@@ -596,9 +581,6 @@ exports.softwareDetailSelect = async (req, res) => {
       ).keys()
     ];
 
-    //  console.log("Computers : ", computers);
-    console.log("Computer Ids : ", computerIds);
-
     res.render("pages/addSoftware.twig", {
       title: "Software Details",
       data,
@@ -609,7 +591,7 @@ exports.softwareDetailSelect = async (req, res) => {
   }
   catch (error) {
     req.session.errorRequest = "Software data could not be sent";
-    console.log("Software data could not be sent");
+ 
     res.redirect("/pages/softwareList.twig");
   }
 }

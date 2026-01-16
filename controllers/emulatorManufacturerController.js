@@ -212,7 +212,6 @@ exports.updateEmulatorManufacturerList = async (req, res) => {
                 });
             }
 
-            console.log("Deleting photo ", toDelete);
 
             //Delete the emulator manufacturer logo
             await prisma.photo.deleteMany({
@@ -221,7 +220,7 @@ exports.updateEmulatorManufacturerList = async (req, res) => {
                 },
             });
 
-            console.log("Deleting manu");
+           
             //Delete the emulator manufacturer
             await prisma.fabricantEmulateur.delete({
                 where: {
@@ -229,7 +228,7 @@ exports.updateEmulatorManufacturerList = async (req, res) => {
                 }
             });
 
-            console.log("Manu deleted returning");
+          
 
             //Return to the list of emulator manufacturers
             res.redirect("/showEmulatorManufacturers");
@@ -277,7 +276,7 @@ exports.updateEmulatorManufacturer = async (req, res) => {
     const logoUrl = `/assets/images/logos/${manufacturerName}.webp`;
 
     let manufacturers = [];
-    console.log("Data : ", req.body);
+   
 
     try {
 

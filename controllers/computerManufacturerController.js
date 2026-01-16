@@ -200,8 +200,6 @@ exports.updateComputerManufacturerList = async (req, res) => {
                 });
             }
 
-            console.log("Deleting photo ", toDelete);
-
             //Delete the computer manufacturer logo
             await prisma.photo.deleteMany({
                 where: {
@@ -209,7 +207,7 @@ exports.updateComputerManufacturerList = async (req, res) => {
                 },
             });
 
-            console.log("Deleting manu");
+          
             //Delete the computer manufacturer
             await prisma.fabricantOrdinateur.delete({
                 where: {
@@ -217,7 +215,7 @@ exports.updateComputerManufacturerList = async (req, res) => {
                 }
             });
 
-            console.log("Manu deleted returning");
+           
 
             //Return to the list of computer manufacturers
             res.redirect("/showComputerManufacturers");
@@ -265,7 +263,7 @@ exports.updateComputerManufacturer = async (req, res) => {
     const logoUrl = `/assets/images/logos/${manufacturerName}.webp`;
     let manufacturers = [];
 
-    console.log("Data : ", req.body);
+   
 
     try {
 

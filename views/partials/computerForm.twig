@@ -17,7 +17,7 @@
 							</div>
 							<!-- END OF fomanuLogoHolder -->
 							<div>
-								<input {{ origin ? 'readonly' : '' }} type="text" name="nom" maxlength="15" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (15 max)" required value="{{data.nom|default('') }}"/>
+								<input {{ origin ? 'readonly' : '' }} type="text" name="nom" maxlength="12" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (15 max)" required value="{{data.nom|default('') }}"/>
 							</div>
 						</div>
 						<p id="computerNameErrors">{{errors.computerName}}</p>

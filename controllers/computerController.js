@@ -125,9 +125,6 @@ exports.listComputer = async (req, res) => {
 exports.postComputer = async (req, res) => {
   const data = req.body;
 
-  console.log(data);
-
-  
   const bkgClass = "bg-1";
 
   try {
@@ -167,13 +164,12 @@ exports.postComputer = async (req, res) => {
     });
 
     let filePath = fs.existsSync(`./public/assets/images/computers/${comput.nom}.webp`);
-    console.log(`${comput.nom}.webp exists:`, filePath);
 
     if (filePath) {
       filePath = `/assets/images/computers/${comput.nom}.webp`;  // URL for browser
     } else {
       filePath = "/assets/images/computers/defaultComputer.webp";
-      console.log("Computer does not exist:", filePath);
+      
     }
 
     //Save computer photo
@@ -289,7 +285,6 @@ exports.computerDetailSelect = async (req, res) => {
   const bkgClass = req.query.bg;
   const origin = req.query.origin;
 
-  console.log(origin);
 
   try {
     const data = await prisma.ordinateur.findUnique({
@@ -311,7 +306,6 @@ exports.computerDetailSelect = async (req, res) => {
       }
     })
 
-    console.log("Here is the computer data : ", data);
 
 
     res.render("pages/addComputer.twig", {
@@ -324,7 +318,7 @@ exports.computerDetailSelect = async (req, res) => {
   }
   catch (error) {
     req.session.errorRequest = "Computer data could not be sent";
-    console.log("Computer data could not be sent");
+    
     res.redirect("/computerList");
   }
 }
@@ -332,7 +326,7 @@ exports.computerDetailSelect = async (req, res) => {
 exports.updateComputerList = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
-  console.log("Data sent : ", req.body);
+
   const action = req.body.buttons; // "delete-123" or "modify-123"
 
   const user = req.session.user;
@@ -347,7 +341,6 @@ exports.updateComputerList = async (req, res) => {
       //Computers will be sent if an Error occurs
       const computers = await prisma.ordinateur.findMany();
 
-      console.log("You are : ", user.role);
 
 
       //Delete computer
@@ -377,7 +370,6 @@ exports.updateComputerList = async (req, res) => {
 
     // handle modify
 
-    console.log("Ready to go bg :", bg);
 
     res.redirect(`/showUpdateComputer/${id}?bg=${bg}`);
 
@@ -385,16 +377,16 @@ exports.updateComputerList = async (req, res) => {
 };
 
 exports.showUpdateComputer = async (req, res) => {
-  console.log("Ready to show");
+  
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const computerId = Number(req.params.id);
   const bg = Number(req.query.bg);
 
-  console.log("Background : ", parseInt(req.params.bg));
+ 
 
   const bkgClass = "bg-" + bg;
 
-  console.log("Data carried : ", req.body);
+ 
 
   try {
     const data = await prisma.ordinateur.findUnique({
@@ -410,7 +402,7 @@ exports.showUpdateComputer = async (req, res) => {
       },
     })
 
-    //console.log("Data for updating : ", data);
+  
 
     const successeur = await prisma.ordinateur.findUnique({
       where: {
@@ -428,7 +420,7 @@ exports.showUpdateComputer = async (req, res) => {
   }
   catch (error) {
     req.session.errorRequest = "Computer data could not be sent";
-    console.log("Computer data could not be sent");
+    
     res.redirect("/computerList");
   }
 };
@@ -436,8 +428,7 @@ exports.showUpdateComputer = async (req, res) => {
 exports.updateComputer = async (req, res) => {
   const data = req.body;
   const computerId = Number(req.params.id);
-  console.log(data);
-  console.log("Computer ID : ",computerId);
+ 
 
   const name = req.body.nom.trim();
 
@@ -450,7 +441,7 @@ exports.updateComputer = async (req, res) => {
       where: { nom: name }
     });
 
-    console.log("Checking exists");
+    
 
     if (exists && computerId !== exists.id_ordinateur) {
       errors.computerName = "Computer already exists";
@@ -463,7 +454,7 @@ exports.updateComputer = async (req, res) => {
       });
     }
 
-    console.log("Updating computer");
+    
 
     // Update computer
     const comput = await prisma.ordinateur.update({
@@ -485,19 +476,16 @@ exports.updateComputer = async (req, res) => {
       }
     });
 
-    console.log("Checking photo");
 
     let filePath = fs.existsSync(`./public/assets/images/computers/${comput.nom}.webp`);
-    console.log(`${comput.nom}.webp exists:`, filePath);
 
     if (filePath) {
       filePath = `/assets/images/computers/${comput.nom}.webp`;  // URL for browser
     } else {
       filePath = "/assets/images/computers/defaultComputer.webp";
-      console.log("Computer does not exist:", filePath);
+     
     }
 
-    console.log("Saving photo ",computerId);
 
     const existingPhoto = await prisma.photo.findFirst({
       where: {
@@ -520,14 +508,11 @@ exports.updateComputer = async (req, res) => {
     }
 
 
-    console.log("Coming back to computer list");
-
     return res.redirect("/computerList");
 
   } catch (error) {
     // Custom validation extension
     if (error.details) {
-      console.log("Crashing out 1 BKG : ", bkgClass);
       return res.render("pages/addComputer.twig", {
         errors: error.details,
         transaction: "update",
@@ -539,7 +524,7 @@ exports.updateComputer = async (req, res) => {
     // Unknown error
     errors.computerName = "An unexpected error occurred.";
     console.error(error);
-    console.log("Crashing out 2 ");
+    
     return res.render("pages/addComputer.twig", {
       errors,
       transaction: "update",

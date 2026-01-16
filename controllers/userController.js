@@ -121,7 +121,7 @@ exports.connect = async (req, res) => {
         console.log("User:", req.session.user);
         req.app.loginStatus = true;
         // Redirect to the homepage
-        res.redirect('/home')
+        res.redirect('/')
 
       } else {
         // If the password is incorrect return error
@@ -629,7 +629,7 @@ exports.updateUserInfo = async (req, res) => {
     }
 
     //Everything went well return to Home page
-    return res.redirect('/home');
+    return res.redirect('/');
   }
   catch (error) {
     console.error("Error updating user data:", error);
@@ -997,6 +997,6 @@ exports.resetPassword = async (req, res) => {
 exports.userLogout = async (req, res) => {
   req.app.loginStatus = false;
   req.session.destroy()
-  res.redirect('/home')
+  res.redirect('/')
 }
 

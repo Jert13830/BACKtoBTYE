@@ -9,8 +9,6 @@ const requireAdmin = require('../middleware/services/requireAdmin');
 const multer = require("multer");
 const upload = multer(); 
 
-//userRouter.get('/home',userController.displayHome);
-
 userRouter.get('/about',userController.displayAbout);
 
 
