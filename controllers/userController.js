@@ -118,7 +118,6 @@ exports.connect = async (req, res) => {
           role: user.roleUtilisateurs?.[0]?.role?.role
         };
 
-        console.log("User:", req.session.user);
         req.app.loginStatus = true;
         // Redirect to the homepage
         res.redirect('/')
@@ -175,12 +174,11 @@ exports.registerUser = async (req, res) => {
   const email = req.body.email.toLowerCase().trim();
   const pseudo = req.body.usernameProfile.trim();
   const data = req.body;
-  console.log("User ERROR");
-  console.log(data);
+  
   try {
 
     // Check the two passwords match
-    console.log("The password is : " + req.body.password + "( and the confirmeed : " + req.body.confirmPassword);
+   
     if (req.body.password == req.body.confirmPassword) {
 
       // Check to see if the Email address is already registered
@@ -193,7 +191,6 @@ exports.registerUser = async (req, res) => {
 
       if (userEmail) {
         //The email adress is already in use
-        console.log("You are already registered");
         //errors.duplicateEmail = "You are already registered";
         return res.render("pages/registry.twig", {
           duplicateEmail: "You are already registered",
@@ -202,7 +199,7 @@ exports.registerUser = async (req, res) => {
 
       }
       else {
-        console.log("Going to test username");
+        
         //Check to see if the Username is already used
 
         const userProfile = await prisma.utilisateur.findFirst({
@@ -211,11 +208,11 @@ exports.registerUser = async (req, res) => {
           }
         });
 
-        console.log("Moving on " + req.body.usernameProfile);
+        
 
         if (userProfile) {
 
-          console.log("Username already exists");
+     
 
           //The username is already in use
           //errors.duplicateUser = "The Username is already in use";
@@ -227,9 +224,7 @@ exports.registerUser = async (req, res) => {
         }
         else {
 
-          console.log("Creating user");
-          console.log(req.body);
-
+       
           //It is a new user - create the user   
           const user = await prisma.utilisateur.create({
             data: {
@@ -240,10 +235,7 @@ exports.registerUser = async (req, res) => {
             }
           });
 
-          console.log("User created");
-
-          console.log("Ready to create photo");
-
+         
           //Create the photo entry      
 
           const filePath = `/assets/images/users/${req.body.usernameProfile}.webp`;
@@ -251,16 +243,15 @@ exports.registerUser = async (req, res) => {
           try {
             await fs.access(filePath);
 
-            console.log("User photo exists");
+          
             // file exists
           } catch {
             // file does not exist
-            console.log("User photo doesn't exists");
+        
             // filePath = "/assets/images/users/defaultUserImage.webp";
           }
 
-          console.log("Save photo ", filePath);
-
+        
           //Save User profile photo
           const userPhoto = await prisma.photo.create({
             data: {
@@ -271,9 +262,7 @@ exports.registerUser = async (req, res) => {
           });
 
 
-          console.log("Save role")
-          console.log(req.body);
-
+       
 
           const iRole = await prisma.role.findFirst({
             where: {
@@ -331,10 +320,10 @@ exports.registerUser = async (req, res) => {
 
 //Get user role list
 exports.listUserRoles = async (req, res) => {
-  console.log("Fetching Roles");
+ 
   try {
     const roles = await prisma.role.findMany();
-    console.log("Got list, come back");
+  
     return res.json({
       success: true,
       roles,
@@ -353,7 +342,7 @@ exports.listUserRoles = async (req, res) => {
 exports.updateUserList = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
-  console.log(req.body);
+  
   const action = req.body.buttons; // "delete-123" or "modify-123"
 
   //Delete the role
@@ -368,7 +357,7 @@ exports.updateUserList = async (req, res) => {
 
       //Delete the roleUtilisateur entry before deleting the user
 
-      console.log("Check if exists");
+ 
       const exists = await prisma.roleUtilisateur.findFirst({
         where: {
           id_utilisateur: toDelete,
@@ -376,8 +365,6 @@ exports.updateUserList = async (req, res) => {
       });
 
       if (exists) {
-        console.log("Remove if exists");
-        console.log("user exists");
         await prisma.roleUtilisateur.deleteMany({
           where: {
             id_utilisateur: toDelete
@@ -386,7 +373,6 @@ exports.updateUserList = async (req, res) => {
       }
 
       //Delete User 
-      console.log("Check if exists");
       await prisma.utilisateur.delete({
         where: {
           id_utilisateur: toDelete
@@ -418,7 +404,7 @@ exports.updateUserList = async (req, res) => {
 exports.treatRoleList = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
-  console.log(req.body);
+ 
   const action = req.body.buttons; // "delete-123" or "modify-123"
 
   //Delete the role
@@ -473,9 +459,7 @@ exports.updateUserInfo = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const userId = parseInt(req.params.id);
   const data = req.body; // To be sent back if there is an error
-  console.log("Data to update");
-  console.log("Req Body: ", req.body);
-  console.log("UserID: ", userId);
+ 
   try {
     //Get actual user information
     const actualUser = await prisma.utilisateur.findFirst({
@@ -591,8 +575,6 @@ exports.updateUserInfo = async (req, res) => {
     });
 
     if (roleLink) {
-      console.log("The role is : ", req.body.userRole);
-
       let indexRole = 0;
 
       if (isNaN(req.body.userRole)) {
@@ -607,8 +589,6 @@ exports.updateUserInfo = async (req, res) => {
       else {
         indexRole = req.body.userRole;
       }
-
-      console.log("iRole.id_role : ", indexRole);
 
       await prisma.roleUtilisateur.update({
         where: {
@@ -649,8 +629,6 @@ exports.updateUser = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const userId = parseInt(req.params.id);
 
-  console.log("COMING THROUGH !!!");
-
   try {
     const user = await prisma.utilisateur.findFirst({
       where: { id_utilisateur: userId },
@@ -677,7 +655,6 @@ exports.updateUser = async (req, res) => {
     data.confirmPassword = "******";
     data.userRole = user.roleUtilisateurs[0].role.role;
 
-    console.log("User ID: " + userId + " Session : " + req.session.user.id);
     if (userId !== req.session.user.id) {
       data.administratorChange = true;
     }
@@ -819,11 +796,8 @@ exports.postRole = async (req, res) => {
 
 exports.updatePassword = async (req, res) => {
 
-  console.log(req.body);
   const data = req.body;
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
-
-  console.log("The session user : ", req.session.user);
 
   const userId = req.session.user.id;
 
@@ -843,7 +817,7 @@ exports.updatePassword = async (req, res) => {
         //Hash the password
         const hashedPassword = bcrypt.hashSync(data.newPassword, 12);
         data.newPassword = hashedPassword;
-        console.log ("We are back from hashing",userId);
+        
         
         // change the password.
         await prisma.utilisateur.update({
@@ -908,13 +882,9 @@ exports.updatePassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
 
-  console.log("Me FIRST !!");
-
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
   let data = req.body;
-
-  console.log("Req Body: ", req.body);
 
   const userId = parseInt(req.params.id); //User to be reset
 
@@ -922,7 +892,6 @@ exports.resetPassword = async (req, res) => {
   try {
 
     // check to see if the connected user is an administrator, if not no need to continue
-    console.log("Session User : ", req.session.user);
 
     if (req.session.user.role !== "administrator") {
       errors.passwordReset = "You are not authorised to reset this password";
@@ -941,7 +910,7 @@ exports.resetPassword = async (req, res) => {
       email: userData.email,
       }*/
 
-      console.log("The user is : ", data);
+      
 
       return res.render("pages/registry.twig", {
         errors,
@@ -951,9 +920,6 @@ exports.resetPassword = async (req, res) => {
     }
 
     // if adminstrator
-
-    console.log("Administrator : ", req.session.user.nom)
-    console.log("User : ", userId);
 
     // find the user to be updated
     const userToChange = await prisma.utilisateur.findUnique({

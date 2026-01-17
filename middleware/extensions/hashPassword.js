@@ -1,8 +1,6 @@
 const {Prisma} = require('@prisma/client')
 const bcrypt = require('bcrypt')
 
-console.log("We have visited");
-
 module.exports = Prisma.defineExtension({
     name: "hashPasswordExtension",
     query: {

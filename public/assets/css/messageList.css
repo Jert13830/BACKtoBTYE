@@ -134,6 +134,11 @@ th {
     gap:5px;
 }
 
+.tableHeadLink{
+    color:#fff;
+    cursor: pointer;
+}
+
 
 @media (max-width: 800px) {
 

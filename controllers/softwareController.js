@@ -463,7 +463,6 @@ exports.updateSoftware = async (req, res) => {
       });
     }
 
-    console.log("UPDATING : added version");
 
     const photo = await prisma.photo.findFirst({
       where: { id_logiciel: softwareId },
@@ -479,7 +478,6 @@ exports.updateSoftware = async (req, res) => {
       });
     }
 
-    console.log("UPDATING :software");
     await prisma.logiciel.update({
       where: { id_logiciel: softwareId },
       data: {
@@ -493,7 +491,6 @@ exports.updateSoftware = async (req, res) => {
     });
 
 
-    console.log("UPDATING : updated database");
 
     //Cleanup old image file ONLY if name changed
     if (nameChanged && fs.existsSync(oldImageFs)) {
@@ -546,7 +543,6 @@ exports.updateSoftware = async (req, res) => {
 exports.softwareDetailSelect = async (req, res) => {
   const origin = req.query.origin;
 
-  console.log("Origin : ", origin);
 
   try {
     const data = await prisma.logiciel.findUnique({
@@ -597,11 +593,9 @@ exports.softwareDetailSelect = async (req, res) => {
 }
 
 exports.showUpdateSoftware = async (req, res) => {
-  console.log("Ready to show");
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const softwareId = Number(req.params.id);
 
-  console.log("Software data : ", req.body);
 
   try {
     const data = await prisma.logiciel.findUnique({
@@ -620,7 +614,7 @@ exports.showUpdateSoftware = async (req, res) => {
       },
     })
 
-    //console.log("Data for updating : ", data);
+    
 
     const computers = [
       ...new Map(
@@ -632,9 +626,6 @@ exports.showUpdateSoftware = async (req, res) => {
     //Change values to numbers
     const computerIds = computers.map(c => Number(c.id_ordinateur));
 
-    //console.log("COMPUTERS : ", computers);
-
-    console.log("COMPUTERS IDs: ", computerIds);
 
     res.render("pages/addSoftware.twig", {
       title: "Software Details",
@@ -645,7 +636,6 @@ exports.showUpdateSoftware = async (req, res) => {
   }
   catch (error) {
     req.session.errorRequest = "Software data could not be sent";
-    console.log("Software data could not be sent");
     res.redirect("/softwareList");
   }
 };

@@ -212,7 +212,7 @@ exports.updateSoftwareManufacturerList = async (req, res) => {
                 });
             }
 
-            console.log("Deleting photo ", toDelete);
+           
 
             //Delete the software manufacturer logo
             await prisma.photo.deleteMany({
@@ -221,7 +221,7 @@ exports.updateSoftwareManufacturerList = async (req, res) => {
                 },
             });
 
-            console.log("Deleting manu");
+        
             //Delete the software manufacturer
             await prisma.fabricantLogiciel.delete({
                 where: {
@@ -229,7 +229,7 @@ exports.updateSoftwareManufacturerList = async (req, res) => {
                 }
             });
 
-            console.log("Manu deleted returning");
+         
 
             //Return to the list of software manufacturers
             res.redirect("/showSoftwareManufacturers");
@@ -277,7 +277,6 @@ exports.updateSoftwareManufacturer = async (req, res) => {
     const logoUrl = `/assets/images/logos/${manufacturerName}.webp`;
 
     let manufacturers = [];
-    console.log("Data : ", req.body);
 
     try {
 

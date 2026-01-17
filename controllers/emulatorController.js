@@ -527,7 +527,6 @@ exports.showUpdateEmulator = async (req, res) => {
   }
   catch (error) {
     req.session.errorRequest = "Emulator data could not be sent";
-    console.log("Emulator data could not be sent");
     res.redirect("/emulatorList");
   }
 };

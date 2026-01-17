@@ -1,13 +1,12 @@
 const { Prisma } = require('@prisma/client');
-console.log("Checking user");
+
 module.exports = Prisma.defineExtension({
     name: "userValidateExtension",
     query: {
         utilisateur: {
             create: async ({ args, query }) => {
                 const errors = {}
-                console.log("checking things out");
-                console.log(args.data);
+             
 
                 //First character must be a letter or number (no leading +, space, -, etc.) With at least 1 character (not null)
                 if (!/^[A-Za-z0-9][A-Za-z0-9 ./_+-]*$/.test(args.data.pseudo)) {

@@ -35,11 +35,17 @@
 				</label>
 			</div>
 		</form>
+		<div>
+			{% if errors.post %}
+				<p class="errNinput">{{errors.post}}</p>
+			{% endif %}
+		</div>
 		<!-- filter list -->
 		<p>
 			<h3>Category</h3>
 		</p>
 		<div id="sideBarCategoryList">
+			<a href="/filterPostByCategory/all">All</a>
 			<div id="categoryLoadErrors"></div>
 		</div>
 		<div id="addNewCategoryDiv">
@@ -57,11 +63,20 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Subject</th>
-					<th>Date</th>
-					<th>Username</th>
-					<th>System</th>
-					<th>Likes</th>
+					<th><a class="tableHeadLink" onclick="sortPostTableBy('subject')">Subject</a></th>
+					<input type="hidden" id="subjectSort" value="{{ subjectDir|default('') }}">
+					<th><a class="tableHeadLink" onclick="sortPostTableBy('date')">Date</a></th>
+					<input type="hidden" id="dateSort" value="{{ dateDir|default('') }}">
+
+					<th><a class="tableHeadLink" onclick="sortPostTableBy('username')">Username</th>
+					<input type="hidden" id="usernameSort" value="{{ usernameDir|default('') }}">
+
+					<th><a class="tableHeadLink" onclick="sortPostTableBy('system')">System</a></th>
+					<input type="hidden" id="systemSort" value="{{ systemDir|default('') }}">
+
+					<th><a class="tableHeadLink" onclick="sortPostTableBy('likes')">Likes</a></th>
+					<input type="hidden" id="likesSort" value="{{ likesDir|default('') }}">
+
 					<th class="role-column">Action</th>
 				</tr>
 			</thead>

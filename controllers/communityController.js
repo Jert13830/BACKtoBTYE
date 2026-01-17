@@ -20,8 +20,6 @@ exports.displayCommunity = async (req, res) => {
       },
     });
 
-    
-    
     res.render("pages/community.twig", {
       title: "Community",
       posts,
@@ -97,7 +95,7 @@ exports.addPost = async (req, res) => {
 
     //Create post photo
     let filePath = fs.existsSync(`./public/assets/images/post/${title}.webp`);
-  
+
 
     if (filePath) {
       filePath = `/assets/images/post/${title}.webp`;
@@ -108,7 +106,7 @@ exports.addPost = async (req, res) => {
     //Save post photo
     await prisma.photo.create({
       data: {
-        id_article : post.id_article ,
+        id_article: post.id_article,
         alt: `${title} post`,
         path: filePath,
       },
@@ -150,4 +148,154 @@ exports.commentPost = async (req, res) => {
 }
 
 exports.likePost = async (req, res) => {
+}
+
+exports.filterPostByCategory = async (req, res) => {
+  const categoryName = req.params.category;
+  let posts = [];
+  let errors = {};
+
+
+  try {
+
+    if (categoryName == "all") {
+      return res.redirect("/displayCommunity");
+    }
+
+    // Find the category
+    const categoryExists = await prisma.categorie.findFirst({
+      where: {
+        categorie: categoryName,
+      },
+    });
+
+    //Category wasn't found
+    if (!categoryExists) {
+      return res.render("pages/community.twig", {
+        posts: [],
+        errors: {
+          post: "Category not found"
+        }
+      });
+    }
+
+
+    // Find the articles with this category
+    posts = await prisma.article.findMany({
+      where: {
+        id_categorie: categoryExists.id_categorie,
+      },
+      include: {
+        categorie: true,
+        articleLikes: true,
+        ordinateur: true,
+        utilisateur: true,
+      },
+    });
+
+    // Render result
+    res.render("pages/community.twig", {
+      posts,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.render("pages/community.twig", {
+      posts,
+      errors: {
+        post: "An error occurred"
+      },
+    });
+  }
+
+}
+
+exports.sortPostByDetails = async (req, res) => {
+  const detailName = req.params.detail;
+  const dir = req.query.dir;
+
+  let posts = [];
+  let errors = {};
+
+  let usernameDir ="";
+  let subjectDir = "";
+  let dateDir = "";
+  let systemDir = "";
+  let likesDir = "";
+
+
+  try {
+
+    let orderBy;
+
+    if (detailName === "subject") {
+      orderBy = { titre: dir };
+      subjectDir = dir;
+    } else if (detailName === "date") {
+      orderBy = { date: dir };
+       dateDir = dir;
+    } else if (detailName === "username") {
+      orderBy = {
+        utilisateur: {
+          pseudo: dir
+        }
+      };
+      usernameDir = dir;
+    } else if (detailName === "system") {
+      orderBy = {
+        ordinateur: {
+          nom: dir
+        }
+      };
+      systemDir = dir;
+
+    } else {
+      // sort by number of likes
+      orderBy = {
+        articleLikes: {
+          _count: dir
+        }
+      };
+      likesDir = dir;
+    }
+
+
+    posts = await prisma.article.findMany({
+      orderBy,
+      include: {
+        categorie: true,
+        articleLikes: true,
+        ordinateur: true,
+        utilisateur: true,
+      },
+    });
+
+    res.render('pages/community.twig',
+      {
+        title: "Community",
+        posts,
+        subjectDir,
+        dateDir,
+        systemDir,
+        usernameDir,
+        likesDir,
+     });
+  }
+  catch (error) {
+    // Custom validation extension
+    if (error.details) {
+      return res.render("pages/community.twig", {
+        errors: error.details,
+        posts,
+      });
+    }
+
+    // Unknown error
+    console.error(error);
+
+    return res.render("pages/community.twig", {
+      errors,
+      posts,
+    });
+  }
 }

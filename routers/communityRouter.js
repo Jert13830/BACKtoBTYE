@@ -20,4 +20,7 @@ communityRouter.post('/updatePost', authGuard, communityController.updatePost);
 communityRouter.post('/commentPost', authGuard, communityController.commentPost);
 communityRouter.post('/likePost', authGuard, communityController.likePost);
 
+communityRouter.get('/filterPostByCategory/:category', communityController.filterPostByCategory);
+communityRouter.get('/sortPostByDetails/:detail', communityController.sortPostByDetails);
+
 module.exports = communityRouter;

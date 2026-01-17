@@ -225,7 +225,7 @@ if (squareBtnClose) {
       window.location.href = "/displayEmulatorList";
     }
 
-     if (page === 'addPost') {
+    if (page === 'addPost') {
       window.location.href = "/community";
     }
 
@@ -273,8 +273,6 @@ if (btnResearch) {
     const selectedRadio = document.querySelector('input[name="selection"]:checked');
     const selectionValue = selectedRadio ? selectedRadio.value : null;
 
-    console.log('searchBar:', searchValue);
-    console.log('selection:', selectionValue);
   });
 }
 
@@ -306,9 +304,9 @@ function updateManufacturer(button, mode) {
   nameBeforeChange.value = button.dataset.manufacturerName;
 
   updateId.value = manufacturerId;
-if (mode != 'category') {
+  if (mode != 'category') {
     manuLogo.src = "/assets/images/logos/" + button.dataset.manufacturerName + ".webp";
-}
+  }
   btnAddManu.textContent = "Update";
 
   if (mode == 'computer') {
@@ -319,7 +317,7 @@ if (mode != 'category') {
   }
   else if (mode == 'emulator') {
     form.action = `/updateEmulatorManufacturer/${manufacturerId}`;
-    
+
   }
   else {
     form.action = `/updateCategory/${manufacturerId}`;
@@ -476,7 +474,7 @@ function treatImages() {
 
       else {
         document.querySelector("#computerNameErrors").textContent = "Please enter a computer name";
-         uploadImageComputer.value = ""; // clears file input, user must reselect
+        uploadImageComputer.value = ""; // clears file input, user must reselect
       }
     });
 
@@ -495,15 +493,15 @@ function treatImages() {
       if (!files.length) return;
       const value = postTitle.value?.trim();
 
-    
+
       if (value) { //Test if a title has been given
-        
+
         fileName = value;
         loadImage(files, "Post", fileName, "#postPhoto");
       }
 
       else {
-      
+
         document.querySelector("#postNameErrors").textContent = "Enter a post title";
         uploadImagePost.value = ""; // clears file input, user must reselect
       }
@@ -532,7 +530,7 @@ function treatImages() {
       }
       else {
         document.querySelector(".manufacturerErrors").textContent = "Please enter a software title";
-         uploadImageSoftware.value = ""; // clears file input, user must reselect
+        uploadImageSoftware.value = ""; // clears file input, user must reselect
       }
     });
 
@@ -557,7 +555,7 @@ function treatImages() {
       }
       else {
         document.querySelector(".manufacturerErrors").textContent = "Please enter a emulator title";
-         uploadImageEmulator.value = ""; // clears file input, user must reselect
+        uploadImageEmulator.value = ""; // clears file input, user must reselect
       }
     });
 
@@ -773,7 +771,7 @@ async function loadRoleList() {
   });
 }
 
-  async function loadCategoryList() {
+async function loadCategoryList() {
 
   const response = await fetch('/listCategory');
   const selectedId = document.querySelector("#previousCategory").value
@@ -785,7 +783,7 @@ async function loadRoleList() {
   const select = document.querySelector('#categorySelect');
   select.innerHTML = '';
 
-   data.categories.forEach(c => {
+  data.categories.forEach(c => {
     const option = document.createElement('option');
     option.value = c.id_categorie;
     option.textContent = c.categorie;
@@ -1139,7 +1137,7 @@ async function loadSystemList() {
       else if (manufacturerMode == "emulator") {
         link.href = `/filterEmulatorByComputer/${encodeURIComponent(name)}`;
       }
-      
+
       link.textContent = name;
 
       para.appendChild(link);
@@ -1179,10 +1177,10 @@ async function loadCategorySideList() {
       const categoryName = category.categorie;
 
       const link = document.createElement("a");
-    
+
       link.href = `/filterPostByCategory/${encodeURIComponent(categoryName)}`;
-      
-      
+
+
       link.textContent = categoryName;
 
       para.appendChild(link);
@@ -1202,8 +1200,8 @@ async function init() {
     loadSystemList();
   }
 
-  if (sideBarCategoryList){
-     loadCategorySideList();
+  if (sideBarCategoryList) {
+    loadCategorySideList();
   }
 
   if (manuImage || computerProfileImage || uploadImageComputer) {
@@ -1268,7 +1266,7 @@ async function init() {
     console.log("No computer select on this page — skipping loadComputerList");
   }
 
-const categorySelect = document.querySelector("#categorySelect");
+  const categorySelect = document.querySelector("#categorySelect");
   if (categorySelect) {
     await loadCategoryList().catch(err => {
       console.error("Failed to load categories:", err);
@@ -1291,7 +1289,6 @@ const categorySelect = document.querySelector("#categorySelect");
   if (btnModify) {
     updateId = btnModify.value;
   }
-  console.log("All relevant data loaded successfully!");
 }
 
 //Get the multi selected computer system for the software
@@ -1304,4 +1301,21 @@ function applyPreselection() {
       opt.selected = true;
     }
   });
+}
+
+function sortPostTableBy(el) {
+
+  let sortElement = document.querySelector(`#${el}Sort`);
+  if (!sortElement) {
+    console.error("Missing element:", el + "Sort");
+    return;
+  }
+
+  if (sortElement.value === '' || sortElement.value === "desc") {
+    sortElement.value = "asc";
+    window.location.href = `/sortPostByDetails/${el}?dir=asc`;
+  } else {
+    sortElement.value = "desc";
+    window.location.href = `/sortPostByDetails/${el}?dir=desc`;
+  }
 }
