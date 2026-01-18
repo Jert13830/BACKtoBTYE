@@ -25,10 +25,9 @@ module.exports = Prisma.defineExtension({
                 
             },
             update: async ({ args, query }) => {
-                const errors = { }
-                
+                const errors = {};
                 //Starts with a letter or number. Ends with a letter or number. Length: 3–30 characters total
-                if (!!/^[\p{L}\p{N}\p{P}\p{Zs}'"«»-–—…!?.,:;()&%#@$€£¥*]{3,60}$/u.test(args.data.titre)) {
+                if (!/^[\p{L}\p{N}\p{P}\p{Zs}'"«»-–—…!?.,:;()&%#@$€£¥*]{3,60}$/u.test(args.data.titre)) {
                     errors.post = "Invalid or empty post title"
                 }
                 

@@ -232,7 +232,7 @@ width: min(90vw, 250px);
     color: #fff;
 }
 
-  .closeBtn{
+  .closeBtnb{
     color:white;
   }
 
@@ -253,7 +253,7 @@ width: min(90vw, 250px);
   
   justify-self:center;
 }
-  .squareBtnClose {
+  .squareBtnCloseb {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -273,7 +273,7 @@ width: min(90vw, 250px);
   cursor: pointer;
 }
 
-.squareBtnClose:hover {
+.squareBtnCloseb:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 

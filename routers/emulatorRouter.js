@@ -21,7 +21,7 @@ emulatorRouter.get('/emulatorDetailSelect/:id', emulatorController.emulatorDetai
 
 emulatorRouter.get("/showUpdateEmulator/:id", authGuard, requireAdmin, emulatorController.showUpdateEmulator);
 
-emulatorRouter.post('/updateEmulator/:id', authGuard, requireAdmin, emulatorController.updateEmulator);
+emulatorRouter.post('/updateEmulator/:id', authGuard, emulatorController.updateEmulator);
 
 
 module.exports = emulatorRouter;

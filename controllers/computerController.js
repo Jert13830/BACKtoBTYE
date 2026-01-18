@@ -38,7 +38,7 @@ exports.displayHome = async (req, res) => {
 
     // Unknown error
     errors.computerName = "An unexpected error occurred.";
-    console.error(error);
+  
 
     return res.render("pages/home.twig", {
       errors,
@@ -81,7 +81,7 @@ exports.displayComputerList = async (req, res) => {
 
     // Unknown error
     errors.computerName = "An unexpected error occurred.";
-    console.error(error);
+  
 
     return res.render("pages/home.twig", {
       errors,
@@ -112,7 +112,7 @@ exports.listComputer = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error retrieving computers:", error);
+  
 
     return res.status(500).json({
       success: false,
@@ -195,7 +195,7 @@ exports.postComputer = async (req, res) => {
 
     // Unknown error
     errors.computerName = "An unexpected error occurred.";
-    console.error(error);
+ 
 
     return res.render("pages/addComputer.twig", {
       errors,
@@ -270,8 +270,7 @@ exports.filterComputerList = async (req, res) => {
       });
     }
 
-    // Unknown error
-    console.error(error);
+  
 
     return res.render("pages/computerList.twig", {
       errors,
@@ -523,8 +522,6 @@ exports.updateComputer = async (req, res) => {
 
     // Unknown error
     errors.computerName = "An unexpected error occurred.";
-    console.error(error);
-    
     return res.render("pages/addComputer.twig", {
       errors,
       transaction: "update",

@@ -13,7 +13,7 @@
 						<img id="emulatorManufacturerLogo" name="emulatorManufacturerLogo" src="/assets/images/logos/{{data.fabricantEmulateur.nom}}.webp" alt="Logo" onerror="this.src='/assets/images/logos/defaultLogo.webp'" width="80">
 					</div>
 					<div id="emulatorNameDiv">
-						<input {{ origin ? 'readonly' : '' }} type="text" name="emulatorName" id="emulatorName" required pattern="[A-Za-z0-9][A-Za-z0-9 _+\-:.()]{0,29}" placeholder="Emulator title" value="{{data.nom|default('') }}">
+						<input {{ origin ? 'readonly' : '' }} type="text" name="emulatorName" title="The title must be 3 - 30 characters long and start with a letter or number." id="emulatorName" required pattern="[A-Za-z0-9][A-Za-z0-9 _+\-:.()]{2,29}" placeholder="Emulator title" value="{{data.nom|default('') }}">
 						<input ype="text" name="emulatorNameBeforeChange" id="emulatorNameBeforeChange" value="{{data.nom|default('') }}" hidden>
 					</div>
 					<div>
@@ -86,7 +86,7 @@
 				</div>
 				<div id="emulatorPhotoHolder">
 					<div id="emulatorProfileImage">
-						<img id="emulatorPhoto" src="/assets/images/emulator/{{data.nom}}.webp" alt="Emulator image" onerror="this.src='/assets/images/emulator/defaultEmulator.webp'">
+						<img id="emulatorPhoto" title="Enter the emulator title before clicking on the photo." src="/assets/images/emulator/{{data.nom}}.webp" alt="Emulator image" onerror="this.src='/assets/images/emulator/defaultEmulator.webp'">
 					</div>
 
 					<input {{ origin ? 'disabled' : '' }} id="uploadImageEmulator" type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="uploadImageEmulator" class="sofwareImage" hidden>
@@ -96,7 +96,7 @@
 				<textarea {{ origin ? 'readonly' : '' }} id="detailsInfo" name="detailsInfo" rows="4" cols="60" placeholder="Emulator Information">{{ data.details|default('') }}</textarea>
 			</div>
 			<div id="link">
-				<input {{ origin ? 'readonly' : '' }} type="url" name="emulatorLink" id="emulatorLink" placeholder="Enter link URL" value="{{data.lien|default('') }}">
+				<input {{ origin ? 'readonly' : '' }} title="Optional" type="url" name="emulatorLink" id="emulatorLink" placeholder="Enter link URL" value="{{data.lien|default('') }}">
 			</div>
 			{% if not origin %}
 				<div class="formBtnDiv">

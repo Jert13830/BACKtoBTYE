@@ -6,10 +6,14 @@ const prisma = new PrismaClient().$extends(validateCommunity);
 const errors = {};
 
 const fs = require('fs');
+const fsPromises = require("fs/promises");
+
+const path = require("path");
 
 
 // Show community
 exports.displayCommunity = async (req, res) => {
+  const user = req.session.user;
   try {
     const posts = await prisma.article.findMany({
       include: {
@@ -17,12 +21,14 @@ exports.displayCommunity = async (req, res) => {
         articleLikes: true,
         ordinateur: true,
         utilisateur: true,
+        photo: true,
       },
     });
 
     res.render("pages/community.twig", {
       title: "Community",
       posts,
+      user,
       error: null,
     });
 
@@ -35,7 +41,7 @@ exports.displayCommunity = async (req, res) => {
       });
     }
     // Unknown error
-    console.error(error);
+
     res.redirect("/")
 
   }
@@ -126,7 +132,7 @@ exports.addPost = async (req, res) => {
 
     // Unknown error
     errors.emulator = "An unexpected error occurred.";
-    console.error(error);
+
 
     return res.render("pages/writeMessage.twig", {
       errors,
@@ -136,12 +142,331 @@ exports.addPost = async (req, res) => {
 }
 
 exports.readPost = async (req, res) => {
-}
+  let data = null;
+  const postId = parseInt(req.params.id, 10);
 
-exports.deletePost = async (req, res) => {
-}
+  try {
+    data = await prisma.article.findFirst({
+      where: {
+        id_article: postId,
+      },
+      include: {
+        categorie: true,
+        articleLikes: true,
+        ordinateur: true,
+        utilisateur: true,
+        photo: true,
+      },
+    });
+
+    if (!data) {
+      return res.redirect("/displayCommunity");
+    }
+
+    console.log("Hello Data: ", data);
+
+    res.render("pages/readMessage.twig", {
+      title: "Message",
+      data,
+      error: null,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.redirect("/displayCommunity");
+  }
+};
+
+
+exports.updatePostList = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+
+  const action = req.body.buttons; // "delete-123" or "modify-123"
+
+  let posts = [];
+
+  //Delete the post
+  if (action.startsWith("delete-")) {
+    let toDelete = action.split("-")[1];
+    toDelete = parseInt(toDelete);
+    let posts = [];
+
+    try {
+
+      //send this data back to fill table if there is an error
+      posts = await prisma.article.findMany({
+        include: {
+          categorie: true,
+          articleLikes: true,
+          ordinateur: true,
+          utilisateur: true,
+          photo: true,
+        },
+      });
+
+
+      //Delete the post photo
+      await prisma.photo.delete({
+        where: {
+          id_article: toDelete,
+        },
+      });
+
+      //get post name for deleting image
+      const postToDelete = await prisma.article.findFirst({
+        where: {
+          id_article: toDelete,
+        }
+      });
+
+      //delete the photo from the folder
+      let filePath = fs.existsSync(`./public/assets/images/post/${postToDelete.titre}.webp`);
+
+
+      if (filePath) {
+        fs.unlink(`./public/assets/images/post/${postToDelete.titre}.webp`, (err) => {
+          if (err) throw err;
+        });
+      }
+
+      //Delete comments
+      await prisma.commentaire.deleteMany({
+        where: {
+          id_article: toDelete,
+        }
+      });
+
+      //Delete likes
+      await prisma.articleLike.deleteMany({
+        where: {
+          id_article: toDelete,
+        }
+      });
+
+      //Delete the post
+      await prisma.article.delete({
+        where: {
+          id_article: toDelete,
+        }
+      });
+
+      //Return to the list of emulator
+      res.redirect("/displayCommunity");
+
+    } catch (error) {
+
+      errors.post = "The post could not be deleted"
+      res.render("pages/community.twig", {
+        errors,
+        mode: "post",
+        title: "Community",
+      });
+
+    }
+
+  } else if (action.startsWith("modify-")) {
+    let id = action.split("-")[1];
+
+    id = parseInt(id);
+    // handle modify
+    res.redirect("/showUpdatePost/" + id);
+
+  }
+};
+
+exports.showUpdatePost = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const postId = Number(req.params.id);
+
+  try {
+    const data = await prisma.article.findUnique({
+      where: {
+        id_article: postId,
+      },
+      include:
+      {
+        categorie: true,
+        articleLikes: true,
+        ordinateur: true,
+        utilisateur: true,
+        photo: true,
+
+      },
+    })
+
+
+    res.render("pages/writeMessage.twig", {
+      title: "Post",
+      data,
+      transaction: "update",
+    });
+  }
+  catch (error) {
+    req.session.errorRequest = "Post data could not be sent";
+    res.redirect("/community");
+  }
+};
+
 
 exports.updatePost = async (req, res) => {
+
+  const data = req.body;
+
+  const postTitle = data.postTitle;
+  const postTitleBefore = data.postTitleBefore;
+  const postId = parseInt(req.params.id);
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+
+  const imageDir = path.join(__dirname, "../public/assets/images/post");
+
+  const nameChanged = postTitle !== postTitleBefore;
+  const newImageUploaded = req.file ? true : false;
+
+  console.log("New file loaded : ", newImageUploaded);
+
+  const oldImageFs = path.join(imageDir, `${postTitleBefore}.webp`);
+  const newImageFs = path.join(imageDir, `${postTitle}.webp`);
+
+  const imageUrl = `/assets/images/post/${postTitle}.webp`;
+  let posts = [];
+
+  try {
+
+    //send this data back to fill table if there is an error
+    posts = await prisma.article.findMany({
+      include: {
+        categorie: true,
+        articleLikes: true,
+        ordinateur: true,
+        utilisateur: true,
+        photo: true,
+      },
+    })
+
+
+    const originalPost = await prisma.article.findFirst({
+      where: {
+        id_article: postId,
+      }
+    });
+
+
+    //Find if a post by the same user has the same title 
+    const postExists = await prisma.article.findFirst({
+      where: {
+        titre: postTitleBefore,
+        id_utilisateur: originalPost.id_utilisateur,
+      }
+    });
+
+
+
+    //Check if the id number is the same as the current one we are changing
+    if (postExists && postId !== postExists.id_article) {
+      //The name already exists
+
+      errors.post = "The title already exists"
+      return res.render("pages/writeMessage.twig", {
+        posts,
+        errors,
+        mode: "post",
+        title: "Details",
+        tranaction: "update",
+      });
+    }
+
+    //Update photo
+    //Handle filesystem
+    if (nameChanged && !newImageUploaded && fs.existsSync(oldImageFs)) {
+      //Name changed only  - copy old image
+      await fsPromises.copyFile(oldImageFs, newImageFs);
+    }
+
+    if (newImageUploaded) {
+      //New image uploaded - save image
+      await fsPromises.writeFile(newImageFs, req.file.buffer);
+    }
+
+    if (!fs.existsSync(newImageFs)) {
+      //No image - use default image
+      const defaultImage = path.join(imageDir, "defaultPost.webp");
+      await fsPromises.copyFile(defaultImage, newImageFs);
+    }
+
+    const photo = await prisma.photo.findFirst({
+      where: { id_article: postId },
+    });
+
+    if (photo) {
+      await prisma.photo.update({
+        where: { id_photo: photo.id_photo },
+        data: {
+          alt: `${postTitle} image`,
+          path: imageUrl,
+        },
+      });
+    }
+
+    //Update post (article)
+    await prisma.article.update({
+      where: { id_article: postId },
+      data: {
+        titre: data.postTitle,
+        texte: data.postMessage,
+        date: new Date(),
+        id_categorie: Number(data.categorySelect),
+        id_ordinateur: Number(data.computerSelect),
+        id_utilisateur: originalPost.id_utilisateur,
+      },
+    });
+
+
+    //Cleanup old image file ONLY if name changed
+    if (nameChanged && fs.existsSync(oldImageFs)) {
+      await fsPromises.unlink(oldImageFs);
+    }
+
+    //Return to the list of message
+    res.redirect("/displayCommunity");
+
+  } catch (error) {
+
+
+    // Prisma unique constraint
+    if (error.code === "P2002") {
+      errors.post = "The post title already exists";
+
+      return res.render("pages/writeMessage.twig", {
+        posts,
+        errors,
+        mode: "post",
+        title: "Post",
+        tranaction: "update",
+      });
+    }
+
+    // Prisma extension validation error
+    if (error.details?.postTitle) {
+      return res.render("pages/writeMessage.twig", {
+        posts,
+        errors: error.details,
+        mode: "post",
+        title: "Post",
+        tranaction: "update",
+      });
+    }
+
+    // Fallback
+    errors.global = "An unexpected error occurred. Please try again.";
+
+    return res.status(500).render("pages/writeMessage.twig", {
+      posts,
+      errors,
+      mode: "post",
+      title: "Post",
+      tranaction: "update",
+    });
+  }
 }
 
 exports.commentPost = async (req, res) => {
@@ -199,7 +524,6 @@ exports.filterPostByCategory = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
     res.render("pages/community.twig", {
       posts,
       errors: {
@@ -217,7 +541,7 @@ exports.sortPostByDetails = async (req, res) => {
   let posts = [];
   let errors = {};
 
-  let usernameDir ="";
+  let usernameDir = "";
   let subjectDir = "";
   let dateDir = "";
   let systemDir = "";
@@ -233,7 +557,7 @@ exports.sortPostByDetails = async (req, res) => {
       subjectDir = dir;
     } else if (detailName === "date") {
       orderBy = { date: dir };
-       dateDir = dir;
+      dateDir = dir;
     } else if (detailName === "username") {
       orderBy = {
         utilisateur: {
@@ -279,7 +603,7 @@ exports.sortPostByDetails = async (req, res) => {
         systemDir,
         usernameDir,
         likesDir,
-     });
+      });
   }
   catch (error) {
     // Custom validation extension
@@ -291,8 +615,6 @@ exports.sortPostByDetails = async (req, res) => {
     }
 
     // Unknown error
-    console.error(error);
-
     return res.render("pages/community.twig", {
       errors,
       posts,

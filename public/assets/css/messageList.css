@@ -129,6 +129,20 @@ th {
     padding: 10px;
 }
 
+tbody tr:nth-child(even) {
+  background-color: #F7F6F5; 
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #EDEDED; 
+}
+
+tbody tr:hover {
+  background-color: #B0B0B0;
+}
+
+
+
 #postListform{
     display:flex;
     gap:5px;
@@ -139,6 +153,25 @@ th {
     cursor: pointer;
 }
 
+.btnForm {
+    border-radius: 6px;
+    background-color: #D3CBCB;
+    color: #3C3C43;
+
+
+    border: 1px #b2afaf solid;
+
+    padding: 5px;
+
+    width: 5rem;
+    font-size: 1rem;
+
+}
+
+.btnForm:hover {
+    background-color: #7c7c7d;
+    color: #fff;
+}
 
 @media (max-width: 800px) {
 

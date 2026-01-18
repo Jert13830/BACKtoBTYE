@@ -51,7 +51,7 @@ exports.displaySoftwareList = async (req, res) => {
 
     // Unknown error
     errors.software = "An unexpected error occurred.";
-    console.error(error);
+  
 
     return res.render("pages/home.twig", {
       errors,
@@ -148,7 +148,7 @@ exports.postSoftware = async (req, res) => {
 
     // Unknown error
     errors.software = "An unexpected error occurred.";
-    console.error(error);
+
 
     return res.render("pages/addSoftware.twig", {
       errors,
@@ -214,7 +214,7 @@ exports.filterSoftwareList = async (req, res) => {
     }
 
     // Unknown error
-    console.error(error);
+  
 
     return res.render("pages/softwareList.twig", {
       errors,
@@ -273,7 +273,7 @@ exports.filterByComputer = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+ 
     res.render("pages/softwareList.twig", {
       softwares: [],
       error: "An error occurred",
@@ -394,7 +394,7 @@ exports.updateSoftware = async (req, res) => {
   try {
 
     //send this data back to fill table if there is an error
-    const softwares = await prisma.logiciel.findMany({
+     softwares = await prisma.logiciel.findMany({
       include: {
         photos: true,
         fabricantLogiciel: true,
@@ -636,6 +636,7 @@ exports.showUpdateSoftware = async (req, res) => {
   }
   catch (error) {
     req.session.errorRequest = "Software data could not be sent";
+
     res.redirect("/softwareList");
   }
 };

@@ -5,3 +5,7 @@ body {
         min-height: 100vh;
     }
 
+    body, html {
+  margin: 0;
+}
+

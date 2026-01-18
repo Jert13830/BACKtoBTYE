@@ -13,7 +13,7 @@
 						<img id="softwareManufacturerLogo" name="softwareManufacturerLogo" src="/assets/images/logos/{{data.fabricantLogiciel.nom}}.webp" alt="Logo" onerror="this.src='/assets/images/logos/defaultLogo.webp'" width="80">
 					</div>
 					<div id="softwareNameDiv">
-						<input {{ origin ? 'readonly' : '' }} type="text" name="softwareName" id="softwareName" required pattern="[A-Za-z0-9][A-Za-z0-9 _+\-:.()]{0,29}" placeholder="Software title" value="{{data.nom|default('') }}">
+						<input {{ origin ? 'readonly' : '' }} type="text" title="The title must be 3 - 30 characters long and start with a letter or number." name="softwareName" id="softwareName" required pattern="[A-Za-z0-9][A-Za-z0-9 _+\-:.()]{2,29}" placeholder="Software title" value="{{data.nom|default('') }}">
 						<input ype="text" name="softwareNameBeforeChange" id="softwareNameBeforeChange" value="{{data.nom|default('') }}" hidden>
 					</div>
 					<div>
@@ -48,7 +48,7 @@
 					<div>
 						{% if not origin %}
 
-							<select class="computerSelect" name="computerSelect" aria-label="Select computers" multiple maxlength="30" required>
+							<select class="computerSelect" name="computerSelect" aria-label="Select computers" multiple maxlength="30" required title="To choose several computer hold down CTRL or Shift and click.">
 								{% for item in options %}
 
 									<option value="{{ item.id }}" {% if item.id in computerIds %} selected {% endif %}>
@@ -100,7 +100,7 @@
 				</div>
 				<div id="softwarePhotoHolder">
 					<div id="softwareProfileImage">
-						<img id="softwarePhoto" src="/assets/images/software/{{data.nom}}.webp" alt="Software image" onerror="this.src='/assets/images/software/defaultSoftware.webp'">
+						<img id="softwarePhoto" src="/assets/images/software/{{data.nom}}.webp" title="Enter the software title before clicking on the photo." alt="Software image" onerror="this.src='/assets/images/software/defaultSoftware.webp'">
 					</div>
 
 					<input {{ origin ? 'disabled' : '' }} id="uploadImageSoftware" type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="uploadImageSoftware" class="sofwareImage" hidden>
@@ -110,7 +110,7 @@
 				<textarea {{ origin ? 'readonly' : '' }} id="detailsInfo" name="detailsInfo" rows="4" cols="60" placeholder="Software Information">{{ data.details|default('') }}</textarea>
 			</div>
 			<div id="link">
-				<input {{ origin ? 'readonly' : '' }} type="url" name="softwareLink" id="softwareLink" placeholder="Enter link URL" value="{{data.lien|default('') }}">
+				<input {{ origin ? 'readonly' : '' }} type="url" name="softwareLink" id="softwareLink" title="Optional" placeholder="Enter link URL" value="{{data.lien|default('') }}">
 			</div>
 			{% if not origin %}
 				<div class="formBtnDiv">

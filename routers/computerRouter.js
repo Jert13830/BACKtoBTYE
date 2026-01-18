@@ -9,6 +9,7 @@ const authGuard = require('../middleware/services/authguard');
 const requireAdmin = require('../middleware/services/requireAdmin');
 
 computerRouter.get('/', computerController.displayHome);
+computerRouter.get('/home', computerController.displayHome);
 
 computerRouter.get('/computerList', computerController.displayComputerList);
 computerRouter.get('/listComputer', upload.none(), computerController.listComputer);

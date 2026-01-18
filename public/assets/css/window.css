@@ -184,7 +184,7 @@
     margin: 1px 0;
 }
 
-.squareBtnClose {
+.hideClose .squareBtnClose {
     display: none;
 }
 

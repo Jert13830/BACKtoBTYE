@@ -40,8 +40,6 @@ exports.listCategory = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error retrieving categories:", error);
-
         return res.status(500).json({
             success: false,
             error: "Unexpected error while retrieving categories."
@@ -87,7 +85,6 @@ exports.addCategory = async (req, res) => {
         res.redirect("/showCategory");
 
     } catch (error) {
-        console.error("Add category Error:", error);
 
         // Prisma unique constraint
         if (error.code === "P2002") {
@@ -255,7 +252,7 @@ exports.updateCategory = async (req, res) => {
         res.redirect("/showCategory");
 
     } catch (error) {
-        console.error("Update category error:", error);
+        
 
         // Prisma unique constraint
         if (error.code === "P2002") {
@@ -330,7 +327,7 @@ exports.filterPostByCategory = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+
     res.render("pages/emulatorList.twig", {
       posts,
       error: "An error occurred",

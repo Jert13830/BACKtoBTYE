@@ -23,7 +23,7 @@ exports.listComputerManufacturer = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error retrieving manufacturers:", error);
+    
 
         return res.status(500).json({
             success: false,
@@ -113,7 +113,7 @@ exports.addComputerManufacturer = async (req, res) => {
         res.redirect("/showComputerManufacturers");
 
     } catch (error) {
-        console.error("Add Computer Manufacturer Error:", error);
+    
 
         // Prisma unique constraint
         if (error.code === "P2002") {
@@ -201,7 +201,7 @@ exports.updateComputerManufacturerList = async (req, res) => {
             }
 
             //Delete the computer manufacturer logo
-            await prisma.photo.deleteMany({
+            await prisma.photo.delete({
                 where: {
                     id_fab_ordinateur: toDelete,
                 },
@@ -335,7 +335,6 @@ exports.updateComputerManufacturer = async (req, res) => {
         res.redirect("/showComputerManufacturers");
 
     } catch (error) {
-        console.error("Update Computer Manufacturer Error:", error);
 
         // Prisma unique constraint
         if (error.code === "P2002") {

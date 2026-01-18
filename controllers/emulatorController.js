@@ -268,7 +268,7 @@ exports.updateEmulatorList = async (req, res) => {
 
      
       //Delete the emulator photo logo
-      await prisma.photo.deleteMany({
+      await prisma.photo.delete({
         where: {
           id_emulateur: toDelete,
         },
@@ -345,7 +345,7 @@ exports.updateEmulator = async (req, res) => {
   try {
 
     //send this data back to fill table if there is an error
-    const emulators = await prisma.emulateur.findMany({
+    emulators = await prisma.emulateur.findMany({
       include: {
         photos: true,
         fabricantEmulateur: true,
@@ -432,7 +432,6 @@ exports.updateEmulator = async (req, res) => {
     res.redirect("/displayEmulatorList");
 
   } catch (error) {
-    console.error("Update emulator Error:", error);
 
     // Prisma unique constraint
     if (error.code === "P2002") {

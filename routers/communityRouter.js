@@ -12,15 +12,21 @@ communityRouter.get('/displayCommunity', communityController.displayCommunity);
 
 communityRouter.get('/addPost', authGuard, communityController.showAddPost);
 communityRouter.post('/addPost', authGuard, communityController.addPost);
-communityRouter.get('/readPost',authGuard, communityController.readPost);
 
-communityRouter.get('/deletePost', authGuard, communityController.deletePost);
-communityRouter.post('/updatePost', authGuard, communityController.updatePost);
+communityRouter.get('/readPost',authGuard, communityController.readPost);
 
 communityRouter.post('/commentPost', authGuard, communityController.commentPost);
 communityRouter.post('/likePost', authGuard, communityController.likePost);
 
 communityRouter.get('/filterPostByCategory/:category', communityController.filterPostByCategory);
 communityRouter.get('/sortPostByDetails/:detail', communityController.sortPostByDetails);
+
+
+communityRouter.post('/updatePost/:id', authGuard, communityController.updatePost);
+communityRouter.post('/updatePostList', authGuard, communityController.updatePostList);
+
+communityRouter.get("/showUpdatePost/:id", authGuard, communityController.showUpdatePost);
+
+communityRouter.get("/readPost/:id", authGuard, communityController.readPost);
 
 module.exports = communityRouter;

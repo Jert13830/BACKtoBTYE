@@ -7,6 +7,7 @@ const roundBtn = document.querySelector('.roundBtn');
 const addComputerDialogue = document.querySelector('#addComputer');
 
 const squareBtnClose = document.querySelector('.squareBtnClose');
+const squareBtnCloseb = document.querySelector('.squareBtnCloseb');
 let openedDialog;
 
 const btnSearch = document.querySelector('.btnSearch');
@@ -198,9 +199,10 @@ if (roundBtn) {
 
 
 //close button
-if (squareBtnClose) {
+if (squareBtnClose || squareBtnCloseb ) {
+  
   document.addEventListener('click', (e) => {
-    const closeBtn = e.target.closest('.squareBtnClose');
+    const closeBtn = e.target.closest('.squareBtnClose') || e.target.closest('.squareBtnCloseb');
     if (!closeBtn) return;
 
     const page = closeBtn.dataset.page;
@@ -210,6 +212,18 @@ if (squareBtnClose) {
       clearFormState("computerForm");
       const origin = "/" + document.querySelector("#originInput").value;
       window.location.href = origin;
+    }
+
+    if (page === 'readMessage') {
+      window.location.href = "/displayCommunity"
+    }
+
+    if (page === 'about') {
+      window.location.href = "/";
+    }
+
+     if (page === 'connect') {
+      window.location.href = "/";
     }
 
     if (page === 'addSoftware') {
@@ -225,8 +239,14 @@ if (squareBtnClose) {
       window.location.href = "/displayEmulatorList";
     }
 
-    if (page === 'addPost') {
-      window.location.href = "/community";
+    if (page === 'registration') {
+      //Clear form data
+      clearFormState("registrationForm");
+      window.location.href = "/connect";
+    }
+
+    if (page === 'writeMessage') {
+      window.location.href = "/displayCommunity";
     }
 
     // Find if we're inside an open dialog
@@ -426,6 +446,10 @@ document.addEventListener("DOMContentLoaded", () => {
 //Retore emulator form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
   restoreFormState("#emulatorForm", "emulatorForm");
+});
+//Retore registration form data when loaded
+document.addEventListener("DOMContentLoaded", () => {
+  restoreFormState("#registrationForm", "registrationForm");
 });
 
 function treatImages() {
@@ -789,7 +813,7 @@ async function loadCategoryList() {
     option.textContent = c.categorie;
 
     // Pre-select if this matches the previous value
-    if (selectedId !== null && String(c.categorie) === String(selectedId)) {
+    if (selectedId !== null && String(c.id_categorie) === String(selectedId)) {
       option.selected = true;
     }
     select.appendChild(option);
@@ -805,7 +829,6 @@ function openUserRole() {
 }
 
 function updateRoleSelect(roles) {
-
 
   const select = document.querySelector("#userRole");
   const selectedId = document.querySelector("#previousRole").value
@@ -827,7 +850,7 @@ function updateRoleSelect(roles) {
     opt.textContent = r.role;
 
     // Pre-select if this matches the previous value
-    if (selectedId !== null && String(r.role) === String(selectedId)) {
+    if (selectedId !== null && String(r.id_role) === String(selectedId)) {
       opt.selected = true;
     }
 
@@ -872,9 +895,6 @@ async function loadManufacturerList() {
       return;
     }
 
-    console.warn(data.manufacturers);
-
-
     updateManufacturerSelect(data.manufacturers);
 
   } catch (err) {
@@ -897,7 +917,6 @@ function updateManufacturerSelect(manufacturers) {
   }
 
   if (!select) {
-    console.warn("No manufacturer select on this page — skipping update");
     return;
   }
 
@@ -954,13 +973,8 @@ function updateManufacturerSelect(manufacturers) {
 
 async function loadComputerList() {
 
-  const errorBox = document.querySelector(".manufacturerErrors");
-
   try {
-    const response = await fetch("/listComputer", {
-      method: "GET"
-    });
-
+    const response = await fetch("/listComputer", { method: "GET" });
     const data = await response.json();
 
     if (!data.success) {
@@ -971,7 +985,7 @@ async function loadComputerList() {
     updateComputerSelect(data.computers);
 
   } catch (err) {
-    // errorBox.textContent = "Failed to load computer list.";
+    console.error("Fetch computer list failed:", err);
   }
 }
 
@@ -987,7 +1001,6 @@ function updateComputerSelect(computers) {
   }
 
   if (!select) {
-    console.warn("No computer select on this page — skipping update");
     return;
   }
 
@@ -1251,7 +1264,6 @@ async function init() {
   const successorSelect = document.querySelector("#successor");
   if (successorSelect) {
     await loadComputerList().catch(err => {
-      console.error("Failed to load computers:", err);
     });
   } else {
     console.log("No successor select on this page — skipping loadComputerList");
@@ -1260,7 +1272,6 @@ async function init() {
   const computerSelect = document.querySelector(".computerSelect");
   if (computerSelect) {
     await loadComputerList().catch(err => {
-      console.error("Failed to load computers:", err);
     });
   } else {
     console.log("No computer select on this page — skipping loadComputerList");
@@ -1269,7 +1280,7 @@ async function init() {
   const categorySelect = document.querySelector("#categorySelect");
   if (categorySelect) {
     await loadCategoryList().catch(err => {
-      console.error("Failed to load categories:", err);
+    
     });
   } else {
     console.log("No category select on this page — skipping loadCategoryList");
@@ -1278,7 +1289,6 @@ async function init() {
   const roleSelect = document.getElementById("userRole");
   if (roleSelect) {
     await loadRoleList().catch(err => {
-      console.error("Failed to load roles:", err);
     });
   } else {
     console.log("No userRole select on this page — skipping loadRoleList");
@@ -1289,6 +1299,7 @@ async function init() {
   if (btnModify) {
     updateId = btnModify.value;
   }
+  
 }
 
 //Get the multi selected computer system for the software
@@ -1307,7 +1318,6 @@ function sortPostTableBy(el) {
 
   let sortElement = document.querySelector(`#${el}Sort`);
   if (!sortElement) {
-    console.error("Missing element:", el + "Sort");
     return;
   }
 

@@ -64,7 +64,6 @@ exports.displayUserList = async (req, res) => {
     }
 
     // Unknown error
-    console.error(error);
 
     return res.render("pages/registry.twig", {
       errors,
@@ -152,7 +151,7 @@ exports.connect = async (req, res) => {
 
     // Unknown error
     errors.connection = "An unexpected error occurred.";
-    console.error(error);
+  
 
     return res.render("pages/connect.twig", {
       errors,
@@ -307,7 +306,7 @@ exports.registerUser = async (req, res) => {
 
     // Unknown error
     errors.usernameProfile = "An unexpected error occurred.";
-    console.error(error);
+   
 
     return res.render("pages/registry.twig", {
       errors,
@@ -330,8 +329,7 @@ exports.listUserRoles = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error retrieving user roles:", error);
-
+   
     return res.status(500).json({
       success: false,
       error: "Unexpected error while retrieving user roles."
@@ -542,7 +540,7 @@ exports.updateUserInfo = async (req, res) => {
         });
 
       } catch (err) {
-        console.error("Image rename failed:", err);
+        
         //place default image
         await prisma.photo.update({
           where: { id_photo: actualUser.photo.id_photo },
@@ -612,7 +610,7 @@ exports.updateUserInfo = async (req, res) => {
     return res.redirect('/');
   }
   catch (error) {
-    console.error("Error updating user data:", error);
+  
 
     return res.render("pages/registry.twig", {
       errors: {
@@ -950,7 +948,6 @@ exports.resetPassword = async (req, res) => {
     res.redirect("/connect")
 
   } catch (error) {
-    console.error("Reset password error:", error);
 
     errors.passwordReset = "An unexpected error occurred while resetting the password.";
 

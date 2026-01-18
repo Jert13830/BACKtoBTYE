@@ -17,7 +17,7 @@
 						<td>{{user.roleUtilisateurs[0].role.role}}</td>
 						<td class="action-column">
 							<form method="post" action="/updateUserList">
-								<button class="btnForm" id="btnModify" name="buttons" value="modify-{{user.id_utilisateur}}">✏️</button>
+								<button class="btnForm" id="btnModify" name="buttons" value="modify-{{user.id_utilisateur}}" onclick="clearFormState('registrationForm')">✏️</button>
 								<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{user.id_utilisateur}}">🗑️</button>
 							</form>
 						</td>

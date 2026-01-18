@@ -7,30 +7,40 @@
 		<div id="formContent">
 			<section id="profile">
 				<div id="photoId">
-					<img id="userPhoto" names="userPhoto" src="/assets/images/users/{{user.pseudo}}.webp" alt="{{user.pseudo}}">
+
+					{% if transaction == 'update' %}
+						<img id="userPhoto" names="userPhoto" src="/assets/images/users/{{data.utilisateur.pseudo}}.webp" alt="{{user.pseudo}}">
+					{% else %}
+						<img id="userPhoto" names="userPhoto" src="/assets/images/users/{{user.pseudo}}.webp" alt="{{user.pseudo}}">
+					{% endif %}
 				</div>
 				<div id="username">
-					<label id="name">{{user.pseudo}}</label>
+					{% if transaction == 'update' %}
+						<label id="name">{{data.utilisateur.pseudo}}</label>
+					{% else %}
+						<label id="name">{{user.pseudo}}</label>
+					{% endif %}
 				</div>
 
 				<div id="postErrors">
 					<p class="inputNErrors" id="postNameErrors"></p>
-						
+
 					{% if errors.post %}
-							<p class="inputNErrors">{{errors.post}}</p>
-						{% endif %}
+						<p class="inputNErrors">{{errors.post}}</p>
+					{% endif %}
 
 				</div>
 			</section>
 
 			<section id="messageContent">
 				<div id="postTitleDiv">
-					<input type="text" name="postTitle" id="postTitle" placeholder="Title required" pattern="^(?=.*[A-Za-z]).{3,60}$"
-  title="3 to 60 characters, must contain at least one letter">
+					<input type="text" name="postTitle" id="postTitle" placeholder="Title required" pattern="^(?=.*[A-Za-z]).{3,60}$" title="3 to 60 characters, must contain at least one letter." value="{{data.titre|default('') }}">
+					<input type="text" name="postTitleBefore" id="postTitleBefore" value="{{data.titre|default('')}}" hidden>
 				</div>
-				
+
 				<div id="postText">
-					<textarea id="postMessage" name="postMessage" placeholder="Post text" rows="18" cols="75"></textarea>
+					<textarea id="postMessage" name="postMessage" placeholder="Post text" rows="18" cols="75">{{ data.texte|default('') }}</textarea>
+
 				</div>
 			</section>
 
@@ -63,18 +73,23 @@
 						<label for="previousCategory">Category :</label>
 					</div>
 					<div>
-						<input hidden id="previousCategory" name="previousCategory" type="text" value="{{ data.categorie.id_categorie|default('0') }}">
+						<input hidden id="previousCategory" name="previousCategory" type="text" value="{{ data.id_categorie|default('0') }}">
 						{% if not origin %}
-							<select id="categorySelect" name="categorySelect" aria-label="Select category" maxlength="30" required value="{{ data.categorie.id_categorie|default('0') }}"></select>
+							<select id="categorySelect" name="categorySelect" aria-label="Select category" maxlength="30" required value="{{ data.id_categorie|default('0') }}"></select>
 						{% else %}
-							<input id="previousCategorySelect" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.category.categorie }}">
+							<input id="previousCategorySelect" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.id_categorie }}">
 						{% endif %}
 					</div>
 				</div>
 
 				<div class="formBtnDiv">
 					<div>
-						<button class="btnForm" type="submit" id="addPostSubmit" name="addPostSubmit">Post</button>
+						{% if transaction == 'update' %}
+						
+							<button class="btnForm" type="submit" id="updatePostSubmit" name="updatePostSubmit">Update</button>
+						{% else %}
+								<button class="btnForm" type="submit" id="addPostSubmit" name="addPostSubmit">Post</button>
+						{% endif %}
 					</div>
 					<div>
 						<button class="btnForm" type="reset" id="btnReset" value="reset">Reset</button>

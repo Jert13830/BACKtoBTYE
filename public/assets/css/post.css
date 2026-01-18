@@ -1,0 +1,50 @@
+#pageContent{
+    display:flex;
+    border: 1px solid #000;
+    border-radius: 10px;
+    min-height: 100vh;
+}
+
+#sideDiv{
+    display:flex;
+    flex-direction: column;
+    color: #fff;
+    background-color: #0078AA;
+    flex: 1;
+}
+
+#messageDiv{
+    display:flex;
+    flex-direction: column;
+     flex: 3;
+}
+
+#titleDate{
+    display:flex;
+    gap: 50px;
+}
+
+#postBtn{
+    display:flex;
+    justify-self: right;
+}
+
+.btnForm {
+    border-radius: 6px;
+    background-color: #D3CBCB;
+    color: #3C3C43;
+
+
+    border: 1px #b2afaf solid;
+
+    padding: 5px;
+
+    width: 5rem;
+    font-size: 1rem;
+
+}
+
+.btnForm:hover {
+    background-color: #7c7c7d;
+    color: #fff;
+}

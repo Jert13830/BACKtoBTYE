@@ -17,7 +17,7 @@
 							</div>
 							<!-- END OF fomanuLogoHolder -->
 							<div>
-								<input {{ origin ? 'readonly' : '' }} type="text" name="nom" maxlength="12" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (15 max)" required value="{{data.nom|default('') }}"/>
+								<input {{ origin ? 'readonly' : '' }} type="text" name="nom" maxlength="12" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (15 max)" title="Enter the computer name, a maximum of 12 characters. The name must be entered before clicking on the photo." required value="{{data.nom|default('') }}"/>
 							</div>
 						</div>
 						<p id="computerNameErrors">{{errors.computerName}}</p>
@@ -182,7 +182,7 @@
 				<div id="formRight">
 					<div id="computerPhotoHolder">
 						<div id="computerProfileImage">
-							<img id="computerPhoto" src="/assets/images/computers/{{data.nom}}.webp" alt="Computer image" onerror="this.src='/assets/images/computers/defaultComputer.webp'">
+							<img id="computerPhoto" title="Please enter the computer name before clicking here." src="/assets/images/computers/{{data.nom}}.webp" alt="Computer image" onerror="this.src='/assets/images/computers/defaultComputer.webp'">
 						</div>
 
 						<input {{ origin ? 'disabled' : '' }} id="uploadImageComputer" type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="filePath" id="filePath" class="computerImage" hidden>

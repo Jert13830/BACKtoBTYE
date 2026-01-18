@@ -44,7 +44,7 @@ exports.listSoftwareManufacturer = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error retrieving manufacturers:", error);
+       
 
         return res.status(500).json({
             success: false,
@@ -124,7 +124,7 @@ exports.addSoftwareManufacturer = async (req, res) => {
         res.redirect("/showSoftwareManufacturers");
 
     } catch (error) {
-        console.error("Add Software Manufacturer Error:", error);
+       
 
         // Prisma unique constraint
         if (error.code === "P2002") {
@@ -215,7 +215,7 @@ exports.updateSoftwareManufacturerList = async (req, res) => {
            
 
             //Delete the software manufacturer logo
-            await prisma.photo.deleteMany({
+            await prisma.photo.delete({
                 where: {
                     id_fab_logiciel: toDelete,
                 },
@@ -348,8 +348,7 @@ exports.updateSoftwareManufacturer = async (req, res) => {
         res.redirect("/showSoftwareManufacturers");
 
     } catch (error) {
-        console.error("Update Software Manufacturer Error:", error);
-
+      
         // Prisma unique constraint
         if (error.code === "P2002") {
             errors.manufacturerName = "The manufacturer already exists";

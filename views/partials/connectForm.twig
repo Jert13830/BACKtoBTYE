@@ -8,7 +8,7 @@
 				</label>
 			</div>
 			<div>
-				<input type="text" name="email" id="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="Email address">
+				<input type="text" name="email" id="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="Email address" title="Please enter a valid email address that you have previously registered with.">
 				{% if errors.email %}
 					<p>{{errors.email}}</p>
 				{% endif %}
@@ -20,7 +20,7 @@
 				</label>
 			</div>
 			<div>
-				<input type="password" name="password" id="password" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" placeholder="6+ characters" autocomplete="current-password">
+				<input type="password" name="password" id="password" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" placeholder="6+ characters" autocomplete="current-password" title="Password must contain 6 or more characters, at least one number and at least one letter.">
 				{% if errors.password %}
 					<p class="error">{{ errors.password }}</p>
 				{% endif %}
