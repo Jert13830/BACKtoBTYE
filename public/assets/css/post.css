@@ -2,7 +2,7 @@
     display:flex;
     border: 1px solid #000;
     border-radius: 10px;
-    min-height: 100vh;
+    min-height: 62vh;
 }
 
 #sideDiv{
@@ -11,22 +11,41 @@
     color: #fff;
     background-color: #0078AA;
     flex: 1;
+    gap:30px;
+    
+     align-items: center;
 }
 
 #messageDiv{
     display:flex;
     flex-direction: column;
      flex: 3;
+     gap:1rem;
+     margin-top: 1rem;
+     padding:1rem;
+     
+}
+
+
+#titleDate{
+  justify-content: center;
+}
+
+#postPhoto{
+    justify-self: center;
 }
 
 #titleDate{
     display:flex;
     gap: 50px;
+     color: #1A1A1A;
+    font-weight: 700;
 }
 
 #postBtn{
     display:flex;
-    justify-self: right;
+    gap:10px;
+    align-self:flex-end;
 }
 
 .btnForm {
@@ -47,4 +66,52 @@
 .btnForm:hover {
     background-color: #7c7c7d;
     color: #fff;
+}
+
+#photoId {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  background-size: cover;
+  background-position: center;
+  border: 3px dashed #aaa;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: opacity 0.2s;
+  margin-top: 20px;
+}
+
+#photoId img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+
+}
+
+ #postPhoto {
+    align-self: center;
+}
+
+#userPhoto {
+  justify-content: center;
+  align-content: center;
+}
+
+@media (max-width: 550px) {
+  #pageContent{
+    flex-direction: column;
+}
+#sideDiv{
+    padding-bottom: 20px;
+}
+}
+
+@media (max-width: 410px) {
+  #postImage{
+    width:250px;
+}
 }

@@ -270,9 +270,14 @@ dialog[open] .squareBtnClose {
 }
 
 #addSoftware .content,
-#addEmulator .content {
+#addEmulator .content{
     height: 70vh;
     overflow: hidden; 
+}
+
+#readMessage .content {
+    height: 70vh;
+    overflow-y: auto; 
 }
 
 

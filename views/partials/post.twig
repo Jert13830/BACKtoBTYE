@@ -1,5 +1,5 @@
 {% block style %}
-	<link rel="stylesheet" href="/assets/css/message.css">
+	<link rel="stylesheet" href="/assets/css/post.css">
 {% endblock %}
 
 <div id="pageContent">
@@ -19,9 +19,9 @@
 	<div id="messageDiv">
 		<div id="titleDate">
 			<div id="postTitle">{{data.titre}}</div>
-			<div id="postDate">{{data.date}}</div>
+			<div id="postDate">{{ data.date|date('d/m/Y - H:i') }}</div>
 		</div>
-		<div id="postPhoto"><img src="/assets/images/post/{{data.titre}}.webp" alt="Photo {{data.utilisateur.pseudo}} post"></div>
+		<div id="postPhoto"><img id="postImage" src="/assets/images/post/{{data.titre}}.webp" alt="Photo {{data.utilisateur.pseudo}} post"></div>
 		<div id="postText">{{data.texte}}</div>
 		<div id="postBtn">
 			<button class="btnForm" id="addLike" name="uaddLike">Like</button>
