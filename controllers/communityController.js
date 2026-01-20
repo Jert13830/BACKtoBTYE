@@ -144,7 +144,7 @@ exports.addPost = async (req, res) => {
 exports.readPost = async (req, res) => {
   let data = null;
   const postId = parseInt(req.params.id, 10);
-   const user = req.session.user;
+  const user = req.session.user;
 
   try {
     data = await prisma.article.findFirst({
@@ -166,15 +166,15 @@ exports.readPost = async (req, res) => {
 
 
     const checkPostLike = await prisma.articleLike.findFirst({
-       where: {
-        id_article : data.id_article,
-        id_utilisateur : user.id,
+      where: {
+        id_article: data.id_article,
+        id_utilisateur: user.id,
       }
     });
 
     let likedPost = false;
 
-    if(checkPostLike){
+    if (checkPostLike) {
       likedPost = true;
     }
 
@@ -186,7 +186,7 @@ exports.readPost = async (req, res) => {
     });
 
   } catch (error) {
-    
+
     res.redirect("/displayCommunity");
   }
 };
@@ -688,12 +688,12 @@ exports.commentPost = async (req, res) => {
   let data = req.body;
   const articleId = parseInt(req.params.id);
 
-    res.render("pages/writeComment.twig", {
-      title: "Comment",
-      data,
-      error: null,
-      articleId,
-    });
+  res.render("pages/writeComment.twig", {
+    title: "Comment",
+    data,
+    error: null,
+    articleId,
+  });
 
 };
 
@@ -704,12 +704,22 @@ exports.addComment = async (req, res) => {
   const user = req.session.user; //Get the current user
 
   console.log(commentData);
- try{
-  
+  try {
 
+    //create the comment
+    post = await prisma.commentaire.create({
+      data: {
+        texte: commentData.commentMessage,
+        date: new Date(),
+        id_article: articleId,
+        id_utilisateur :user.id,
+      },
 
+    });
 
-   } catch (error) {
+    return res.redirect(`/readPost/${articleId}`);
+
+  } catch (error) {
     res.render("pages/writeComment.twig", {
       title: "Comment",
       articleId,
@@ -719,10 +729,4 @@ exports.addComment = async (req, res) => {
       },
     });
   }
-
-  id_commentaire Int         @id @default(autoincrement())
-  texte          String      @db.Text
-  date           DateTime
-  id_article     Int
-  id_utilisateur Int
 }
