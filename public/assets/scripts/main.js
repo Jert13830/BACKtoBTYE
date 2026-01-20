@@ -11,6 +11,7 @@ const squareBtnCloseb = document.querySelector('.squareBtnCloseb');
 let openedDialog;
 
 const btnSearch = document.querySelector('.btnSearch');
+const btnComment = document.querySelector('btnComment');
 
 const computerName = document.querySelector('#computer');
 const manufacturerName = document.querySelector('#manufacturerName');
@@ -199,8 +200,8 @@ if (roundBtn) {
 
 
 //close button
-if (squareBtnClose || squareBtnCloseb ) {
-  
+if (squareBtnClose || squareBtnCloseb) {
+
   document.addEventListener('click', (e) => {
     const closeBtn = e.target.closest('.squareBtnClose') || e.target.closest('.squareBtnCloseb');
     if (!closeBtn) return;
@@ -218,11 +219,16 @@ if (squareBtnClose || squareBtnCloseb ) {
       window.location.href = "/displayCommunity"
     }
 
+    if (page === 'writeComment') {
+      window.location.href = "/displayCommunity"
+    }
+
+    
     if (page === 'about') {
       window.location.href = "/";
     }
 
-     if (page === 'connect') {
+    if (page === 'connect') {
       window.location.href = "/";
     }
 
@@ -271,6 +277,7 @@ if (btnSearch) {
     openedDialog = searchComputer;
   });
 }
+
 
 function openUpdatePasswordDialog(button) {
 
@@ -345,7 +352,7 @@ function updateManufacturer(button, mode) {
 
 }
 
-// Save form data when opening the manufacturers page
+// Save form data when opening when navigating to + tasks
 function saveFormState(formSelector, storageKey) {
   const form = document.querySelector(formSelector);
   if (!form) return;
@@ -357,65 +364,85 @@ function saveFormState(formSelector, storageKey) {
 
     if (el.tagName === "SELECT" && el.multiple) {
       data[el.name] = Array.from(el.selectedOptions).map(o => o.value);
-    }
-    else if (el.type === "checkbox") {
+    } else if (el.type === "checkbox") {
       data[el.name] = el.checked;
-    }
-    else if (el.type === "radio") {
+    } else if (el.type === "radio") {
       if (el.checked) data[el.name] = el.value;
-    }
-    else {
+    } else {
       data[el.name] = el.value;
     }
   });
 
-  sessionStorage.setItem(storageKey, JSON.stringify(data));
+  const payload = {
+    data,
+    savedAt: Date.now()
+  };
+
+  sessionStorage.setItem(storageKey, JSON.stringify(payload));
 }
 
 
-//Restore form data when going back to add computer - software - emulator pages
-function restoreFormState(formSelector, storageKey) {
+
+//Restore form data when going back to add computer - software - emulator pages - limit to 1 minutes
+function restoreFormState(formSelector, storageKey, maxAgeMinutes = 1) {
   const form = document.querySelector(formSelector);
   if (!form) return;
 
   const raw = sessionStorage.getItem(storageKey);
   if (!raw) return;
 
-  const data = JSON.parse(raw);
+  const payload = JSON.parse(raw);
+  const maxAge = maxAgeMinutes * 60 * 1000;
 
-  Object.entries(data).forEach(([name, value]) => {
-    const field = form.querySelector(`[name="${name}"]`);
-    if (!field) return;
+  if (Date.now() - payload.savedAt > maxAge) {
+    sessionStorage.removeItem(storageKey);
+    return;
+  }
 
-    if (field.tagName === "SELECT" && field.multiple) {
-      Array.from(field.options).forEach(opt => {
-        opt.selected = value.includes(opt.value);
+  const data = payload.data;
+
+  Array.from(form.elements).forEach(el => {
+    if (!el.name || !(el.name in data)) return;
+
+    if (el.tagName === "SELECT" && el.multiple) {
+      Array.from(el.options).forEach(o => {
+        o.selected = data[el.name].includes(o.value);
       });
-      field.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-    else if (field.tagName === "SELECT") {
-      field.value = value;
-      field.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-    else if (field.type === "checkbox") {
-      field.checked = value === true;
-    }
-    else if (field.type === "radio") {
-      const radio = form.querySelector(
-        `input[name="${name}"][value="${value}"]`
-      );
-      if (radio) radio.checked = true;
-    }
-    else {
-      field.value = value;
+    } else if (el.type === "checkbox") {
+      el.checked = data[el.name];
+    } else if (el.type === "radio") {
+      el.checked = el.value === data[el.name];
+    } else {
+      el.value = data[el.name];
     }
   });
 }
+
+//clear form data when leaving page
+window.addEventListener("pagehide", () => {
+  const keys = document.body.dataset.formKeys;
+  if (!keys) return;
+
+  keys.split(",").forEach(k => {
+    sessionStorage.removeItem(k.trim());
+  });
+});
+
+
 
 //Clear form stored data
 function clearFormState(storageKey) {
   sessionStorage.removeItem(storageKey);
 }
+
+//Clean up any stray data
+function clearAllFormData() {
+  clearFormState("computerForm");
+  clearFormState("softwareForm");
+  clearFormState("emulatorForm");
+  clearFormState("registrationForm");
+}
+
 
 //On submit clear computer form data
 document.querySelector("#computerForm")?.addEventListener("submit", () => {
@@ -436,7 +463,10 @@ document.querySelector("#emulatorForm")?.addEventListener("submit", () => {
 document.addEventListener("DOMContentLoaded", () => {
 
   restoreFormState("#computerForm", "computerForm");
+
 });
+
+
 
 //Retore software form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
@@ -1280,7 +1310,7 @@ async function init() {
   const categorySelect = document.querySelector("#categorySelect");
   if (categorySelect) {
     await loadCategoryList().catch(err => {
-    
+
     });
   } else {
     console.log("No category select on this page — skipping loadCategoryList");
@@ -1299,7 +1329,7 @@ async function init() {
   if (btnModify) {
     updateId = btnModify.value;
   }
-  
+
 }
 
 //Get the multi selected computer system for the software

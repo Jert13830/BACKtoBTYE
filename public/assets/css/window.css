@@ -335,8 +335,20 @@ dialog[open] .squareBtnClose {
     height: 67vh;
 }
 
+
 #writeMessage .largeWindow{
     height:76vh;
+}
+
+
+#writeComment .largeWindow{
+    width: 70vw;
+    height:63vh;
+}
+
+#writeComment .content {
+    overflow-y: auto;
+    height: 51vh;
 }
 
 dialog[open] {
@@ -367,4 +379,14 @@ dialog[open] {
     #addEmulator .content  {
         height: 72vh;
     }
+}
+@media (max-width: 800px) {
+#writeComment .largeWindow{
+    width: 90vw;
+    height: 80vh;
+    
+}
+#writeComment .content {
+    height: 70vh;
+}
 }

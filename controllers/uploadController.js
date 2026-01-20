@@ -56,7 +56,7 @@ exports.uploadImage = async (req, res) => {
       path: uploadedUrls.length === 1 ? uploadedUrls[0] : null,
     });
   } catch (err) {
-    console.error("Upload error:", err);
+   
     res.status(500).json({ success: false, message: "Error processing image(s)." });
   }
 };

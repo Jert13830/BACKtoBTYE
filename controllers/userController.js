@@ -7,7 +7,10 @@ const prisma = new PrismaClient().$extends(validateUser).$extends(hashExtension)
 // Importing bcrypt for password hashing and comparison
 const bcrypt = require('bcrypt');
 
-const fs = require('fs/promises');
+const fs = require('fs');
+const fsPromises = require("fs/promises");
+
+const path = require("path");
 
 
 
@@ -163,6 +166,8 @@ exports.connect = async (req, res) => {
 exports.registration = async (req, res) => {
   res.render("pages/registry.twig", {
     title: "Registration",
+    transaction: "update",
+     
     error: null
   })
 }
@@ -457,6 +462,18 @@ exports.updateUserInfo = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const userId = parseInt(req.params.id);
   const data = req.body; // To be sent back if there is an error
+
+  const username = req.body.usernameProfile;
+    const usernameBeforeChange = req.body.usernameProfileBeforeChange;
+    const imageDir = path.join(__dirname, "../public/assets/images/users");
+  
+    const nameChanged = username !== usernameBeforeChange;
+    const newImageUploaded = !!req.file;
+  
+    const oldImageFs = path.join(imageDir, `${usernameBeforeChange}.webp`);
+    const newImageFs = path.join(imageDir, `${username}.webp`);
+  
+    const imageUrl = `/assets/images/emulator/${username}.webp`;
  
   try {
     //Get actual user information
@@ -513,43 +530,35 @@ exports.updateUserInfo = async (req, res) => {
     //Email address is the same or available
 
     //Find the photo and change the name
+    //Handle filesystem
+    if (nameChanged && !newImageUploaded && fs.existsSync(oldImageFs)) {
+      //Name changed only  - copy old image
+      await fsPromises.copyFile(oldImageFs, newImageFs);
+    }
 
-    const fs = require('fs/promises');
-    const path = require('path');
+    if (newImageUploaded) {
+      //New image uploaded - save image
+      await fsPromises.writeFile(newImageFs, req.file.buffer);
+    }
 
-    if (data.usernameProfile !== actualUser.pseudo && actualUser.photo) {
+    if (!fs.existsSync(newImageFs)) {
+      //No image - use default image
+      const defaultImage = path.join(imageDir, "defaultUserImage.webp");
+      await fsPromises.copyFile(defaultImage, newImageFs);
+    }
 
-      const oldPath = path.join(
-        __dirname,
-        `../public/assets/images/users/${actualUser.pseudo}.webp`
-      );
+    const photo = await prisma.photo.findFirst({
+      where: { id_utilisateur: userId },
+    });
 
-      const newPath = path.join(
-        __dirname,
-        `../public/assets/images/users/${data.usernameProfile}.webp`
-      );
-
-      try {
-        await fs.rename(oldPath, newPath);
-
-        await prisma.photo.update({
-          where: { id_photo: actualUser.photo.id_photo },
-          data: {
-            path: `/assets/images/users/${data.usernameProfile}.webp`
-          }
-        });
-
-      } catch (err) {
-        
-        //place default image
-        await prisma.photo.update({
-          where: { id_photo: actualUser.photo.id_photo },
-          data: {
-            path: `/assets/images/users/defaultUserImage.webp`
-          }
-        });
-
-      }
+    if (photo) {
+      await prisma.photo.update({
+        where: { id_photo: photo.id_photo },
+        data: {
+          alt: `${username} image`,
+          path: imageUrl,
+        },
+      });
     }
 
     //Now update the user account
@@ -626,7 +635,7 @@ exports.updateUserInfo = async (req, res) => {
 exports.updateUser = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const userId = parseInt(req.params.id);
-
+  
   try {
     const user = await prisma.utilisateur.findFirst({
       where: { id_utilisateur: userId },
@@ -663,7 +672,7 @@ exports.updateUser = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+    
     return res.render("pages/userList.twig", {
       errors: { userError: "Unknown error" }
     });

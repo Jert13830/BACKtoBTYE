@@ -5,9 +5,9 @@
 <div id="formDiv">
 
 	<form id="registrationForm" action="{{ transaction ? '/updateUserInfo/' ~ data.id : '/register' }}" method="post">
-
+		<input type="text" id="backupId" name= "backupId" value="{{data.id}}" >
 		<div id="profileContainer">
-			<img title="Enter a username and then click here to upload your profile photo." id="profileImage" name="profileImage" src="/assets/images/users/{{data.usernameProfile}}.webp" alt="Profile image" onerror="this.src='/assets/images/users/defaultUserImage.webp'">
+			<img id="profileImage" name="profileImage" src="/assets/images/users/{{data.usernameProfile}}.webp" alt="Profile image" onerror="this.src='/assets/images/users/defaultUserImage.webp'" title="Enter a username and then click here to upload your profile photo.">
 		</div>
 		<input id="uploadImageProfile" type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="uploadImageProfile" placeholder="Photo" title="Enter a username and then click here to upload your profile photo.">
 
@@ -16,8 +16,9 @@
 				<label for="usernameProfile">Username :</label>
 			</div>
 			<div>
+				<input type="text" id="usernameProfileBeforeChange" name="usernameProfileBeforeChange" value="{{ data.usernameProfile|default('')}}" hidden >
 				<input type="text" id="usernameProfile" title="Enter a username before clicking on the profile image." required name="usernameProfile" value="{{ data.usernameProfile|default('')}}">
-
+				
 			</div>
 
 		</div>

@@ -9,10 +9,11 @@
 		</div>
 
 		<div id="username">
-				<label id="name">{{data.utilisateur.pseudo}}</label>
+			<label id="name">{{data.utilisateur.pseudo}}</label>
 		</div>
 		<div id="likes">
-				<label id="likes">Likes : {{data.articleLikes|length }}</label>
+			<label id="likes">Likes :
+				{{data.articleLikes|length }}</label>
 		</div>
 
 	</div>
@@ -24,7 +25,14 @@
 		<div id="postPhoto"><img id="postImage" src="/assets/images/post/{{data.titre}}.webp" alt="Photo {{data.utilisateur.pseudo}} post"></div>
 		<div id="postText">{{data.texte}}</div>
 		<div id="postBtn">
-			<button class="btnForm" id="addLike" name="uaddLike">Like</button>
-			<button class="btnForm" id="addComment" name="addComment">Comment</button>
+			<form method="post" action="/postReact">
+				<input type="hidden" name="postId" value="{{ data.id_article}}">
+				<input type="hidden" name="userId" value="{{ user.id }}">
+
+				<button class="btnForm" name="action" value="like">
+					{{ likedPost ? 'Unlike' : 'Like' }}
+				</button>
+				<button class="btnForm" name="action" value="comment">Comment</button>
+			</form>
+		</div>
 	</div>
-</div>

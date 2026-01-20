@@ -1,0 +1,45 @@
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/comment.css">
+{% endblock %}
+
+<div id="pageContent">
+	<form id="commentForm" action="{{ transaction == 'update' ? '/updateComment/' ~ data.id_commentaire : '/addComment/' ~ data.id_article }}" method="post">
+		<div id="commentFormContent">
+			<input type="hidden" name="articleId" value={{articleId}}>
+			<section id="profile">
+				<div id="photoId">
+					{% if transaction == 'update' %}
+						<img id="userPhoto" names="userPhoto" src="/assets/images/users/{{data.utilisateur.pseudo}}.webp" alt="{{user.pseudo}}">
+					{% else %}
+						<img id="userPhoto" names="userPhoto" src="/assets/images/users/{{user.pseudo}}.webp" alt="{{user.pseudo}}">
+					{% endif %}
+				</div>
+				<div id="username">
+					{% if transaction == 'update' %}
+						<label id="name">{{data.utilisateur.pseudo}}</label>
+					{% else %}
+						<label id="name">{{user.pseudo}}</label>
+					{% endif %}
+				</div>
+				<div id="commentErrors">
+					<p class="inputNErrors" id="commentNameErrors"></p>
+					{% if errors.comment %}
+						<p class="inputNErrors">{{errors.comment}}</p>
+					{% endif %}
+				</div>
+			</section>
+			<section id="commentContent">
+				<div id="commentText">
+					<textarea id="commentMessage" name="commentMessage" placeholder="Comment text" rows="18">{{ data.texte|default('') }}</textarea>
+				</div>
+				<div id="btnComment">
+					{% if transaction == 'update' %}
+						<button class="btnForm" type="submit" id="updateCommentSubmit" name="updateCommentSubmit">Update</button>
+					{% else %}
+						<button class="btnForm" type="submit" id="addCommentSubmit" name="addCommentSubmit">Post</button>
+					{% endif %}
+				</div>
+			</section>
+		</div>
+	</form>
+</div>

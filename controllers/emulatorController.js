@@ -45,7 +45,6 @@ exports.displayEmulatorList = async (req, res) => {
 
     // Unknown error
     errors.emulator = "An unexpected error occurred.";
-    console.error(error);
 
     return res.render("pages/home.twig", {
       errors,
@@ -124,7 +123,7 @@ exports.postEmulator = async (req, res) => {
 
     // Unknown error
     errors.emulator = "An unexpected error occurred.";
-    console.error(error);
+    
 
     return res.render("pages/addEmulator.twig", {
       errors,
@@ -186,7 +185,7 @@ exports.filterEmulatorList = async (req, res) => {
     }
 
     // Unknown error
-    console.error(error);
+   
 
     return res.render("pages/emulatorList.twig", {
       errors,
@@ -234,7 +233,7 @@ exports.filterEmulatorByComputer = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+   
     res.render("pages/emulatorList.twig", {
       emulators: [],
       error: "An error occurred",

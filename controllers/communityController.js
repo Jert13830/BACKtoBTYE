@@ -144,6 +144,7 @@ exports.addPost = async (req, res) => {
 exports.readPost = async (req, res) => {
   let data = null;
   const postId = parseInt(req.params.id, 10);
+   const user = req.session.user;
 
   try {
     data = await prisma.article.findFirst({
@@ -163,20 +164,32 @@ exports.readPost = async (req, res) => {
       return res.redirect("/displayCommunity");
     }
 
-    console.log("Hello Data: ", data);
+
+    const checkPostLike = await prisma.articleLike.findFirst({
+       where: {
+        id_article : data.id_article,
+        id_utilisateur : user.id,
+      }
+    });
+
+    let likedPost = false;
+
+    if(checkPostLike){
+      likedPost = true;
+    }
 
     res.render("pages/readMessage.twig", {
       title: "Message",
       data,
       error: null,
+      likedPost,
     });
 
   } catch (error) {
-    console.error(error);
+    
     res.redirect("/displayCommunity");
   }
 };
-
 
 exports.updatePostList = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
@@ -321,8 +334,6 @@ exports.updatePost = async (req, res) => {
 
   const nameChanged = postTitle !== postTitleBefore;
   const newImageUploaded = req.file ? true : false;
-
-  console.log("New file loaded : ", newImageUploaded);
 
   const oldImageFs = path.join(imageDir, `${postTitleBefore}.webp`);
   const newImageFs = path.join(imageDir, `${postTitle}.webp`);
@@ -469,11 +480,6 @@ exports.updatePost = async (req, res) => {
   }
 }
 
-exports.commentPost = async (req, res) => {
-}
-
-exports.likePost = async (req, res) => {
-}
 
 exports.filterPostByCategory = async (req, res) => {
   const categoryName = req.params.category;
@@ -620,4 +626,103 @@ exports.sortPostByDetails = async (req, res) => {
       posts,
     });
   }
+}
+
+exports.postReact = async (req, res) => {
+  try {
+    let { postId, userId, action } = req.body;
+
+    postId = parseInt(postId, 10);
+    userId = parseInt(userId, 10);
+
+    const data = req.body;
+    console.log("Data : ", data);
+
+    if (!postId || !userId || !action) {
+      return res.status(400).send("Missing data");
+    }
+
+    if (action === "like") {
+      console.log("LIKE");
+
+      const exists = await prisma.articleLike.findFirst({
+        where: {
+          id_article: postId,
+          id_utilisateur: userId,
+        }
+      });
+
+      if (exists) {
+        await prisma.articleLike.delete({
+          where: {
+            id_article_like: exists.id_article_like,
+          }
+        });
+      } else {
+        await prisma.articleLike.create({
+          data: {
+            id_article: postId,
+            id_utilisateur: userId,
+            score: 1,
+          }
+        });
+      }
+
+      return res.redirect(`/readPost/${postId}`);
+    }
+
+    if (action === "comment") {
+      console.log("COMMENT");
+      return res.redirect(`/commentPost/${postId}`);
+    }
+
+    return res.status(400).send("Unknown action");
+
+  } catch (err) {
+    console.error("postReact error:", err);
+    return res.status(500).send("Server error");
+  }
+};
+
+exports.commentPost = async (req, res) => {
+  let data = req.body;
+  const articleId = parseInt(req.params.id);
+
+    res.render("pages/writeComment.twig", {
+      title: "Comment",
+      data,
+      error: null,
+      articleId,
+    });
+
+};
+
+
+exports.addComment = async (req, res) => {
+  const commentData = req.body;
+  const articleId = Number(req.body.articleId);
+  const user = req.session.user; //Get the current user
+
+  console.log(commentData);
+ try{
+  
+
+
+
+   } catch (error) {
+    res.render("pages/writeComment.twig", {
+      title: "Comment",
+      articleId,
+      commentData,
+      errors: {
+        comment: "An error occurred"
+      },
+    });
+  }
+
+  id_commentaire Int         @id @default(autoincrement())
+  texte          String      @db.Text
+  date           DateTime
+  id_article     Int
+  id_utilisateur Int
 }

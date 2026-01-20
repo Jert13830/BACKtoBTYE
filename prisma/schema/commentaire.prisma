@@ -1,6 +1,6 @@
 model Commentaire {
   id_commentaire Int         @id @default(autoincrement())
-  texte          String
+  texte          String      @db.Text
   date           DateTime
   id_article     Int
   id_utilisateur Int

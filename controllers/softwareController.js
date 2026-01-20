@@ -501,7 +501,7 @@ exports.updateSoftware = async (req, res) => {
     res.redirect("/displaySoftwareList");
 
   } catch (error) {
-    console.error("Update software Error:", error);
+  
 
     // Prisma unique constraint
     if (error.code === "P2002") {

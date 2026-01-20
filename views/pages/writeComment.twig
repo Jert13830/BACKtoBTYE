@@ -1,0 +1,28 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>{{ title }}</title>
+
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section>
+				<div id="writeComment">
+					{% embed '/partials/window.twig' with {
+   					 	windowType: 'largeWindow',
+    					title:  title ,
+    					showPlus: 0,
+						showClose : 1,
+						pageId:'writeComment'
+					} %}
+						{% block content %}
+							{% include '/partials/comment.twig' %}
+						{% endblock %}
+					{% endembed %}
+				</div>
+			</section>
+		</div>
+		</main>
+{% endblock %}

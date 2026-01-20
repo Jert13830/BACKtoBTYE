@@ -15,8 +15,9 @@ communityRouter.post('/addPost', authGuard, communityController.addPost);
 
 communityRouter.get('/readPost',authGuard, communityController.readPost);
 
-communityRouter.post('/commentPost', authGuard, communityController.commentPost);
-communityRouter.post('/likePost', authGuard, communityController.likePost);
+//communityRouter.post('/commentPost', authGuard, communityController.commentPost);
+
+//communityRouter.post('/likePost', authGuard, communityController.likePost);
 
 communityRouter.get('/filterPostByCategory/:category', communityController.filterPostByCategory);
 communityRouter.get('/sortPostByDetails/:detail', communityController.sortPostByDetails);
@@ -28,5 +29,11 @@ communityRouter.post('/updatePostList', authGuard, communityController.updatePos
 communityRouter.get("/showUpdatePost/:id", authGuard, communityController.showUpdatePost);
 
 communityRouter.get("/readPost/:id", authGuard, communityController.readPost);
+
+communityRouter.post("/postReact", authGuard, communityController.postReact);
+
+communityRouter.get("/commentPost/:id", authGuard, communityController.commentPost);
+
+communityRouter.post("/addComment", authGuard, communityController.addComment);
 
 module.exports = communityRouter;
