@@ -3,36 +3,78 @@
 {% endblock %}
 
 <div id="pageContent">
-	<div id="sideDiv">
-		<div id="photoId">
-			<img id="userPhoto" name="userPhoto" src="/assets/images/users/{{data.utilisateur.pseudo}}.webp" alt="{{user.pseudo}}">
-		</div>
+	<div id="postDiv">
+		<div id="sideDiv">
+			<div id="photoId">
+				<img id="userPhoto" name="userPhoto" src="/assets/images/users/{{data.utilisateur.pseudo}}.webp" alt="{{data.utilisateur.pseudo}}">
+			</div>
 
-		<div id="username">
-			<label id="name">{{data.utilisateur.pseudo}}</label>
-		</div>
-		<div id="likes">
-			<label id="likes">Likes :
-				{{data.articleLikes|length }}</label>
-		</div>
+			<div id="username">
+				<label id="name">{{data.utilisateur.pseudo}}</label>
+			</div>
+			<div id="likes">
+				<label id="likes">Likes :
+					{{data.articleLikes|length }}</label>
+			</div>
 
+		</div>
+		<div id="messageDiv">
+			<div id="titleDate">
+				<div id="postTitle">{{data.titre}}</div>
+				<div id="postDate">{{ data.date|date('d F, Y - H:i ') }}</div>
+			</div>
+			<div id="postPhoto"><img id="postImage" src="/assets/images/post/{{data.titre}}.webp" alt="Photo {{data.utilisateur.pseudo}} post"></div>
+			<div id="postText">{{data.texte}}</div>
+			<div id="postBtn">
+				<form method="post" action="/postReact">
+					<input type="hidden" name="postId" value="{{ data.id_article}}">
+					<input type="hidden" name="userId" value="{{ user.id }}">
+
+					<button class="btnForm" name="action" value="like">
+						{{ likedPost ? 'Unlike' : 'Like' }}
+					</button>
+					<button class="btnForm" name="action" value="comment">Comment</button>
+				</form>
+			</div>
+		</div>
 	</div>
-	<div id="messageDiv">
-		<div id="titleDate">
-			<div id="postTitle">{{data.titre}}</div>
-			<div id="postDate">{{ data.date|date('d/m/Y - H:i') }}</div>
-		</div>
-		<div id="postPhoto"><img id="postImage" src="/assets/images/post/{{data.titre}}.webp" alt="Photo {{data.utilisateur.pseudo}} post"></div>
-		<div id="postText">{{data.texte}}</div>
-		<div id="postBtn">
-			<form method="post" action="/postReact">
-				<input type="hidden" name="postId" value="{{ data.id_article}}">
-				<input type="hidden" name="userId" value="{{ user.id }}">
-
-				<button class="btnForm" name="action" value="like">
-					{{ likedPost ? 'Unlike' : 'Like' }}
-				</button>
-				<button class="btnForm" name="action" value="comment">Comment</button>
-			</form>
-		</div>
+	<!-- comments section -->
+	<div
+		id="commentDiv">
+		<!-- For each comment -->
+		{% for comment in data.commentaires %}
+			<div class="commentItem">
+				<div class="commentSide">
+					<div class="commentPhotoContainer">
+						{% if comment.utilisateur.photo %}
+							<img class="commentPhoto" src="{{ comment.utilisateur.photo.path }}" alt="{{ comment.utilisateur.photo.alt }}">
+						{% else %}
+							<img class="commentPhoto" src="/assets/images/users/{{ comment.utilisateur.pseudo }}.webp" alt="Photo de {{ comment.utilisateur.pseudo }}" onerror="this.src='/assets/images/users/defaultUserImage.webp'">
+						{% endif %}
+					</div>
+					<div class="commentUsername">
+						{{ comment.utilisateur.pseudo }}
+					</div>
+					<div class="commentDate">
+						{{ comment.date|date('d F, Y - H:i ') }}
+					</div>
+				</div>
+				<div class="commentMain">
+					<div class="commentText">{{ comment.texte }}</div>
+					{% if user.role == "administrator" or  user.id == comment.utilisateur.id_utilisateur %}
+						<div class="commentBtn">
+							<form method="post" action="/updateComment">
+							<input type="hidden" name="postId" value={{data.id_article}}>
+								<button class="btnForm" id="btnModify" name="buttons" value="modify-{{comment.id_commentaire}}">✏️</button>
+								<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{comment.id_commentaire}}">🗑️</button>
+							</form>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		{% else %}
+			<p>This post has no comments.</p>
+		{% endfor %}
 	</div>
+	<!-- end of comments -->
+</div>

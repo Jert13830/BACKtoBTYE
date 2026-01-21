@@ -328,7 +328,7 @@ exports.filterPostByCategory = async (req, res) => {
 
   } catch (error) {
 
-    res.render("pages/emulatorList.twig", {
+    res.render("pages/community.twig", {
       posts,
       error: "An error occurred",
     });

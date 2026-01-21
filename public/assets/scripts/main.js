@@ -626,6 +626,7 @@ if (rarity) {
     const child = e.target;
     const nList = document.querySelector("#rarityStars");
     lightStars(child, nList);
+
   });
 }
 
@@ -666,6 +667,8 @@ if (popularity) {
     const child = e.target;
     const nList = document.querySelector("#popularityStars");
     lightStars(child, nList);
+
+
   });
 }
 
@@ -698,27 +701,91 @@ if (profileContainer) {
 
 }
 
+function preLightStars(listId, ratingValue) {
 
+  const nList = document.getElementById(listId);
+  
+  if (!nList) return;
+
+  const nEntry = nList.getElementsByTagName("li");
+  const rating = Number(ratingValue) || 0; 
+
+  for (let i = 0; i < nEntry.length; i++) {
+    if (i < rating) {  
+      nEntry[i].classList.remove('star-unselected');
+      nEntry[i].classList.add('star-selected');
+    } else {
+      nEntry[i].classList.remove('star-selected');
+      nEntry[i].classList.add('star-unselected');
+    }
+  }
+
+  // Set hidden input (same logic)
+  if (listId === "rarityStars") {
+    document.querySelector('input[name="rarityRating"]').value = rating;
+  }
+  if (listId === "popularityStars") {
+    document.querySelector('input[name="popularityRating"]').value = rating;
+  }
+
+  // IMPORTANT: do NOT call updateRating() here
+}
 
 function lightStars(child, nList) {
   const parent = child.parentNode;
   const nEntry = nList.getElementsByTagName("li");
 
-  // Convert HTMLCollection to array and get index
   const index = [...parent.children].indexOf(child);
+  const rating = index + 1;
 
+  // Colour stars
   for (let i = 0; i < nEntry.length; i++) {
-
     if (i <= index) {
       nEntry[i].classList.remove('star-unselected');
       nEntry[i].classList.add('star-selected');
-    }
-    else {
+    } else {
       nEntry[i].classList.remove('star-selected');
       nEntry[i].classList.add('star-unselected');
     }
-
   }
+
+  // Store value in hidden input
+  if (nList.id === "rarityStars") {
+    document.querySelector('input[name="rarityRating"]').value = rating;
+  }
+
+  if (nList.id === "popularityStars") {
+    document.querySelector('input[name="popularityRating"]').value = rating;
+  }
+
+  updateRating(nList.id, rating);
+}
+
+function updateRating(type, rating) {
+  const computerId = document.getElementById("id_ordinateur").value;
+  const userId = document.getElementById("userId").value;
+
+if (!computerId || !userId) {
+    console.error("Missing computerId or userId");
+    return;
+  }
+
+  console.log("Hello ", rating);
+
+
+  fetch("/rateComputer", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      computerId,
+      userId,
+      ratingType: type,      
+      rating
+    })
+  });
+
+
+
 }
 
 /*if (addComputerManu) {
@@ -1285,7 +1352,6 @@ async function init() {
 
   if (manufacturerSelect) {
     await loadManufacturerList().catch(err => {
-      console.error("Failed to load manufacturers:", err);
     });
   } else {
     console.log("No manufacturer select on this page — skipping loadManufacturerList");

@@ -75,12 +75,16 @@
 								</div>
 								<div>
 									{% set rarity = 0 %}
+									{% set count = computer.raretes|length %}
 
-									{% for r in computer.rarity %}
-										{% set rarity = rarity + r %}
-									{% endfor %}
-
-									{% set rarity = rarity / computer.rarity|length %}
+									{% if count > 0 %}
+										{% for r in computer.raretes %}
+											{% set rarity = rarity + r.score %}
+										{% endfor %}
+										{% set rarity = rarity / count %}
+									{% else %}
+										{% set rarity = 0 %}
+									{% endif %}
 
 									{% for i in 0..4 %}
 										{% if i < rarity %}
@@ -96,11 +100,16 @@
 								<div>
 									{% set popularity = 0 %}
 
-									{% for p in computer.popularity %}
-										{% set popularity= popularity + p %}
-									{% endfor %}
+									{% set count = computer.popularites|length %}
 
-									{% set popularity = popularity / computer.popularity|length %}
+									{% if count > 0 %}
+										{% for p in computer.popularites %}
+											{% set popularity = popularity + p.score %}
+										{% endfor %}
+										{% set popularity = popularity / count %}
+									{% else %}
+										{% set popularity = 0 %}
+									{% endif %}
 
 									{% for i in 0..4 %}
 										{% if i < popularity %}

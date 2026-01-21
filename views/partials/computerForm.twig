@@ -4,7 +4,7 @@
 <div class="formBk1">
 	<div class="formBk2 {{bkgClass}}">
 		<form id="computerForm" action="{{ transaction == 'update' ? '/updateComputer/' ~ data.id_ordinateur ~ '?bg='~ bkgClass : '/addComputer' }}" method="post">
-			<input type="text" name="id_ordinateur" id="id_ordinateur" hidden value="{{ data.id_ordinateur  }}">
+			<input type="text" name="id_ordinateur" id="id_ordinateur" hidden value="{{ data.id_ordinateur }}">
 			<input type="text" id="originInput" hidden value="{{ origin|default('computerList')}}">
 			<div id="formDiv">
 				<div id="formLeft">
@@ -195,12 +195,21 @@
 						</div>
 					</div>
 					{% if user %}
+
+						<input hidden name="userId" id="userId" value={{user.id}}>
 						<div id="scoringBtn">
 							<div id="rarity">
 								<div>
+									{% set currentUserScore = null %}
+
+									{% for rar in data.raretes %}
+										{% if user.id == rar.id_utilisateur %}
+											{% set currentUserScore = rar.score %}
+										{% endif %}
+									{% endfor %}
+
 									<p>Rarity</p>
 								</div>
-								<input type="hidden" name="rarityRating" value="">
 								<div class="stars">
 									<ul id="rarityStars">
 										<li>★</li>
@@ -209,13 +218,31 @@
 										<li>★</li>
 										<li>★</li>
 									</ul>
+
+									<input hidden name="rarityRating" value="{{ currentUserScore|default(0) }}">
+									<script>
+										document.addEventListener('DOMContentLoaded', function () {
+										if (typeof preLightStars === 'function') {
+											preLightStars("rarityStars", {{ currentUserScore|default(0) }});
+										} else {
+											console.error("preLightStars still not available after DOMContentLoaded");
+										}
+										});
+									</script>
 								</div>
 							</div>
 							<div id="popularity">
 								<div>
+
+									{% set currentUserScore = null %}
+
+									{% for pop in data.popularites %}
+										{% if user.id == pop.id_utilisateur %}
+											{% set currentUserScore = pop.score %}
+										{% endif %}
+									{% endfor %}
 									<p>Popularity</p>
 								</div>
-								<input type="hidden" name="popularityRating" value="">
 								<div class="stars">
 									<ul id="popularityStars">
 										<li>★</li>
@@ -224,6 +251,16 @@
 										<li>★</li>
 										<li>★</li>
 									</ul>
+									<input hidden name="popularityRating" value="{{ currentUserScore|default(0) }}">
+									<script>
+										document.addEventListener('DOMContentLoaded', function () {
+if (typeof preLightStars === 'function') {
+preLightStars("popularityStars", {{ currentUserScore|default(0) }});
+} else {
+console.error("preLightStars still not available after DOMContentLoaded");
+}
+});
+									</script>
 								</div>
 							</div>
 						</div>

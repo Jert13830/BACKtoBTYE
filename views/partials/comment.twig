@@ -3,9 +3,9 @@
 {% endblock %}
 
 <div id="pageContent">
-	<form id="commentForm" action="{{ transaction == 'update' ? '/updateComment/' ~ data.id_commentaire : '/addComment/' ~ data.id_article }}" method="post">
+	<form id="commentForm" action="{{ transaction == 'update' ? '/editComment/' ~ data.id_commentaire : '/addComment/' ~ data.id_article }}" method="post">
 		<div id="commentFormContent">
-			<input type="hidden" name="articleId" value={{articleId}}>
+			<input type="hidden" name="postId" value={{postId}}>
 			<section id="profile">
 				<div id="photoId">
 					{% if transaction == 'update' %}

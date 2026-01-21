@@ -32,13 +32,13 @@ exports.displayHome = async (req, res) => {
     if (error.details) {
       return res.render("pages/home.twig", {
         errors: error.details,
-        computers:[],
+        computers: [],
       });
     }
 
     // Unknown error
     errors.computerName = "An unexpected error occurred.";
-  
+
 
     return res.render("pages/home.twig", {
       errors,
@@ -52,7 +52,7 @@ exports.displayHome = async (req, res) => {
 
 exports.displayComputerList = async (req, res) => {
 
-   let computers = [];
+  let computers = [];
 
   try {
     computers = await prisma.ordinateur.findMany({
@@ -81,7 +81,7 @@ exports.displayComputerList = async (req, res) => {
 
     // Unknown error
     errors.computerName = "An unexpected error occurred.";
-  
+
 
     return res.render("pages/home.twig", {
       errors,
@@ -112,7 +112,7 @@ exports.listComputer = async (req, res) => {
     });
 
   } catch (error) {
-  
+
 
     return res.status(500).json({
       success: false,
@@ -128,7 +128,7 @@ exports.postComputer = async (req, res) => {
   const bkgClass = "bg-1";
 
   try {
-    
+
     const name = req.body.nom.trim();
     const exists = await prisma.ordinateur.findFirst({
       where: { nom: name }
@@ -169,7 +169,7 @@ exports.postComputer = async (req, res) => {
       filePath = `/assets/images/computers/${comput.nom}.webp`;  // URL for browser
     } else {
       filePath = "/assets/images/computers/defaultComputer.webp";
-      
+
     }
 
     //Save computer photo
@@ -195,7 +195,7 @@ exports.postComputer = async (req, res) => {
 
     // Unknown error
     errors.computerName = "An unexpected error occurred.";
- 
+
 
     return res.render("pages/addComputer.twig", {
       errors,
@@ -270,7 +270,7 @@ exports.filterComputerList = async (req, res) => {
       });
     }
 
-  
+
 
     return res.render("pages/computerList.twig", {
       errors,
@@ -317,7 +317,7 @@ exports.computerDetailSelect = async (req, res) => {
   }
   catch (error) {
     req.session.errorRequest = "Computer data could not be sent";
-    
+
     res.redirect("/computerList");
   }
 }
@@ -376,16 +376,16 @@ exports.updateComputerList = async (req, res) => {
 };
 
 exports.showUpdateComputer = async (req, res) => {
-  
+
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const computerId = Number(req.params.id);
   const bg = Number(req.query.bg);
 
- 
+
 
   const bkgClass = "bg-" + bg;
 
- 
+
 
   try {
     const data = await prisma.ordinateur.findUnique({
@@ -401,7 +401,7 @@ exports.showUpdateComputer = async (req, res) => {
       },
     })
 
-  
+
 
     const successeur = await prisma.ordinateur.findUnique({
       where: {
@@ -419,7 +419,7 @@ exports.showUpdateComputer = async (req, res) => {
   }
   catch (error) {
     req.session.errorRequest = "Computer data could not be sent";
-    
+
     res.redirect("/computerList");
   }
 };
@@ -427,11 +427,11 @@ exports.showUpdateComputer = async (req, res) => {
 exports.updateComputer = async (req, res) => {
   const data = req.body;
   const computerId = Number(req.params.id);
- 
+
 
   const name = req.body.nom.trim();
 
-  const bkgClass =  req.query.bg;
+  const bkgClass = req.query.bg;
 
   try {
 
@@ -440,7 +440,7 @@ exports.updateComputer = async (req, res) => {
       where: { nom: name }
     });
 
-    
+
 
     if (exists && computerId !== exists.id_ordinateur) {
       errors.computerName = "Computer already exists";
@@ -453,7 +453,7 @@ exports.updateComputer = async (req, res) => {
       });
     }
 
-    
+
 
     // Update computer
     const comput = await prisma.ordinateur.update({
@@ -482,7 +482,7 @@ exports.updateComputer = async (req, res) => {
       filePath = `/assets/images/computers/${comput.nom}.webp`;  // URL for browser
     } else {
       filePath = "/assets/images/computers/defaultComputer.webp";
-     
+
     }
 
 
@@ -530,3 +530,83 @@ exports.updateComputer = async (req, res) => {
     });
   }
 }
+
+
+exports.rateComputer = async (req, res) => {
+  const data = req.body;
+
+  const ratingType = data.ratingType === "rarityStars" ? "rarityRating" : "popularityRating";
+
+  if (ratingType == "popularityRating") {
+    //find if the user has already rated the computer
+    const popRatingExists = await prisma.popularite.findFirst({
+      where: {
+        id_ordinateur: Number(data.computerId),
+        id_utilisateur: Number(data.userId),
+      }
+    });
+
+    //if found update it
+    if (popRatingExists) {
+      await prisma.popularite.update({
+        where: {
+          id_popularite: popRatingExists.id_popularite
+        },
+        data:
+        {
+          score: Number(data.rating),
+        },
+      });
+    }
+    else {
+      //ceate a new rating
+      await prisma.popularite.create({
+        data: {
+
+          score: Number(data.rating),
+          id_ordinateur: Number(data.computerId),
+          id_utilisateur: Number(data.userId),
+        },
+      });
+
+    }
+
+
+  }
+  else {
+    //find if the user has already rated the computer
+    const rarRatingExists = await prisma.rarete.findFirst({
+      where: {
+        id_ordinateur: Number(data.computerId),
+        id_utilisateur: Number(data.userId),
+      }
+    });
+
+    //if found update it
+    if (rarRatingExists) {
+      await prisma.rarete.update({
+        where: {
+          id_rarete: rarRatingExists.id_rarete,
+        },
+        data:
+        {
+          score: Number(data.rating),
+        },
+      });
+    }
+    else {
+      //ceate a new rating
+      await prisma.rarete.create({
+        data: {
+
+          score: Number(data.rating),
+          id_ordinateur: Number(data.computerId),
+          id_utilisateur: Number(data.userId),
+        },
+      });
+
+    }
+  }
+
+  res.sendStatus(200);
+};

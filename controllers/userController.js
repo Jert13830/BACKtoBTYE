@@ -166,7 +166,7 @@ exports.connect = async (req, res) => {
 exports.registration = async (req, res) => {
   res.render("pages/registry.twig", {
     title: "Registration",
-    transaction: "update",
+    
      
     error: null
   })
@@ -182,6 +182,7 @@ exports.registerUser = async (req, res) => {
   try {
 
     // Check the two passwords match
+
    
     if (req.body.password == req.body.confirmPassword) {
 
@@ -192,7 +193,7 @@ exports.registerUser = async (req, res) => {
           email: email
         }
       })
-
+     
       if (userEmail) {
         //The email adress is already in use
         //errors.duplicateEmail = "You are already registered";
@@ -205,7 +206,6 @@ exports.registerUser = async (req, res) => {
       else {
         
         //Check to see if the Username is already used
-
         const userProfile = await prisma.utilisateur.findFirst({
           where: {
             pseudo: pseudo,
@@ -215,8 +215,6 @@ exports.registerUser = async (req, res) => {
         
 
         if (userProfile) {
-
-     
 
           //The username is already in use
           //errors.duplicateUser = "The Username is already in use";
@@ -228,9 +226,9 @@ exports.registerUser = async (req, res) => {
         }
         else {
 
-       
+
           //It is a new user - create the user   
-          const user = await prisma.utilisateur.create({
+          const newUser = await prisma.utilisateur.create({
             data: {
               pseudo: pseudo,
               email: email,
@@ -255,30 +253,19 @@ exports.registerUser = async (req, res) => {
             // filePath = "/assets/images/users/defaultUserImage.webp";
           }
 
-        
           //Save User profile photo
           const userPhoto = await prisma.photo.create({
             data: {
-              id_utilisateur: user.id_utilisateur,
-              alt: `Profile photo of ${user.pseudo}`,
+              id_utilisateur: newUser.id_utilisateur,
+              alt: `Profile photo of ${newUser.pseudo}`,
               path: filePath,
             },
           });
 
-
-       
-
-          const iRole = await prisma.role.findFirst({
-            where: {
-              role: req.body.userRole,
-            }
-          });
-
-
           await prisma.roleUtilisateur.create({
             data: {
-              id_role: iRole.id_role,
-              id_utilisateur: user.id_utilisateur,
+              id_role: Number(data.userRole),
+              id_utilisateur: newUser.id_utilisateur,
 
             },
           });
@@ -877,7 +864,6 @@ exports.updatePassword = async (req, res) => {
 
     // Unknown error
     errors.connection = "An unexpected error occurred.";
-    console.error(error);
 
     return res.render("pages/registry.twig", {
       errors,

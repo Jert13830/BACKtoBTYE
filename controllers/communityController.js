@@ -67,15 +67,17 @@ exports.addPost = async (req, res) => {
 
     const title = req.body.postTitle.trim();  //get the post title
 
+
     const exists = await prisma.article.findFirst({
       where: {
         titre: title,
-        id_utilisateur: user.id_utilisateur
+        id_utilisateur: user.id
       }
     });
 
+   
     if (exists) {
-      errors.post = "You already have a post with this name.";
+      errors.post = "You already have a post with this title.";
 
       return res.render("pages/writeMessage.twig", {
         errors,
@@ -142,12 +144,15 @@ exports.addPost = async (req, res) => {
 }
 
 exports.readPost = async (req, res) => {
-  let data = null;
   const postId = parseInt(req.params.id, 10);
   const user = req.session.user;
 
+  if (isNaN(postId)) {
+    return res.redirect("/displayCommunity");
+  }
+
   try {
-    data = await prisma.article.findFirst({
+    const data = await prisma.article.findUnique({
       where: {
         id_article: postId,
       },
@@ -155,38 +160,62 @@ exports.readPost = async (req, res) => {
         categorie: true,
         articleLikes: true,
         ordinateur: true,
-        utilisateur: true,
-        photo: true,
-      },
+        utilisateur: {
+          select: {
+            pseudo: true,
+            photo: {
+              select: {
+                path: true,
+                alt: true,
+              }
+            }
+          }
+        },
+        commentaires: {
+          include: {
+            utilisateur: {
+              select: {
+                id_utilisateur: true,
+                pseudo: true,
+                photo: {
+                  select: {
+                    path: true,
+                    alt: true,
+                  }
+                }
+              }
+            }
+          },
+          orderBy: {
+            date: 'desc',     // newest comments first (optional but nice)
+          }
+        }
+      }
     });
 
     if (!data) {
       return res.redirect("/displayCommunity");
     }
 
-
+    // Check if current user liked the post
     const checkPostLike = await prisma.articleLike.findFirst({
       where: {
         id_article: data.id_article,
-        id_utilisateur: user.id,
+        id_utilisateur: user?.id,
       }
     });
 
-    let likedPost = false;
-
-    if (checkPostLike) {
-      likedPost = true;
-    }
+    const likedPost = !!checkPostLike;
 
     res.render("pages/readMessage.twig", {
       title: "Message",
       data,
-      error: null,
+      user,
       likedPost,
+      error: null,
     });
 
   } catch (error) {
-
     res.redirect("/displayCommunity");
   }
 };
@@ -636,15 +665,13 @@ exports.postReact = async (req, res) => {
     userId = parseInt(userId, 10);
 
     const data = req.body;
-    console.log("Data : ", data);
+
 
     if (!postId || !userId || !action) {
       return res.status(400).send("Missing data");
     }
 
     if (action === "like") {
-      console.log("LIKE");
-
       const exists = await prisma.articleLike.findFirst({
         where: {
           id_article: postId,
@@ -672,27 +699,26 @@ exports.postReact = async (req, res) => {
     }
 
     if (action === "comment") {
-      console.log("COMMENT");
       return res.redirect(`/commentPost/${postId}`);
     }
 
     return res.status(400).send("Unknown action");
 
   } catch (err) {
-    console.error("postReact error:", err);
+    
     return res.status(500).send("Server error");
   }
 };
 
 exports.commentPost = async (req, res) => {
   let data = req.body;
-  const articleId = parseInt(req.params.id);
+  const postId = parseInt(req.params.id);
 
   res.render("pages/writeComment.twig", {
     title: "Comment",
     data,
     error: null,
-    articleId,
+    postId,
   });
 
 };
@@ -700,10 +726,8 @@ exports.commentPost = async (req, res) => {
 
 exports.addComment = async (req, res) => {
   const commentData = req.body;
-  const articleId = Number(req.body.articleId);
+  const postId = Number(req.body.postId);
   const user = req.session.user; //Get the current user
-
-  console.log(commentData);
   try {
 
     //create the comment
@@ -711,18 +735,18 @@ exports.addComment = async (req, res) => {
       data: {
         texte: commentData.commentMessage,
         date: new Date(),
-        id_article: articleId,
-        id_utilisateur :user.id,
+        id_article: postId,
+        id_utilisateur: user.id,
       },
 
     });
 
-    return res.redirect(`/readPost/${articleId}`);
+    return res.redirect(`/readPost/${postId}`);
 
   } catch (error) {
     res.render("pages/writeComment.twig", {
       title: "Comment",
-      articleId,
+      postId,
       commentData,
       errors: {
         comment: "An error occurred"
@@ -730,3 +754,109 @@ exports.addComment = async (req, res) => {
     });
   }
 }
+
+exports.updateComment = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+
+  const action = req.body.buttons; // "delete-123" or "modify-123"
+  const postId = Number(req.body.postId);
+
+  //Delete the comment
+  if (action.startsWith("delete-")) {
+    let toDelete = action.split("-")[1];
+    toDelete = parseInt(toDelete);
+
+    try {
+      //Delete the comment
+
+      await prisma.commentaire.delete({
+        where: {
+          id_commentaire: toDelete,
+        },
+      });
+
+      //Return to the post
+      res.redirect(`/readPost/${postId}`);
+
+    } catch (error) {
+
+      errors.post = "The comment could not be deleted"
+      res.redirect(`/readPost/${postId}`);
+    }
+
+  } else if (action.startsWith("modify-")) {
+    let id = action.split("-")[1];
+
+    id = parseInt(id);
+    // handle modify
+    res.redirect(`/showUpdateComment/${id}?post=${postId}`);
+  }
+};
+
+
+exports.editComment = async (req, res) => {
+  const postId = Number(req.body.postId);
+  const commentId = Number(req.params.id);
+
+  try {
+    await prisma.commentaire.update({
+      where: {
+        id_commentaire: commentId,
+      },
+      data: {
+        texte: req.body.commentMessage,
+      },
+    });
+
+    // Return to the post
+    res.redirect(`/readPost/${postId}`);
+
+  } catch (error) {
+    console.error("Error updating comment:", error);
+
+    // Always go back to the post, even if it failed
+    errors.post="An error occurred";
+    return res.redirect(`/readPost/${postId}?error=editComment`);
+  }
+}
+
+
+exports.showUpdateComment = async (req, res) => {
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const commentId = Number(req.params.id);
+  const postId = Number(req.query.post);
+
+  try {
+    const data = await prisma.commentaire.findUnique({
+      where: {
+        id_commentaire: commentId,
+      },
+      include:
+      {
+        utilisateur: {
+          select: {
+            id_utilisateur: true,
+            pseudo: true,
+            photo: {
+              select: {
+                path: true,
+                alt: true,
+              }
+            }
+          }
+        }
+      },
+    })
+
+    res.render("pages/writeComment.twig", {
+      title: "Comment",
+      data,
+      postId,
+      transaction: "update",
+    });
+  }
+  catch (error) {
+    req.session.errorRequest = "Comment data could not be sent";
+    return res.redirect(`/readPost/${postId}`);
+  }
+};

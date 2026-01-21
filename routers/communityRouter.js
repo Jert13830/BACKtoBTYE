@@ -36,4 +36,8 @@ communityRouter.get("/commentPost/:id", authGuard, communityController.commentPo
 
 communityRouter.post("/addComment", authGuard, communityController.addComment);
 
+communityRouter.post('/updateComment', authGuard, communityController.updateComment);
+communityRouter.get("/showUpdateComment/:id", authGuard, communityController.showUpdateComment);
+communityRouter.post('/editComment/:id', authGuard, communityController.editComment);
+
 module.exports = communityRouter;

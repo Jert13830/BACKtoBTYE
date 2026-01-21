@@ -15,12 +15,13 @@ emulatorRouter.get('/displayEmulatorList', emulatorController.displayEmulatorLis
 emulatorRouter.post('/filterEmulator', emulatorController.filterEmulatorList);
 
 emulatorRouter.get('/filterEmulatorByComputer/:id', emulatorController.filterEmulatorByComputer);
-emulatorRouter.post('/updateEmulatorList', authGuard, requireAdmin, emulatorController.updateEmulatorList);
+
 
 emulatorRouter.get('/emulatorDetailSelect/:id', emulatorController.emulatorDetailSelect);
 
 emulatorRouter.get("/showUpdateEmulator/:id", authGuard, requireAdmin, emulatorController.showUpdateEmulator);
 
+emulatorRouter.post('/updateEmulatorList', authGuard, requireAdmin, emulatorController.updateEmulatorList);
 emulatorRouter.post('/updateEmulator/:id', authGuard, emulatorController.updateEmulator);
 
 

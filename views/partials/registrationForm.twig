@@ -5,7 +5,7 @@
 <div id="formDiv">
 
 	<form id="registrationForm" action="{{ transaction ? '/updateUserInfo/' ~ data.id : '/register' }}" method="post">
-		<input type="text" id="backupId" name= "backupId" value="{{data.id}}" >
+		<input type="text" id="backupId" name= "backupId" value="{{data.id}}" hidden>
 		<div id="profileContainer">
 			<img id="profileImage" name="profileImage" src="/assets/images/users/{{data.usernameProfile}}.webp" alt="Profile image" onerror="this.src='/assets/images/users/defaultUserImage.webp'" title="Enter a username and then click here to upload your profile photo.">
 		</div>

@@ -27,6 +27,6 @@ computerRouter.get("/showUpdateComputer/:id", authGuard, requireAdmin, computerC
 
 computerRouter.post('/updateComputer/:id', authGuard, requireAdmin, computerController.updateComputer);
 
-
+computerRouter.post('/rateComputer', authGuard, computerController.rateComputer);
 
 module.exports = computerRouter;
