@@ -173,10 +173,10 @@ tbody tr:hover {
     color: #fff;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
 
     #openAside {
-        display: block;
+    display: block;
     width: 5rem;
     padding: 0.4rem;
     font-size: 1rem;

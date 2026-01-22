@@ -195,11 +195,11 @@
 						</div>
 					</div>
 					{% if user %}
-
 						<input hidden name="userId" id="userId" value={{user.id}}>
 						<div id="scoringBtn">
 							<div id="rarity">
 								<div>
+								<!-- Prefill the computer rating stars -->
 									{% set currentUserScore = null %}
 
 									{% for rar in data.raretes %}

@@ -8,10 +8,18 @@ const errors = {};
 const fs = require('fs');
 
 
+
+
 // Show homepage
 exports.displayHome = async (req, res) => {
 
+let lastOuting = null;
+let latestNews = null;
+const errors = {};
+
   try {
+
+    //Get the computer data
     const computers = await prisma.ordinateur.findMany({
       include:
       {
@@ -22,9 +30,50 @@ exports.displayHome = async (req, res) => {
       },
     });
 
+    //Get last outing
+    const findOuting = await prisma.categorie.findFirst({
+      where: {
+        categorie: "Outings",
+      }
+    });
+
+    if (findOuting) {
+
+      lastOuting = await prisma.article.findFirst({
+        where: {
+          id_categorie: findOuting.id_categorie,
+        },
+        orderBy: {
+          date: 'desc',
+        }
+      });
+    }
+
+    //Get lastest news
+
+    const findNews = await prisma.categorie.findFirst({
+      where: {
+        categorie: "News",
+      }
+    });
+
+    if (findNews) {
+
+      latestNews = await prisma.article.findFirst({
+        where: {
+          id_categorie: findNews.id_categorie,
+        },
+        orderBy: {
+          date: 'desc',
+        }
+      });
+    }
+
     res.render("pages/home.twig", {
       title: "Home",
       computers,
+      lastOuting,
+      latestNews,
       error: null,
     });
 
@@ -42,7 +91,7 @@ exports.displayHome = async (req, res) => {
 
     return res.render("pages/home.twig", {
       errors,
-      computers,
+      computers: [],
     });
   }
 

@@ -16,40 +16,69 @@
 						showPlus: 0,
 						pageId: 'home'
 						} %}
-					{% block content %}
-						{% include '/partials/computerCarousel.twig' %}
-					{% endblock %}
-				{% endembed %}
+						{% block content %}
+							{% include '/partials/computerCarousel.twig' %}
+						{% endblock %}
+					{% endembed %}
 				</div>
 			</section>
 
 		</div>
-			<section>
+		<section>
 
-        {# Lower section windows #}
-				<div class="newsOutings">
+			{# Lower section windows #}
+			<div
+				class="newsOutings">
 
-          {# News window #}
-					{% include "/partials/window.twig" with {
+				{# News window #}
+				{% embed '/partials/window.twig' with {
               windowType: 'newsDiv column',    
               title: 'News',
-              content: '<p>News Informations</p>',
               showPlus: 0
-            } 
-          %}
+            }%}
+					{% block content %}
+					<div class="info">
+						<p>
+							<h3>RETRO NEWS</h3>
+						</p>
+						{% if latestNews %}
+						<a class="infoLink" href="/readPost/{{latestNews.id_article}}">
+							<p class="infoTitle uppercaseText">{{ latestNews.titre|striptags|trim|split(' ')|slice(0, 10)|join(' ') }}</p>
+							<p class="infoText uppercaseText">{{ latestNews.texte|striptags|trim|split(' ')|slice(0, 10)|join(' ') }}</p>
+						</a>
+						{% else %}
+							<p class="infoTitle uppercaseText">*** No news ***</p>
+						{% endif %}
+					 </div>
+					{% endblock %}
+				{% endembed %}
 
-          {# Outing information window #}
-					{% include "/partials/window.twig"  with {
+				{# Outing information window #}
+				{% embed '/partials/window.twig' with {
               windowType: 'outingsDiv column',  
               title: 'Outings',
-              content: '<p>Outings Informations</p>',
               showPlus: 0
             } 
           %}
+					{% block content %}
+					<div class="info">
+						<p>
+							<h3>UPCOMING RETRO OUTINGS</h3>
+						</p>
+						{% if lastOuting %}
+						<a class="infoLink" href="/readPost/{{lastOuting.id_article}}">
+							<p class="infoTitle uppercaseText">{{ lastOuting.titre |striptags|trim|split(' ')|slice(0, 10)|join(' ') }}</p>
+							<p class="infoText uppercaseText">{{ lastOuting.texte |striptags|trim|split(' ')|slice(0, 10)|join(' ') }}</p>
+						</a>
+						{% else %}
+							<p>*** No outing information ***</p>
+						{% endif %}
+					</div>
+					{% endblock %}
+				{% endembed %}
 
-				</div>
+			</div>
 
-			</section>
-		</div>
-	</main>
-{% endblock %}
+		</section>
+	</div>
+</main>{% endblock %}

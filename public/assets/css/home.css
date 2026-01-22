@@ -41,6 +41,32 @@
    gap:15px;
 }
 
+.uppercaseText {
+        text-transform: uppercase;
+    }
+
+.infoTitle{
+    font-weight: 800;
+    font-size:medium;
+     margin: 0;
+    padding-bottom: 3px;
+    color: rgba(60, 60, 67, 0.8);
+}
+
+.infoText{
+    
+    font-weight: 800;
+    font-size:small;
+     margin: 0;
+    padding: 0;
+    color: rgba(60, 60, 67, 0.8);
+}
+
+.infoLink{
+    text-decoration: none;
+    cursor: pointer;
+}
+
 /* Mobile: Stack vertically */
 
 @media (max-width: 768px) {
