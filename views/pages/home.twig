@@ -71,7 +71,7 @@
 							<p class="infoText uppercaseText">{{ lastOuting.texte |striptags|trim|split(' ')|slice(0, 10)|join(' ') }}</p>
 						</a>
 						{% else %}
-							<p>*** No outing information ***</p>
+							<p class="infoTitle uppercaseText">*** No outing information ***</p>
 						{% endif %}
 					</div>
 					{% endblock %}
