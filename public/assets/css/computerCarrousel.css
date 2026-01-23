@@ -507,6 +507,9 @@ img {
     border-radius: 16px;
     padding: 16px;
   }
+  .computerCardOuter {
+    width:303px;
+  }
 }
 
 @media (max-width: 490px) {

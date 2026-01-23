@@ -9,7 +9,9 @@
   display: grid;
   /*grid-template-columns: 1fr 1fr 1fr;*/
   grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+
   gap: 20px;
+
   height: 100%;
   width: 100%;
 
@@ -38,7 +40,7 @@
   margin: auto;
   justify-content: center;
   align-items: center;
-  
+
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -50,13 +52,13 @@
     0 4px 6px rgba(0, 0, 0, 0.12);
 }
 
-.computerCardDiv{
+.computerCardDiv {
   position: relative;
-  
+
 }
 
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 1) .computerCardBackground {
+.computerListGrid>.computerCardDiv:nth-child(6n + 1) .computerCardBackground {
   background: linear-gradient(to top left,
       #ff7675 0%,
       #ffcccb 20%,
@@ -67,7 +69,7 @@
   border: solid 1px #FF7675;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 2) .computerCardBackground {
+.computerListGrid>.computerCardDiv:nth-child(6n + 2) .computerCardBackground {
   background: linear-gradient(to top left,
       #55A630 0%,
       #D1F2A5 20%,
@@ -78,7 +80,7 @@
   border: solid 1px #55A630;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 3) .computerCardBackground {
+.computerListGrid>.computerCardDiv:nth-child(6n + 3) .computerCardBackground {
   background: linear-gradient(to top left,
       #74B9FF 0%,
       #A8E6CF 20%,
@@ -89,7 +91,7 @@
   border: solid 1px #74B9FF;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 4) .computerCardBackground {
+.computerListGrid>.computerCardDiv:nth-child(6n + 4) .computerCardBackground {
   background: linear-gradient(to top left,
       #A29BFE 0%,
       #E1BEE7 20%,
@@ -100,7 +102,7 @@
   border: solid 1px #A29BFE;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 5) .computerCardBackground {
+.computerListGrid>.computerCardDiv:nth-child(6n + 5) .computerCardBackground {
   background: linear-gradient(to top left,
       #FFB347 0%,
       #FFE0B2 20%,
@@ -111,7 +113,7 @@
   border: solid 1px #FFB347;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 6) .computerCardBackground {
+.computerListGrid>.computerCardDiv:nth-child(6n + 6) .computerCardBackground {
   background: linear-gradient(to top left,
       #F8A5C2 0%,
       #FCDDE2 20%,
@@ -243,123 +245,123 @@ img {
 }*/
 
 /* Colour the computer card titles */
-.computerListGrid > .computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-1 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #ff7675;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-2 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #ffcccb;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-3 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #e74c3c;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-4 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #ffcccb;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-5 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #ff7675;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-1 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #55A630;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-2 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #D1F2A5;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-3 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #27AE60;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-4 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #D1F2A5;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-5 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 2) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #55A630;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-1 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #74B9FF;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-2 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #A8E6CF;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-3 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #0984E3;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-4 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #A8E6CF;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-5 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 3) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #74B9FF;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-1 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #A29BFE;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-2 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #E1BEE7;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-3 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #8E44AD;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-4 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #E1BEE7;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-5 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 4) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #A29BFE;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-1 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #FFB347;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-2 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #FFE0B2;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-3 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #E67E22;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-4 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #FFE0B2;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-5 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 5) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #FFB347;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-1 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-1 {
   stop-color: #F8A5C2;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-2 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-2 {
   stop-color: #FCDDE2;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-3 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-3 {
   stop-color: #E84393;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-4 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-4 {
   stop-color: #FCDDE2;
 }
 
-.computerListGrid > .computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-5 {
+.computerListGrid>.computerCardDiv:nth-child(6n + 6) .computerCardTitleMiddle svg .grad-5 {
   stop-color: #F8A5C2;
 }
 
@@ -421,8 +423,9 @@ img {
 #slideRightBtn {
   transform: rotate(270deg);
 }
+
 /*** search bar***/
-#searchComputer{
+#searchComputer {
   background-color: transparent;
   border: 0;
 
@@ -435,59 +438,62 @@ img {
 }
 
 #searchBarContent {
-  width: min(90vw, 500px); /* responsive */
+  width: min(90vw, 500px);
+  /* responsive */
   background-color: #7e7f7f;
   border-radius: 20px;
   padding: 20px;
-  position: relative; /* needed for X button */
+  position: relative;
+  /* needed for X button */
   border: 1px solid white;
 }
 
 #btnResearch {
-    border-radius: 6px;
-    background-color: #D3CBCB;
-    color: #3C3C43;
+  border-radius: 6px;
+  background-color: #D3CBCB;
+  color: #3C3C43;
 
 
-    border: 1px #b2afaf solid;
+  border: 1px #b2afaf solid;
 
-    padding: 5px;
+  padding: 5px;
 
-    width: 5rem;
-    font-size: 1rem;
+  width: 5rem;
+  font-size: 1rem;
 
 }
 
 #btnResearch:hover {
-    background-color: #7c7c7d;
-    color: #fff;
+  background-color: #7c7c7d;
+  color: #fff;
 }
 
-  .closeBtn{
-    color:white;
-  }
+.closeBtn {
+  color: white;
+}
 
-  fieldset{
-    border:0;
-    color:#fff;
-    justify-self: center;
-  }
+fieldset {
+  border: 0;
+  color: #fff;
+  justify-self: center;
+}
 
-  #searchBar{
-    border-radius: 10px 0px 0 10px;
-  }
+#searchBar {
+  border-radius: 10px 0px 0 10px;
+}
 
-  #searchForm{
-      align-content: center;
-  }
+#searchForm {
+  align-content: center;
+}
 
-  #searchGrid {
+#searchGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-top: 30px;
 }
-  .squareBtnClose {
+
+.squareBtnClose {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -507,7 +513,7 @@ img {
   cursor: pointer;
 }
 
-.computerCardButtons{
+.computerCardButtons {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
@@ -520,19 +526,19 @@ img {
   bottom: clamp(0.5rem, 2vw, 1rem);
   right: clamp(0.5rem, 2vw, 1rem);
 
-   background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4);
   padding: 0.25rem;
   border-radius: 0.5rem;
 }
 
-.computerCardButtons button{
+.computerCardButtons button {
   border-radius: 6px;
- 
+
 }
 
-.computerCardButtons button:hover{
-background-color: #7c7c7d;
-    color: #fff;
+.computerCardButtons button:hover {
+  background-color: #7c7c7d;
+  color: #fff;
 }
 
 .computerCardButtons {
@@ -551,10 +557,18 @@ background-color: #7c7c7d;
 .squareBtnClose:hover {
   background: rgba(255, 255, 255, 0.15);
 }
+
 @media (max-width: 480px) {
   #searchBarContent {
     border-radius: 16px;
     padding: 16px;
+  }
+
+  .computerCardOuter {
+    width: 303px;
+  }
+  .computerListGrid {
+    grid-template-columns: repeat(auto-fit, minmax(303px, 1fr));
   }
 }
 
@@ -566,31 +580,32 @@ background-color: #7c7c7d;
   }
 
   .squareBtnClose {
-  position: absolute;
-  top: 12px;
-  right: 12px;
+    position: absolute;
+    top: 12px;
+    right: 12px;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  height: 28px;
-  width: 28px;
-  border-radius: 6px;
+    height: 28px;
+    width: 28px;
+    border-radius: 6px;
 
-  background: transparent;
-  border: 1px solid #fff;
-  color: #fff;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
 
-  cursor: pointer;
-}
+    cursor: pointer;
+  }
 
-.squareBtnClose:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-.squareBtnReduce {
- margin-left: 10px;
-}
+  .squareBtnClose:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .squareBtnReduce {
+    margin-left: 10px;
+  }
 
   #sliderContainer {
     /* Switch to vertical layout */
@@ -611,10 +626,9 @@ background-color: #7c7c7d;
 
 }
 
-.computerListGridA{
- color: inherit; 
+.computerListGridA {
+  color: inherit;
   text-decoration: inherit
-
 }
 
 @media (max-width: 800px) {

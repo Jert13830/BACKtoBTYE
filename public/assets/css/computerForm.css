@@ -53,9 +53,12 @@
         grid-template-columns: 1fr !important; /* single column override*/
         gap: 5px !important;
     }
+   #addComputer .largeWindow {
+        width: 90vw;
 
-   
+    }
 }
+
 
 /* Window Backgrounds*/
 .formBk1 {
