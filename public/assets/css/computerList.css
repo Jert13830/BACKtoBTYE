@@ -221,6 +221,7 @@ img {
   justify-content: center;
 }
 
+/*Position computer name correctly*/
 .computerName {
   position: absolute;
   transform: translateX(16%);
@@ -231,18 +232,12 @@ img {
   display: flex;
   align-items: center;
 }
-
+/*Position year correctly*/
 .computerYear {
   position: absolute;
-  transform: translateX(70%);
+  transform: translateX(16%);
 }
 
-/* Make the entire red cluster match the background width 
-.computerCardTitle > .computerCardTitleRed {
-    width: 90%;                
-    display: flex;
-    justify-content: flex-end; 
-}*/
 
 /* Colour the computer card titles */
 .computerListGrid>.computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-1 {

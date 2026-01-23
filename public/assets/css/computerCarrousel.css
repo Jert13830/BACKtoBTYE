@@ -363,6 +363,7 @@ img {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  
 }
 
 
@@ -373,12 +374,14 @@ img {
   height: 100%;
   width: 100%;
   place-items: center;
+  
   align-items: center;
   padding-bottom: 7px;
   grid-auto-columns: 330px;
   grid-auto-flow: column;
   overflow-y: hidden;
   overflow-x: scroll;
+  
   scroll-snap-type: x mandatory;
 
 }

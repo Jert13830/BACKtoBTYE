@@ -41,6 +41,7 @@ const btnResearch = document.getElementById('btnResearch');
 /** Computer Carrousel **/
 const slider = document.querySelector(".sliderContainer");
 const cardWidth = 330;
+const intervalTime = 3000; //3 seconds
 
 //this holds the current manufacturer type computer / software / emulator
 const manufacturerMode = localStorage.getItem('mode') || 'default';
@@ -1197,12 +1198,12 @@ function changeLogo() {
 /********  Carousel scroll ******/
 
 function slideRight() {
-
-  slider.scrollBy({
+ slider.scrollBy({
     left: cardWidth,
     behavior: "smooth"
   });
 
+  
 }
 
 function slideLeft() {
@@ -1212,8 +1213,33 @@ function slideLeft() {
     behavior: "smooth"
   });
 
+
 }
 
+//This is to make the carousel turn automatically
+document.addEventListener("DOMContentLoaded", () => {
+
+  //set up timer every 3 seconds scrollNext is called
+	let autoScroll = setInterval(scrollNext, intervalTime);
+
+	function scrollNext() {
+    //The images scroll until th last then the counter is reset to zero causing the images to loop
+		if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
+			slider.scrollLeft = 0;
+		} else {
+			slideRight() ;
+		}
+	}
+
+  //The user clicks on the carousel or moves the mouse off the carousel this starts the loop again
+	slider.addEventListener("mouseenter", () => {
+		clearInterval(autoScroll);
+	});
+
+	slider.addEventListener("mouseleave", () => {
+		autoScroll = setInterval(scrollNext, intervalTime);
+	});
+});
 
 async function loadSystemList() {
 
@@ -1425,3 +1451,4 @@ function sortPostTableBy(el) {
     window.location.href = `/sortPostByDetails/${el}?dir=desc`;
   }
 }
+
