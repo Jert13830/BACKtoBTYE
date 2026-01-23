@@ -222,7 +222,7 @@ a {
 
   #sidebar {
     position: fixed;
-    top: 0;
+    top: 80px;
     right: 0;
     width: 200px;
     height: 70vh;
