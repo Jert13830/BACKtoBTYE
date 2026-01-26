@@ -154,7 +154,7 @@ exports.connect = async (req, res) => {
 
     // Unknown error
     errors.connection = "An unexpected error occurred.";
-  
+
 
     return res.render("pages/connect.twig", {
       errors,
@@ -166,8 +166,8 @@ exports.connect = async (req, res) => {
 exports.registration = async (req, res) => {
   res.render("pages/registry.twig", {
     title: "Registration",
-    
-     
+
+
     error: null
   })
 }
@@ -178,23 +178,24 @@ exports.registerUser = async (req, res) => {
   const email = req.body.email.toLowerCase().trim();
   const pseudo = req.body.usernameProfile.trim();
   const data = req.body;
-  
+
   try {
 
     // Check the two passwords match
 
-   
+
     if (req.body.password == req.body.confirmPassword) {
 
       // Check to see if the Email address is already registered
-
+      console.log("Password matches");
       const userEmail = await prisma.utilisateur.findUnique({
         where: {
           email: email
         }
       })
-     
+
       if (userEmail) {
+        console.log("Email in use already");
         //The email adress is already in use
         //errors.duplicateEmail = "You are already registered";
         return res.render("pages/registry.twig", {
@@ -204,7 +205,7 @@ exports.registerUser = async (req, res) => {
 
       }
       else {
-        
+        console.log("Email does not exist check username");
         //Check to see if the Username is already used
         const userProfile = await prisma.utilisateur.findFirst({
           where: {
@@ -212,10 +213,10 @@ exports.registerUser = async (req, res) => {
           }
         });
 
-        
+
 
         if (userProfile) {
-
+          console.log("Username exists already");
           //The username is already in use
           //errors.duplicateUser = "The Username is already in use";
           return res.render("pages/registry.twig", {
@@ -225,7 +226,7 @@ exports.registerUser = async (req, res) => {
 
         }
         else {
-
+          console.log("Create user");
 
           //It is a new user - create the user   
           const newUser = await prisma.utilisateur.create({
@@ -237,7 +238,7 @@ exports.registerUser = async (req, res) => {
             }
           });
 
-         
+
           //Create the photo entry      
 
           const filePath = `/assets/images/users/${req.body.usernameProfile}.webp`;
@@ -245,14 +246,15 @@ exports.registerUser = async (req, res) => {
           try {
             await fs.access(filePath);
 
-          
+            console.log("Photo exists");
             // file exists
           } catch {
             // file does not exist
-        
+            console.log("Photo doesn't exist");
             // filePath = "/assets/images/users/defaultUserImage.webp";
           }
 
+          console.log("Save photo to DB");
           //Save User profile photo
           const userPhoto = await prisma.photo.create({
             data: {
@@ -262,14 +264,23 @@ exports.registerUser = async (req, res) => {
             },
           });
 
+
+          //Find role index that corresponds to role
+          const userRole = await prisma.role.findFirst({
+            where: {
+              role: data.userRole,
+            }
+          })
+
           await prisma.roleUtilisateur.create({
             data: {
-              id_role: Number(data.userRole),
+              id_role: userRole.id_role,
               id_utilisateur: newUser.id_utilisateur,
 
             },
           });
 
+          console.log("All done go back to connect");
           // Redirect to the connect page to log in
           res.redirect('/connect');
         }
@@ -298,7 +309,7 @@ exports.registerUser = async (req, res) => {
 
     // Unknown error
     errors.usernameProfile = "An unexpected error occurred.";
-   
+
 
     return res.render("pages/registry.twig", {
       errors,
@@ -311,17 +322,17 @@ exports.registerUser = async (req, res) => {
 
 //Get user role list
 exports.listUserRoles = async (req, res) => {
- 
+
   try {
     const roles = await prisma.role.findMany();
-  
+
     return res.json({
       success: true,
       roles,
     });
 
   } catch (error) {
-   
+
     return res.status(500).json({
       success: false,
       error: "Unexpected error while retrieving user roles."
@@ -332,7 +343,7 @@ exports.listUserRoles = async (req, res) => {
 exports.updateUserList = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
-  
+
   const action = req.body.buttons; // "delete-123" or "modify-123"
 
   //Delete the role
@@ -347,7 +358,7 @@ exports.updateUserList = async (req, res) => {
 
       //Delete the roleUtilisateur entry before deleting the user
 
- 
+
       const exists = await prisma.roleUtilisateur.findFirst({
         where: {
           id_utilisateur: toDelete,
@@ -394,7 +405,7 @@ exports.updateUserList = async (req, res) => {
 exports.treatRoleList = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
- 
+
   const action = req.body.buttons; // "delete-123" or "modify-123"
 
   //Delete the role
@@ -451,17 +462,17 @@ exports.updateUserInfo = async (req, res) => {
   const data = req.body; // To be sent back if there is an error
 
   const username = req.body.usernameProfile;
-    const usernameBeforeChange = req.body.usernameProfileBeforeChange;
-    const imageDir = path.join(__dirname, "../public/assets/images/users");
-  
-    const nameChanged = username !== usernameBeforeChange;
-    const newImageUploaded = !!req.file;
-  
-    const oldImageFs = path.join(imageDir, `${usernameBeforeChange}.webp`);
-    const newImageFs = path.join(imageDir, `${username}.webp`);
-  
-    const imageUrl = `/assets/images/emulator/${username}.webp`;
- 
+  const usernameBeforeChange = req.body.usernameProfileBeforeChange;
+  const imageDir = path.join(__dirname, "../public/assets/images/users");
+
+  const nameChanged = username !== usernameBeforeChange;
+  const newImageUploaded = !!req.file;
+
+  const oldImageFs = path.join(imageDir, `${usernameBeforeChange}.webp`);
+  const newImageFs = path.join(imageDir, `${username}.webp`);
+
+  const imageUrl = `/assets/images/emulator/${username}.webp`;
+
   try {
     //Get actual user information
     const actualUser = await prisma.utilisateur.findFirst({
@@ -606,7 +617,7 @@ exports.updateUserInfo = async (req, res) => {
     return res.redirect('/');
   }
   catch (error) {
-  
+
 
     return res.render("pages/registry.twig", {
       errors: {
@@ -622,7 +633,7 @@ exports.updateUserInfo = async (req, res) => {
 exports.updateUser = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const userId = parseInt(req.params.id);
-  
+
   try {
     const user = await prisma.utilisateur.findFirst({
       where: { id_utilisateur: userId },
@@ -659,7 +670,7 @@ exports.updateUser = async (req, res) => {
     });
 
   } catch (error) {
-    
+
     return res.render("pages/userList.twig", {
       errors: { userError: "Unknown error" }
     });
@@ -809,10 +820,13 @@ exports.updatePassword = async (req, res) => {
 
       if (data.newPassword == data.confirmPassword) {
         //Hash the password
-        const hashedPassword = bcrypt.hashSync(data.newPassword, 12);
-        data.newPassword = hashedPassword;
-        
-        
+
+        //  const hashedPassword = bcrypt.hashSync(data.newPassword, 12);
+
+        //this is not required
+        //data.newPassword = hashedPassword;
+
+
         // change the password.
         await prisma.utilisateur.update({
           where: {
@@ -903,7 +917,7 @@ exports.resetPassword = async (req, res) => {
       email: userData.email,
       }*/
 
-      
+
 
       return res.render("pages/registry.twig", {
         errors,
@@ -926,8 +940,12 @@ exports.resetPassword = async (req, res) => {
     }
 
     //Hash the temporary password and save it 
-    const hashedPassword = bcrypt.hashSync("Reset123", 12);
-    const newPassword = hashedPassword;
+
+    const newPassword = "Reset123";
+
+
+    //const hashedPassword = bcrypt.hashSync("Reset123", 12);
+    //const newPassword = hashedPassword;
 
     // change the password.
     await prisma.utilisateur.update({

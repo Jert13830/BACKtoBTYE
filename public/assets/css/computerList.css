@@ -235,7 +235,7 @@ img {
 /*Position year correctly*/
 .computerYear {
   position: absolute;
-  transform: translateX(16%);
+  transform: translateX(70%);
 }
 
 
