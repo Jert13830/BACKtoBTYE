@@ -10,7 +10,7 @@ model Ordinateur {
   graphique           String              @db.VarChar(255)
   nbCouleurs          Int
   son                 String              @db.VarChar(255)
-  info                String
+  info                String              @db.VarChar(255)
   successeur          Int
   id_fab_ordinateur   Int
   articles            Article[]

@@ -206,7 +206,8 @@ img {
 #computerInfo {
     background-color: transparent;
     color: #000;
-    max-width: 100%;
+    width:100%;
+
 
     border: 0;
     font-size: 14px;
@@ -329,7 +330,7 @@ img {
 .btnForm {
     border-radius: 6px;
     background-color: #D3CBCB;
-    color: #3C3C43;
+    color: #3C3C43CC;
 
 
     border: 1px #b2afaf solid;

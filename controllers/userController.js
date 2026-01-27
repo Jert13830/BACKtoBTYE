@@ -187,7 +187,6 @@ exports.registerUser = async (req, res) => {
     if (req.body.password == req.body.confirmPassword) {
 
       // Check to see if the Email address is already registered
-      console.log("Password matches");
       const userEmail = await prisma.utilisateur.findUnique({
         where: {
           email: email
@@ -195,7 +194,6 @@ exports.registerUser = async (req, res) => {
       })
 
       if (userEmail) {
-        console.log("Email in use already");
         //The email adress is already in use
         //errors.duplicateEmail = "You are already registered";
         return res.render("pages/registry.twig", {
@@ -205,7 +203,6 @@ exports.registerUser = async (req, res) => {
 
       }
       else {
-        console.log("Email does not exist check username");
         //Check to see if the Username is already used
         const userProfile = await prisma.utilisateur.findFirst({
           where: {
@@ -216,7 +213,6 @@ exports.registerUser = async (req, res) => {
 
 
         if (userProfile) {
-          console.log("Username exists already");
           //The username is already in use
           //errors.duplicateUser = "The Username is already in use";
           return res.render("pages/registry.twig", {
@@ -226,8 +222,6 @@ exports.registerUser = async (req, res) => {
 
         }
         else {
-          console.log("Create user");
-
           //It is a new user - create the user   
           const newUser = await prisma.utilisateur.create({
             data: {
@@ -246,7 +240,6 @@ exports.registerUser = async (req, res) => {
           try {
             await fs.access(filePath);
 
-            console.log("Photo exists");
             // file exists
           } catch {
             // file does not exist
@@ -254,7 +247,6 @@ exports.registerUser = async (req, res) => {
             // filePath = "/assets/images/users/defaultUserImage.webp";
           }
 
-          console.log("Save photo to DB");
           //Save User profile photo
           const userPhoto = await prisma.photo.create({
             data: {
@@ -280,7 +272,6 @@ exports.registerUser = async (req, res) => {
             },
           });
 
-          console.log("All done go back to connect");
           // Redirect to the connect page to log in
           res.redirect('/connect');
         }

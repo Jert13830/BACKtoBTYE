@@ -9,7 +9,7 @@ model Ordinateur {
   rom                 Int
   graphique           String              @db.VarChar(255)
   nbCouleurs          Int
-  info                String
+  info                String?             @db.Text
   successeur          Int?
   id_fab_ordinateur   Int
   son                 String              @db.VarChar(255)

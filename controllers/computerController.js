@@ -378,6 +378,7 @@ exports.updateComputerList = async (req, res) => {
   const action = req.body.buttons; // "delete-123" or "modify-123"
 
   const user = req.session.user;
+  let computers=[];
 
   //Delete the computer
   if (action.startsWith("delete-")) {
@@ -387,9 +388,15 @@ exports.updateComputerList = async (req, res) => {
     try {
 
       //Computers will be sent if an Error occurs
-      const computers = await prisma.ordinateur.findMany();
-
-
+      computers = await prisma.ordinateur.findMany({
+      include:
+      {
+        photos: true,
+        fabricantOrdinateur: true,
+        popularites: true,
+        raretes: true,
+      },
+    });
 
       //Delete computer
       await prisma.ordinateur.delete({
@@ -399,11 +406,14 @@ exports.updateComputerList = async (req, res) => {
       });
 
 
-      res.redirect("/computerList")
+      res.redirect("/computerList");
     } catch (error) {
 
-      errors.userError = "The computer could not be deleted"
+      errors.computer = "The computer could not be deleted, it is associated with other files.";
+     
       res.render("pages/computerList.twig", {
+        title: "Computer List",
+        computers,
         errors,
       });
 
@@ -502,7 +512,7 @@ exports.updateComputer = async (req, res) => {
       });
     }
 
-
+    console.log("Going for update ");
 
     // Update computer
     const comput = await prisma.ordinateur.update({
@@ -517,10 +527,10 @@ exports.updateComputer = async (req, res) => {
         rom: Number(req.body.rom),
         graphique: req.body.graphique,
         nbCouleurs: Number(req.body.nbColours),
-        info: req.body.info,
         son: req.body.son,
         successeur: Number(req.body.successor),
-        id_fab_ordinateur: Number(req.body.fabricantId)
+        id_fab_ordinateur: Number(req.body.fabricantId),
+        info: req.body.info,
       }
     });
 

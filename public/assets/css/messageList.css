@@ -156,7 +156,7 @@ tbody tr:hover {
 .btnForm {
     border-radius: 6px;
     background-color: #D3CBCB;
-    color: #3C3C43;
+    color: #3C3C43CC;
 
 
     border: 1px #b2afaf solid;
@@ -182,7 +182,7 @@ tbody tr:hover {
     font-size: 1rem;
     border-radius: 6px;
     background-color: #D3CBCB;
-    color: #3C3C43;
+    color: #3C3C43CC;
     border: 1px solid #b2afaf;
 }
 
@@ -219,7 +219,7 @@ tbody tr:hover {
         height: 1px;
         margin: 0.5px 0;
         width: 60px;
-        background: #3C3C43;
+        background: #3C3C43CC;
     }
 
     .sidebar {

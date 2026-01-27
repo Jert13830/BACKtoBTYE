@@ -112,7 +112,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: #3C3C43;
+    color: #3C3C43CC;
 }
 
 .squareBtnReduce,
@@ -121,7 +121,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: 2px solid #3C3C43;
+    border: 2px solid #3C3C43CC;
     height: 18px;
     width: 18px;
     border-radius: 3px;
@@ -157,7 +157,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #3C3C43;
+    border: 2px solid #3C3C43CC;
     height: 18px;
     width: 18px;
     border-radius: 50px;
@@ -183,7 +183,7 @@
     display: block;
 
     height: 1px;
-    background: #3C3C43;
+    background: #3C3C43CC;
     ;
     margin: 1px 0;
 }
@@ -287,13 +287,13 @@ dialog[open] .squareBtnClose {
 
 #connect .titleP {
     font-size: 1.5rem;
-    color: #3C3C43;
+    color: #3C3C43CC;
     font-weight: normal;
 }
 
 #about .titleP {
     font-size: 1.5rem;
-    color: #3C3C43;
+    color: #3C3C43CC;
     font-weight: normal;
 }
 

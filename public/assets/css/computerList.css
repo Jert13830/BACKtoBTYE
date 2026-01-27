@@ -238,6 +238,12 @@ img {
   transform: translateX(70%);
 }
 
+.errNinput {
+    color: #1A1A1A;
+    font-weight: 700;
+    justify-self: center;
+}
+
 
 /* Colour the computer card titles */
 .computerListGrid>.computerCardDiv:nth-child(6n + 1) .computerCardTitleMiddle svg .grad-1 {
@@ -446,7 +452,7 @@ img {
 #btnResearch {
   border-radius: 6px;
   background-color: #D3CBCB;
-  color: #3C3C43;
+  color: #3C3C43CC;
 
 
   border: 1px #b2afaf solid;

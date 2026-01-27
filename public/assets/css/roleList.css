@@ -81,7 +81,7 @@ td, th {
 .btnForm {
     border-radius: 6px;
     background-color: #D3CBCB;
-    color: #3C3C43;
+    color: #3C3C43CC;
 
 
     border: 1px #b2afaf solid;
@@ -138,7 +138,7 @@ width: min(90vw, 250px);
 #btnUpdateRole {
     border-radius: 6px;
     background-color: #D3CBCB;
-    color: #3C3C43;
+    color: #3C3C43CC;
     border: 1px #b2afaf solid;
     padding: 5px;
     width: 5rem;

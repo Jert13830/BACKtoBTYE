@@ -50,9 +50,10 @@ header {
   justify-content: center;
   align-items: center;
   color: #F7F4F0;
+  background-color: #D3CBCB;
   font-size: 36px;
   padding: 10px;
-  text-shadow: 1px 1px 2px #3C3C43;
+  text-shadow: 1px 1px 2px #3C3C43CC;
 }
 
 #navLogo a{
@@ -123,7 +124,7 @@ header {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 18px;
-  color: #3C3C43;
+  color: #3C3C43CC;
   z-index: 2;
   user-select: none;
   pointer-events: none;
@@ -268,7 +269,7 @@ header {
     /* match desktop buttons */
     border: 1.5px solid #BDB5B5;
     /* soft border */
-    color: #3C3C43;
+    color: #3C3C43CC;
     /* text */
 
     letter-spacing: 0.5px;
@@ -284,7 +285,7 @@ header {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #3C3C43;
+    color: #3C3C43CC;
     z-index: 2;
     pointer-events: none;
     white-space: nowrap;

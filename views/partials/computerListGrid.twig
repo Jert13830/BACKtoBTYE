@@ -1,8 +1,11 @@
 {% block style %}
 	<link rel="stylesheet" href="/assets/css/computerList.css">
 {% endblock %}
-
+{% if errors.computer %}
+	<p class="errNinput">{{errors.computer}}</p>
+{% endif %}
 <div class="computerListGrid">
+
 	{% for computer in computers %}
 		{% set bgIndex = (loop.index0 % 6) + 1 %}
 		{% set bgClass = 'bg-' ~ bgIndex %}
@@ -119,7 +122,9 @@
 										{% endif %}
 									{% endfor %}
 								</div>
+
 							</div>
+
 						</div>
 					</a>
 				</div>
