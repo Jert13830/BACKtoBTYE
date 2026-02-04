@@ -1021,7 +1021,7 @@ async function generateTokenLink(user) {
     },
   });
 
-  //Return the reset password link with token
+  //Return the reset password link with token to be sent in an email
   return `https://john-thompson.ri7.tech/resetForgottenPassword?token=${token}`;
   //return `http://localhost:3000/resetForgottenPassword?token=${token}`;
 }

@@ -21,7 +21,6 @@ userRouter.post('/connect',userController.connect);
 userRouter.get('/register',userController.registration);
 userRouter.post('/register',userController.registerUser);
 
-//userRouter.get('/listUserRoles', upload.none(),userController.listUserRoles);
 userRouter.get('/listUserRoles', authGuard,userController.listUserRoles);
 
 userRouter.post('/roleList', authGuard,userController.treatRoleList);

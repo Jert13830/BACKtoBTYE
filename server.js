@@ -56,7 +56,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Use routes
+// Routes
 app.use("/", uploadRouter);
 app.use(computerRouter);
 app.use(computerManufacturerRouter);
