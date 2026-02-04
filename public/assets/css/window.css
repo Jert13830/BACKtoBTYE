@@ -291,6 +291,12 @@ dialog[open] .squareBtnClose {
     font-weight: normal;
 }
 
+
+#forgottenPassword .content {
+    height: auto;
+    width: auto;
+}
+
 #about .titleP {
     font-size: 1.5rem;
     color: #3C3C43CC;

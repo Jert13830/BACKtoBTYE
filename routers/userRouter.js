@@ -40,4 +40,7 @@ userRouter.post('/updatePassword', authGuard,userController.updatePassword);
 
 userRouter.post('/resetPassword/:id', authGuard,requireAdmin,userController.resetPassword);
 
+userRouter.get('/resetForgottenPassword', userController.resetForgottenPassword);
+userRouter.post('/updateForgottenPassword', userController.updateForgottenPassword);
+
 module.exports = userRouter;

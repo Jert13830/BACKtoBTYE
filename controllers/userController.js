@@ -3,6 +3,10 @@ const { PrismaClient } = require('@prisma/client');
 const hashExtension = require("../middleware/extensions/hashPassword");
 const validateUser = require("../middleware/extensions/validateUser");
 const prisma = new PrismaClient().$extends(validateUser).$extends(hashExtension);
+const sendEmailConfirmAccount = require("../routers/mailer");
+
+//used to generate the reset password token
+const crypto = require("crypto");
 
 // Importing bcrypt for password hashing and comparison
 const bcrypt = require('bcrypt');
@@ -179,10 +183,11 @@ exports.registerUser = async (req, res) => {
   const pseudo = req.body.usernameProfile.trim();
   const data = req.body;
 
+  let userRoleID = 0;
+
   try {
 
     // Check the two passwords match
-
 
     if (req.body.password == req.body.confirmPassword) {
 
@@ -210,8 +215,6 @@ exports.registerUser = async (req, res) => {
           }
         });
 
-
-
         if (userProfile) {
           //The username is already in use
           //errors.duplicateUser = "The Username is already in use";
@@ -219,7 +222,6 @@ exports.registerUser = async (req, res) => {
             duplicateUser: "The Username is already in use",
             data,
           });
-
         }
         else {
           //It is a new user - create the user   
@@ -227,24 +229,47 @@ exports.registerUser = async (req, res) => {
             data: {
               pseudo: pseudo,
               email: email,
-              // password is hashed via prisma extension bcrypt
+              // password is hashed via prisma extension bcrypt, no raw password
               motDePasse: req.body.password,
             }
           });
 
+          //if data.userRole = 'user' default value when the user sets up their own account
+
+          if (data.userRole == "user") {
+            const findUser = await prisma.role.findFirst({
+              where: {
+                role: data.userRole,
+              }
+
+            });
+
+            if (!findUser) {
+              throw new Error(`Role "${data.userRole}" not found`);
+            }
+
+            userRoleID = findUser.id_role;
+          }
+          else {
+            userRoleID = data.userRole;
+          }
+
+          await prisma.roleUtilisateur.create({
+            data: {
+              id_role: parseInt(userRoleID),
+              id_utilisateur: newUser.id_utilisateur,
+
+            },
+          });
 
           //Create the photo entry      
+          let filePath = fs.existsSync(`./public/assets/images/users/${req.body.usernameProfile}.webp`);
 
-          const filePath = `/assets/images/users/${req.body.usernameProfile}.webp`;
+          if (filePath) {
+            filePath = `/assets/images/users/${req.body.usernameProfile}.webp`;  // URL for browser
+          } else {
+            filePath = "/assets/images/users/defaultUserImage.webp";
 
-          try {
-            await fs.access(filePath);
-
-            // file exists
-          } catch {
-            // file does not exist
-            console.log("Photo doesn't exist");
-            // filePath = "/assets/images/users/defaultUserImage.webp";
           }
 
           //Save User profile photo
@@ -253,22 +278,6 @@ exports.registerUser = async (req, res) => {
               id_utilisateur: newUser.id_utilisateur,
               alt: `Profile photo of ${newUser.pseudo}`,
               path: filePath,
-            },
-          });
-
-
-          //Find role index that corresponds to role
-          const userRole = await prisma.role.findFirst({
-            where: {
-              role: data.userRole,
-            }
-          })
-
-          await prisma.roleUtilisateur.create({
-            data: {
-              id_role: userRole.id_role,
-              id_utilisateur: newUser.id_utilisateur,
-
             },
           });
 
@@ -332,55 +341,133 @@ exports.listUserRoles = async (req, res) => {
 };
 
 exports.updateUserList = async (req, res) => {
-  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  const errors = {};
+  const action = req.body.buttons;
 
-
-  const action = req.body.buttons; // "delete-123" or "modify-123"
-
-  //Delete the role
   if (action.startsWith("delete-")) {
-    let toDelete = action.split("-")[1];
-    toDelete = parseInt(toDelete);
+    let toDelete = parseInt(action.split("-")[1]);
+
+    let users = []; // default for error case
 
     try {
 
-      //Users will be sent if an Error occurs
-      const users = await prisma.utilisateur.findMany();
+      users = await prisma.utilisateur.findMany({
+        include: {
+          roleUtilisateurs: {
+            include: {
+              role: true
+            }
+          }
+        }
+      });
 
-      //Delete the roleUtilisateur entry before deleting the user
-
+      //delete user
 
       const exists = await prisma.roleUtilisateur.findFirst({
-        where: {
-          id_utilisateur: toDelete,
-        }
+        where: { id_utilisateur: toDelete }
       });
 
       if (exists) {
-        await prisma.roleUtilisateur.deleteMany({
+        //The user must be deleted in order - this can no done using cascade delete by Prisma, but there is more control here
+
+        //Delete articles (Posts)
+        await prisma.article.deleteMany({
+          where: { id_utilisateur: toDelete }
+        });
+
+        //Delete articlelikes
+        await prisma.articleLike.deleteMany({
+          where: { id_utilisateur: toDelete }
+        });
+
+        //Delete comments
+        await prisma.commentaire.deleteMany({
+          where: { id_utilisateur: toDelete }
+        });
+
+        //Delete popularity
+        await prisma.popularite.deleteMany({
+          where: { id_utilisateur: toDelete }
+        });
+
+        //Delete rarity
+        await prisma.rarete.deleteMany({
+          where: { id_utilisateur: toDelete }
+        });
+
+        //Delete photo - should only be one by on the safe side.
+        await prisma.photo.deleteMany({
           where: {
-            id_utilisateur: toDelete
-          }
+            id_utilisateur: toDelete,
+          },
+        });
+
+        const userPhotoToDelete = await prisma.utilisateur.findFirst({
+          where: { id_utilisateur: toDelete }
+        });
+
+        //Delete photo on server
+
+        //delete the photo from the folder
+        let filePath = fs.existsSync(`./public/assets/images/users/${userPhotoToDelete.pseudo}.webp`);
+
+
+        if (filePath) {
+          fs.unlink(`./public/assets/images/users/${userPhotoToDelete.pseudo}.webp`, (err) => {
+            if (err) throw err;
+          });
+        }
+
+        //Delete role
+        await prisma.roleUtilisateur.deleteMany({
+          where: { id_utilisateur: toDelete }
+        });
+
+        //Delete user
+        await prisma.utilisateur.delete({
+          where: { id_utilisateur: toDelete }
+        });
+
+        res.redirect("/userList");
+      } else {
+        errors.userError = "The user not found";
+        res.render("pages/userList.twig", {
+          title: "User List",
+          users,
+          errors
         });
       }
 
-      //Delete User 
-      await prisma.utilisateur.delete({
-        where: {
-          id_utilisateur: toDelete
-        }
-      });
-
-      res.redirect("/userList")
     } catch (error) {
+      console.error("Error during delete operation:");
+      console.error(error);
 
-      errors.userError = "The user could not be deleted"
+      if (error.code) {
+        console.error("Prisma error code:", error.code);
+      }
+      if (error.meta) {
+        console.error("Meta:", error.meta);
+      }
+
+      errors.userError = "The user could not be deleted";
+
+      // Fetch users so the list still shows
+      try {
+        users = await prisma.utilisateur.findMany({
+          include: {
+            roleUtilisateurs: { include: { role: true } }
+          }
+        });
+      } catch (e2) {
+        console.error("Failed to reload user list:", e2);
+      }
+
       res.render("pages/userList.twig", {
-        errors,
+        title: "User List",
+        users,
+        errors
       });
-
     }
-
   } else if (action.startsWith("modify-")) {
     let id = action.split("-")[1];
 
@@ -790,6 +877,48 @@ exports.postRole = async (req, res) => {
   }
 }
 
+exports.updateForgottenPassword = async (req, res) => {
+
+  const tokenUser = req.body;
+  const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+
+  const userId = parseInt(tokenUser.utilisateurId);
+
+  try {
+
+    // test that the two passwords are the same
+    if (tokenUser.newPassword == tokenUser.confirmPassword) {
+      // change the password.
+      await prisma.utilisateur.update({
+        where: {
+          id_utilisateur: userId,
+        },
+        data: {
+          motDePasse: tokenUser.newPassword,
+        }
+
+      })
+
+      res.redirect("/connect")
+    }
+    else {
+      // If the passwords don't match return error
+      errors.password = "The passwords don't match";
+      res.render("pages/forgottenPassword.twig", {
+        title: "Password Update",
+        errors,
+        tokenUser,
+      });
+    }
+  }
+  catch (error) {
+
+    errors.connection = "An unexpected error occurred.";
+
+    return res.redirect("/home");
+  }
+}
+
 exports.updatePassword = async (req, res) => {
 
   const data = req.body;
@@ -808,15 +937,7 @@ exports.updatePassword = async (req, res) => {
     if (await bcrypt.compareSync(data.currentPassword, userDb.motDePasse)) {
       //If the password matches then the we check the new password and the confirmed password
 
-
       if (data.newPassword == data.confirmPassword) {
-        //Hash the password
-
-        //  const hashedPassword = bcrypt.hashSync(data.newPassword, 12);
-
-        //this is not required
-        //data.newPassword = hashedPassword;
-
 
         // change the password.
         await prisma.utilisateur.update({
@@ -828,7 +949,6 @@ exports.updatePassword = async (req, res) => {
           }
 
         })
-
 
         res.redirect("/connect")
 
@@ -878,6 +998,35 @@ exports.updatePassword = async (req, res) => {
   }
 }
 
+async function generateTokenLink(user) {
+
+  //Create token and hash it
+  const token = crypto.randomBytes(32).toString("hex");
+  const tokenHash = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+
+  //Get the exipry time now + 30 minutes  
+  const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+
+
+  //Save token to database to be compared later  
+  await prisma.passwordResetToken.create({
+    data: {
+      utilisateurId: user.id_utilisateur,
+      token: tokenHash,
+      expiresAt: expiresAt,
+      createdAt: new Date(),
+    },
+  });
+
+  //Return the reset password link with token
+  return `https://john-thompson.ri7.tech/resetForgottenPassword?token=${token}`;
+  //return `http://localhost:3000/resetForgottenPassword?token=${token}`;
+}
+
+
 exports.resetPassword = async (req, res) => {
 
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
@@ -888,27 +1037,18 @@ exports.resetPassword = async (req, res) => {
 
 
   try {
+    //get user to be changed details
+    data = await prisma.utilisateur.findUnique({
+      where: {
+        //id_utilisateur: req.session.user.id,
+        id_utilisateur: userId,
+      }
+    })
 
     // check to see if the connected user is an administrator, if not no need to continue
 
     if (req.session.user.role !== "administrator") {
       errors.passwordReset = "You are not authorised to reset this password";
-
-      //get user to be changed details
-      data = await prisma.utilisateur.findUnique({
-        where: {
-          //id_utilisateur: req.session.user.id,
-          id_utilisateur: userId,
-        }
-      })
-
-      /*const data = {
-      id:userData.id_utilisateur,   
-      usernameProfile: userData.pseudo,
-      email: userData.email,
-      }*/
-
-
 
       return res.render("pages/registry.twig", {
         errors,
@@ -919,6 +1059,55 @@ exports.resetPassword = async (req, res) => {
 
     // if adminstrator
 
+    /********** DELETE ANY EXISTING RESET PASSWORD TOKENS **********************/
+
+    await prisma.passwordResetToken.delete({
+      where: {
+        utilisateurId: data.id_utilisateur,
+      },
+    });
+
+    /********** CREATE AND GET NEW RESET EMAIL TOKEN AND LINK **********************/
+
+
+    const resetLink = await generateTokenLink(data);
+
+
+    /********** SEND EMAIL TO RESET PASSWORD **********************/
+
+    //This is the email content to, subject, text, html
+    await sendEmailConfirmAccount(
+      data.email,
+      "Demand to reset password",
+      "",
+      `
+            <h1>BACKtoBTYE</h1>
+            <p>
+              Hello <b>${data.pseudo}</b>
+            </p>
+
+          <p>You have requested to reset your password.</p>
+          <a
+              href="${resetLink}"
+              style="background:#D3CBCB;color:#3C3C43;
+              padding:10px 16px;
+              text-decoration:none;
+              border-radius:4px;
+              display:inline-block;"
+          >
+              Reset your password
+          </a>
+          <br>
+          <p>If you did not initiate this request, please ignore this email. Your account will remain secure.</p>
+          </div>
+       `
+    );
+
+    /***********************************************************/
+
+
+
+    /*
     // find the user to be updated
     const userToChange = await prisma.utilisateur.findUnique({
       where: { id_utilisateur: userId }
@@ -947,7 +1136,7 @@ exports.resetPassword = async (req, res) => {
         motDePasse: newPassword,
       }
 
-    })
+    })*/
 
     res.redirect("/connect")
 
@@ -959,6 +1148,35 @@ exports.resetPassword = async (req, res) => {
   }
 
 }
+
+
+exports.resetForgottenPassword = async (req, res) => {
+  const receivedTokenHash = crypto
+    .createHash("sha256")
+    .update(req.query.token)
+    .digest("hex");
+
+  //Find the token if it exists and it has not expired
+  const tokenUser = await prisma.passwordResetToken.findFirst({
+    where: {
+      token: receivedTokenHash,
+      expiresAt: { gt: new Date() }
+    }
+  });
+
+  if (!tokenUser) {
+    //return res.status(400).json({ message: "Invalid or expired token" });
+    //Invalid token go to HOME
+    return res.redirect("/home");
+  }
+
+  res.render("pages/forgottenPassword.twig", {
+    title: "Password Update",
+    error: null,
+    tokenUser,
+  });
+};
+
 
 
 exports.userLogout = async (req, res) => {

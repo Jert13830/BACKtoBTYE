@@ -12,7 +12,7 @@ const emulatorRouter = require ("./routers/emulatorRouter.js");
 const emulatorManufacturerRouter = require ("./routers/emulatorManufacturerRouter.js");
 const communityRouter = require ("./routers/communityRouter.js");
 const categoryRouter = require ("./routers/categoryRouter.js");
-
+const sendMail = require("./routers/mailer");
 
 const app= express();
 
@@ -37,6 +37,19 @@ app.use(session({
         expires: 600000 //duration calculated in seconds - about a week - 7d x 24h x 60m x 60s = 604800 seconds 
     }*/
 }));
+
+// Route to send email
+app.post("/send-email", async (req, res) => {
+  try {
+    const { to, subject, text } = req.body;
+    const info = await sendMail(to, subject, text);
+
+    res.json({ message: "Email sent!", id: info.messageId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to send email" });
+  }
+});
 
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;

@@ -4,6 +4,7 @@ const requireAdmin = (req, res, next) => {
       errors: { authorization: "Administrator access required" }
     });
   }
+   // User is an admin, continue to the next middleware or route
   next();
 };
 

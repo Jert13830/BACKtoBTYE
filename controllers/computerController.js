@@ -512,8 +512,6 @@ exports.updateComputer = async (req, res) => {
       });
     }
 
-    console.log("Going for update ");
-
     // Update computer
     const comput = await prisma.ordinateur.update({
       where: { id_ordinateur: computerId },

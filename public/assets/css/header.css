@@ -61,6 +61,10 @@ header {
    color: #F7F4F0;
 }
 
+h1{
+  font-size:  1.5rem;
+}
+
 /* --- Base Layout --- */
 #navBtns .btnList {
   display: flex;

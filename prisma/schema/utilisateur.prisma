@@ -9,5 +9,7 @@ model Utilisateur {
   popularites      Popularite[]
   raretes          Rarete[]
   roleUtilisateurs RoleUtilisateur[]
-  photo            Photo?           
+  photo            Photo?        
+
+  passwordResetTokens PasswordResetToken[]   
 }

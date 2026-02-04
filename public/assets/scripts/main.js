@@ -771,8 +771,6 @@ if (!computerId || !userId) {
     return;
   }
 
-  console.log("Hello ", rating);
-
 
   fetch("/rateComputer", {
     method: "POST",
