@@ -84,11 +84,11 @@
 							</select>
 							<script>
 								const langue = "{{ data.langue }}";
-								if (langue) {
-									document.getElementById("softwareLanguageSelect").value = langue;
-								} else {
-									document.getElementById("softwareLanguageSelect").value = "English";
-								}
+if (langue) {
+document.getElementById("softwareLanguageSelect").value = langue;
+} else {
+document.getElementById("softwareLanguageSelect").value = "English";
+}
 							</script>
 						{% else %}
 							<input id="previousChoosenLanguage" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.langue }}">
@@ -110,7 +110,15 @@
 				<textarea {{ origin ? 'readonly' : '' }} id="detailsInfo" name="detailsInfo" rows="4" cols="60" placeholder="Software Information">{{ data.details|default('') }}</textarea>
 			</div>
 			<div id="link">
-				<input {{ origin ? 'readonly' : '' }} type="url" name="softwareLink" id="softwareLink" title="Optional" placeholder="Enter link URL" value="{{data.lien|default('') }}">
+				{% if origin %}
+					{% if data.lien %}
+						<a href="{{ data.lien }}" target="_blank">{{ data.lien }}</a>
+					{% else %}
+						<span class="text-gray-400">No link</span>
+					{% endif %}
+				{% else %}
+					<input type="url" name="softwareLink" id="softwareLink" title="Optional" placeholder="Enter link URL" value="{{ data.lien|default('') }}">
+				{% endif %}
 			</div>
 			{% if not origin %}
 				<div class="formBtnDiv">

@@ -50,9 +50,9 @@
 						{% if not origin %}
 							<select class="computerSelect" name="computerSelect" aria-label="Select computers" maxlength="30" required value="{{ data.ordinateur.id_ordinateur|default('0') }}"></select>
 						{% else %}
-            					<input id="previousComputerSelect" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.ordinateur.nom }}">
+							<input id="previousComputerSelect" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.ordinateur.nom }}">
 						{% endif %}
-						
+
 					</div>
 					<div>
 						Language :
@@ -70,11 +70,11 @@
 							</select>
 							<script>
 								const langue = "{{ data.langue }}";
-								if (langue) {
-									document.getElementById("emulatorLanguageSelect").value = langue;
-								} else {
-									document.getElementById("emulatorLanguageSelect").value = "English";
-								}
+if (langue) {
+document.getElementById("emulatorLanguageSelect").value = langue;
+} else {
+document.getElementById("emulatorLanguageSelect").value = "English";
+}
 							</script>
 						{% else %}
 							<input id="previousChoosenLanguage" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.langue }}">
@@ -96,7 +96,17 @@
 				<textarea {{ origin ? 'readonly' : '' }} id="detailsInfo" name="detailsInfo" rows="4" cols="60" placeholder="Emulator Information">{{ data.details|default('') }}</textarea>
 			</div>
 			<div id="link">
-				<input {{ origin ? 'readonly' : '' }} title="Optional" type="url" name="emulatorLink" id="emulatorLink" placeholder="Enter link URL" value="{{data.lien|default('') }}">
+				{% if origin %}
+					{% if data.lien %}
+						<a href="{{ data.lien }}" target="_blank" class="text-blue-600 underline">
+							{{ data.lien }}
+						</a>
+					{% else %}
+						<span class="text-gray-400">No link</span>
+					{% endif %}
+				{% else %}
+					<input type="url" name="emulatorLink" id="emulatorLink" title="Optional" placeholder="Enter link URL" value="{{ data.lien|default('') }}">
+				{% endif %}
 			</div>
 			{% if not origin %}
 				<div class="formBtnDiv">

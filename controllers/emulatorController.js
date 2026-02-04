@@ -254,6 +254,7 @@ exports.updateEmulatorList = async (req, res) => {
     let toDelete = action.split("-")[1];
     toDelete = parseInt(toDelete);
 
+
     try {
 
       //send this data back to fill table if there is an error
@@ -265,20 +266,22 @@ exports.updateEmulatorList = async (req, res) => {
         },
       });
 
-     
+    
       //Delete the emulator photo logo
-      await prisma.photo.delete({
+      await prisma.photo.deleteMany({
         where: {
           id_emulateur: toDelete,
         },
       });
 
+     
       //get emulator name for deleting image
       const emulatorToDelete = await prisma.emulateur.findFirst({
         where: {
           id_emulateur: toDelete
         }
       });
+    
 
       //delete the photo from the folder
       let filePath = fs.existsSync(`./public/assets/images/emulator/${emulatorToDelete.nom}.webp`);
