@@ -11,6 +11,7 @@ const upload = multer();
 
 userRouter.get('/about',userController.displayAbout);
 
+userRouter.get('/displayGDPR',userController.displayGDPR);
 
 
 userRouter.get('/connect',userController.displayconnect);
@@ -37,7 +38,8 @@ userRouter.get('/updateUser/:id', authGuard,userController.updateUser);
 userRouter.post('/updateUserInfo/:id', authGuard,userController.updateUserInfo);
 userRouter.post('/updatePassword', authGuard,userController.updatePassword);
 
-userRouter.post('/resetPassword/:id', authGuard,requireAdmin,userController.resetPassword);
+//Anyone can reset a password but they have to give valide email address, and click on the email link received
+userRouter.post('/resetPassword',userController.resetPassword);
                                                         
 userRouter.get('/resetForgottenPassword', userController.resetForgottenPassword);
 userRouter.post('/updateForgottenPassword', userController.updateForgottenPassword);

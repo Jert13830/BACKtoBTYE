@@ -1,0 +1,109 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<title>GDPR</title>
+	<link rel="stylesheet" href="/assets/css/style.css">
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div id="pageContainer">
+			<section id="gdprSection">
+				<div id="gdpr">
+					{% embed '/partials/window.twig' with {
+   					 	windowType: 'mediumWindow',
+    					title: 'GDPR',
+    					showPlus: 0,
+						showClose : 1,
+						pageId: 'gdpr'
+					} %}
+						{% block content %}
+							<div id="gdprDiv">
+								<div id="titleDiv">
+									<h1>BACKtoBYTE</h1>
+								</div>
+								<div id="subtitleDiv">
+									<h3>Privacy Policy (GDPR)  - Last updated: February 2026</h3>
+								</div>
+								<div>
+									<p class="sectionTitle">1. Data We Collect</p>
+
+									<p class="sectionText">When you use this website, we collect and store :
+										<ul>
+											<li>Username</li>
+											<li>Email address</li>
+										</ul>
+									</p>
+								</div>
+								<div>
+									<p class="sectionTitle">2. Purpose of Data Collection</p>
+
+									<p class="sectionText">We use this information only to :
+										<ul>
+										<li>Identify users when they leave a message or comment</li>
+										
+										<li>Attribute comments to the correct user</li>
+										
+										<li>Prevent spam or abuse</li>
+										
+										<li>Allow users to rate computers and manage their ratings</li>
+										</ul>
+										
+										We do not use this data for marketing, advertising, or sharing with third parties.
+									</p>
+								</div>
+								<div>
+									<p class="sectionTitle">3. Legal Basis</p>
+
+									<p class="sectionText">The collection of this data is based on :
+										<ul>
+										<li>Legitimate interest in maintaining a functional and safe user interaction system</li>
+										
+										<li>Consent, if you voluntarily create an account or leave a comment</li>
+										</ul>	
+									</p>
+								</div>
+								<div>
+									<p class="sectionTitle">4. Data Retention</p>
+
+									<p class="sectionText">Your username and email are kept only as long as necessary to maintain your comments and ratings.
+										
+										You can request deletion at any time by contacting us at : contact@backtobyte.com.</p>
+								</div>
+								<div>
+									<p class="sectionTitle">5. Data Sharing</p>
+
+									<p class="sectionText">We never sell or share your data with third parties.
+										
+										The data is used only within this website for the purposes described above.</p>
+								</div>
+								<div>
+									<p class="sectionTitle">6. Your Rights</p>
+
+									<p class="sectionText">Under the GDPR, you have the right to :
+										<ul>
+										<li>Access your personal data</li>
+										
+										<li>Correct or update it</li>
+										
+										<li>Request deletion (“right to be forgotten”), deletion of all posts, comments, and images</li>
+										
+										<li>Object to its processing</li>
+										</ul>
+										
+										To exercise these rights, contact us at contact@backtobyte.com.</p>
+								</div>
+								<div>
+									<p class="sectionTitle">7. Security</p>
+
+									<p class="sectionText">We take reasonable measures to protect your data against unauthorized access, alteration, or deletion.</p>
+								</div>
+							</div>
+						{% endblock %}
+					{% endembed %}
+
+				</div>
+			</section>
+		</div>
+	</main>
+{% endblock %}

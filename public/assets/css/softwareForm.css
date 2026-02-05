@@ -91,12 +91,13 @@
     border: 1px solid black;
     border-radius: 6px;
     padding: 1rem;
+    margin-top: 5px;
 }
 
 .formBtnDiv {
     display: flex;
     gap: 1rem;
-    padding: 20px;
+    padding: 10px;
 }
 
 .btnForm {

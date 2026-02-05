@@ -13,9 +13,9 @@
     filter: drop-shadow(#b8b8b9 0.4rem 0.4rem 2px);
     background-color: #D9D9D9;
     border-radius: 10px;
-    justify-self: center;
-
-
+  
+     margin: 1.5rem auto;
+    
 }
 
 .largeWindow {
@@ -361,6 +361,10 @@ dialog[open] .squareBtnClose {
     height: 51vh;
 }
 
+#gdpr .content{
+     overflow-y: auto;
+}
+
 dialog[open] {
     position: fixed;
     top: 0;
@@ -377,7 +381,6 @@ dialog[open] {
     background-color: transparent;
     border: 0;
     overflow: hidden;
-
 }
 
 #aboutDialog .content {

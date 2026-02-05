@@ -1,53 +1,52 @@
 <div id="connectFormDiv">
+	<form id="connectForm" action="{{ user ? '/userLogout' : '/connect' }}" method="post">
 
-	<form id="connectForm" action= {{user ? "/userLogout" : "/connect"}} method="post">
-		<div class="connectFormInput">
 		{% if not user %}
-			<div>
-				<label for="email">Email :
-				</label>
-			</div>
-			<div>
-				<input type="text" name="email" id="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="Email address" title="Please enter a valid email address that you have previously registered with.">
+			<div class="connectFormInput">
+				<label for="email">Email :</label>
+				<input type="email" name="email" id="email" required placeholder="Email address"/>
 				{% if errors.email %}
-					<p>{{errors.email}}</p>
+					<p>{{ errors.email }}</p>
 				{% endif %}
 			</div>
-		</div>
-		<div class="connectFormInput">
-			<div>
-				<label for="password">Password :
-				</label>
-			</div>
-			<div>
-				<input type="password" name="password" id="password" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" placeholder="6+ characters" autocomplete="current-password" title="Password must contain 6 or more characters, at least one number and at least one letter.">
+
+			<div class="connectFormInput">
+				<label for="password">Password :</label>
+				<input type="password" name="password" id="password" required placeholder="6+ characters"/>
 				{% if errors.password %}
 					<p class="error">{{ errors.password }}</p>
 				{% endif %}
 			</div>
-		</div>
 		{% endif %}
+
 		<div id="submitBtnDiv">
 			{% if user %}
-				<button type="submit" id="connectSubmit" name="connectSubmit">Log out</button>
+				<button class="connectSubmit"  type="submit">Log out</button>
 			{% else %}
-				<button type="submit" id="connectSubmit" name="connectSubmit">Connect</button>
+				<div id="actionBtn">
+					<button class="connectSubmit" id="connectSubmit" type="submit">Connect</button>
+
+					<button type="submit" class="btnLink" formaction="/resetPassword" formmethod="POST" formnovalidate>
+						Password forgotten
+					</button>
+				</div>
 			{% endif %}
 		</div>
-		<div>
-			{% if errors.connection %}
-				<p class="error">{{ errors.connection }}</p>
-			{% endif %}
-		</div>
-		<div>
-			{% if not user %}
-				<p id="connectP">You are not registered,
-					<a id="connectA" href="/register">please register</a>
-				</p>
-			{% else %}
+
+		{% if errors.connection %}
+			<p class="error">{{ errors.connection }}</p>
+		{% endif %}
+
+		{% if not user %}
+			<p class="connectP">
+				You are not registered,
+				<a id="connectA" href="/register">please register</a>
+			</p>
+		{% else %}
+			<p class="connectP">
 				<a id="connectA" href="/updateUser/{{user.id}}">Edit your profile</a>
 			</p>
-			{% endif %}
-		</div>
+		{% endif %}
+
 	</form>
 </div>

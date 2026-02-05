@@ -88,6 +88,14 @@ exports.displayAbout = async (req, res) => {
   })
 }
 
+//Show GDPR
+exports.displayGDPR = async (req, res) => {
+  res.render("pages/gdpr.twig", {
+    title: "GDPR",
+    error: null
+  })
+}
+
 
 //Show connect
 exports.displayconnect = async (req, res) => {
@@ -131,7 +139,7 @@ exports.connect = async (req, res) => {
       } else {
         // If the password is incorrect return error
         //errors.connection = "Incorrect connection details";
-        errors.connection = "Incorrect password";
+        errors.connection = "Invalid email or password";
         return res.render("pages/connect.twig", {
           errors,
           data
@@ -141,7 +149,7 @@ exports.connect = async (req, res) => {
     } else {
       // If the email is incorrect return error
       //errors.connection = "Incorrect connection details";
-      errors.connection = "Incorrect email";
+      errors.connection = "Invalid email or password";
       return res.render("pages/connect.twig", {
         errors,
         data
@@ -1010,7 +1018,6 @@ async function generateTokenLink(user) {
   //Get the exipry time now + 30 minutes  
   const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
 
-
   //Save token to database to be compared later  
   await prisma.passwordResetToken.create({
     data: {
@@ -1032,119 +1039,96 @@ exports.resetPassword = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
   let data = req.body;
-
-  const userId = parseInt(req.params.id); //User to be reset
-
+ 
+  // Get email either from the user forggeting their password or an administrator demand to reset a user's password
+  const userEmail = data.email; 
 
   try {
-    //get user to be changed details
-    data = await prisma.utilisateur.findUnique({
-      where: {
-        //id_utilisateur: req.session.user.id,
-        id_utilisateur: userId,
-      }
-    })
 
-    // check to see if the connected user is an administrator, if not no need to continue
+    if (data.email){
+      //Find the user whos password is to be changed using the email address
+      data = await prisma.utilisateur.findUnique({
+        where: {
+          email : data.email,
+        }
+      })
 
-    if (req.session.user.role !== "administrator") {
-      errors.passwordReset = "You are not authorised to reset this password";
+     
+      /********** DELETE ANY EXISTING RESET PASSWORD TOKENS **********************/
 
-      return res.render("pages/registry.twig", {
-        errors,
-        data,
-        transaction: "update"
+      await prisma.passwordResetToken.delete({
+        where: {
+          utilisateurId: data.id_utilisateur,
+        },
       });
+
+      /********** CREATE AND GET NEW RESET EMAIL TOKEN AND LINK **********************/
+
+
+      const resetLink = await generateTokenLink(data);
+
+
+      /********** SEND EMAIL TO RESET PASSWORD **********************/
+    
+      //This is the email content to, subject, text, html
+      await sendEmailConfirmAccount(
+        data.email,
+        "Demand to reset password",
+        "",
+        `
+              <h1>BACKtoBTYE</h1>
+              <p>
+                Hello <b>${data.pseudo}</b>
+              </p>
+
+            <p>You have requested to reset your password.</p>
+            <a
+                href="${resetLink}"
+                style="background:#D3CBCB;color:#3C3C43;
+                padding:10px 16px;
+                text-decoration:none;
+                border-radius:4px;
+                display:inline-block;"
+            >
+                Reset your password
+            </a>
+            <br>
+            <p>If you did not initiate this request, please ignore this email. Your account will remain secure.</p>
+            </div>
+        `
+      );
+      /***********************************************/
+
+      //Test if the session user is NULL, then the user is not an administrator
+      if (req.session.user == null) {
+          //If they are not an adminastrator go to the connect screen with a message email sent
+          errors.connection = "A reset email has been sent";
+        return res.render("pages/connect.twig", {
+          errors,
+        });
+        }
+        else{
+            //Go to the connect screen
+            res.redirect("/connect")
+        }
+      
     }
-
-    // if adminstrator
-
-    /********** DELETE ANY EXISTING RESET PASSWORD TOKENS **********************/
-
-    await prisma.passwordResetToken.delete({
-      where: {
-        utilisateurId: data.id_utilisateur,
-      },
-    });
-
-    /********** CREATE AND GET NEW RESET EMAIL TOKEN AND LINK **********************/
-
-
-    const resetLink = await generateTokenLink(data);
-
-
-    /********** SEND EMAIL TO RESET PASSWORD **********************/
-
-    //This is the email content to, subject, text, html
-    await sendEmailConfirmAccount(
-      data.email,
-      "Demand to reset password",
-      "",
-      `
-            <h1>BACKtoBTYE</h1>
-            <p>
-              Hello <b>${data.pseudo}</b>
-            </p>
-
-          <p>You have requested to reset your password.</p>
-          <a
-              href="${resetLink}"
-              style="background:#D3CBCB;color:#3C3C43;
-              padding:10px 16px;
-              text-decoration:none;
-              border-radius:4px;
-              display:inline-block;"
-          >
-              Reset your password
-          </a>
-          <br>
-          <p>If you did not initiate this request, please ignore this email. Your account will remain secure.</p>
-          </div>
-       `
-    );
-
-    /***********************************************************/
-
-
-
-    /*
-    // find the user to be updated
-    const userToChange = await prisma.utilisateur.findUnique({
-      where: { id_utilisateur: userId }
-    });
-
-    // if the user doesn't exist return
-    if (!userToChange) {
-      errors.passwordReset = "User not found";
-      return res.redirect("/updateUser/" + userId);
-    }
-
-    //Hash the temporary password and save it 
-
-    const newPassword = "Reset123";
-
-
-    //const hashedPassword = bcrypt.hashSync("Reset123", 12);
-    //const newPassword = hashedPassword;
-
-    // change the password.
-    await prisma.utilisateur.update({
-      where: {
-        id_utilisateur: userId,
-      },
-      data: {
-        motDePasse: newPassword,
-      }
-
-    })*/
-
-    res.redirect("/connect")
+    else{
+      /*The email is empty, then it can only be a user asking to reset their password 
+         as the administrator option can not be sent without something in the email field*/
+        errors.connection = "An email address is required";
+        return res.render("pages/connect.twig", {
+          errors,
+        });
+      
+    }  
 
   } catch (error) {
 
-    errors.passwordReset = "An unexpected error occurred while resetting the password.";
-
-    return res.redirect("/updateUser/" + userId);
+     errors.connection = "An unexpected error occurred while resetting the password.";
+    return res.render("pages/connect.twig", {
+          errors,
+        });
   }
 
 }

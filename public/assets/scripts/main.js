@@ -223,13 +223,19 @@ if (squareBtnClose || squareBtnCloseb) {
     if (page === 'writeComment') {
       window.location.href = "/displayCommunity"
     }
-
+if (page === 'forgottenPassword') {
+      window.location.href = "/";
+    }
     
     if (page === 'about') {
       window.location.href = "/";
     }
 
     if (page === 'connect') {
+      window.location.href = "/";
+    }
+
+    if (page === 'gdpr') {
       window.location.href = "/";
     }
 

@@ -13,10 +13,11 @@
 }
 
 .connectFormInput {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .connectFormInput label {
@@ -41,13 +42,13 @@
     text-align: left;    
 }
 
-#connectSubmit:hover {
+.connectSubmit:hover {
     background-color: #7c7c7d;
     color: #fff;
 }
 
 
-#connectSubmit {
+.connectSubmit {
     border-radius: 6px;
     background-color: #D3CBCB;
     color: #3C3C43CC;
@@ -72,7 +73,7 @@
     text-align: center;
 }
 
-#connectP {
+.connectP {
     text-align: center;
     font-size: 0.75rem;
     margin: 0;
@@ -87,7 +88,29 @@
 }
 
 .error{
+    text-align: center;
+    margin: 0;
     justify-self: center;
+}
+
+
+.btnLink {
+  all: unset;
+  color: #0066cc;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: small;
+}
+
+.btnLink:focus-visible {
+  outline: 2px solid #99c2ff;
+}
+
+#actionBtn{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap:10px;
 }
 
 @media (width <=520px) {
