@@ -111,7 +111,6 @@ exports.connect = async (req, res) => {
   const email = req.body.email.toLowerCase().trim();
   const data = req.body;
 
-
   try {
     // research email
     const user = await prisma.utilisateur.findUnique({
@@ -123,7 +122,7 @@ exports.connect = async (req, res) => {
     })
     if (user) {
       // Check the password
-      if (await bcrypt.compareSync(req.body.password, user.motDePasse)) {
+      if (await bcrypt.compare(req.body.password, user.motDePasse)) {
         //If the password matches then the User is added to the session
         req.session.user = {
           id: user.id_utilisateur,
@@ -178,6 +177,15 @@ exports.connect = async (req, res) => {
 exports.registration = async (req, res) => {
   res.render("pages/registry.twig", {
     title: "Registration",
+    transaction: "update",
+
+    error: null
+  })
+}
+
+exports.newRegistration = async (req, res) => {
+  res.render("pages/registry.twig", {
+    title: "Registration",
 
 
     error: null
@@ -196,7 +204,6 @@ exports.registerUser = async (req, res) => {
   try {
 
     // Check the two passwords match
-
     if (req.body.password == req.body.confirmPassword) {
 
       // Check to see if the Email address is already registered
@@ -543,9 +550,11 @@ exports.treatRoleList = async (req, res) => {
 };
 
 exports.updateUserInfo = async (req, res) => {
+
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
   const userId = parseInt(req.params.id);
   const data = req.body; // To be sent back if there is an error
+  data.id = data.backupId;
 
   const username = req.body.usernameProfile;
   const usernameBeforeChange = req.body.usernameProfileBeforeChange;
@@ -585,6 +594,7 @@ exports.updateUserInfo = async (req, res) => {
 
       //name already in use
       if (usernameInUse) {
+        data.usernameProfile = actualUser.pseudo;
         return res.render("pages/registry.twig", {
           errors: { usernameProfile: "Username already in use" },
           data,
@@ -603,6 +613,7 @@ exports.updateUserInfo = async (req, res) => {
 
       //Email already in use
       if (emailInUse) {
+        data.email = actualUser.email;
         return res.render("pages/registry.twig", {
           errors: { email: "The user is already registered" },
           data,
@@ -703,12 +714,9 @@ exports.updateUserInfo = async (req, res) => {
     return res.redirect('/');
   }
   catch (error) {
-
-
+    errors.usernameProfile = "An unexpected error occurred."
     return res.render("pages/registry.twig", {
-      errors: {
-        global: "An unexpected error occurred while updating your profile."
-      },
+      errors,
       data,
       transaction: "update"
     });
@@ -931,16 +939,18 @@ exports.updatePassword = async (req, res) => {
 
   const data = req.body;
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
+  let userDb = {}; //user from the database which needs to be sent back if an error occurs
 
   const userId = req.session.user.id;
 
   try {
     // Get the old password from the database
-    const userDb = await prisma.utilisateur.findUnique({
+    userDb = await prisma.utilisateur.findFirst({
       where: {
         id_utilisateur: userId,
       }
     })
+
 
     if (await bcrypt.compareSync(data.currentPassword, userDb.motDePasse)) {
       //If the password matches then the we check the new password and the confirmed password
@@ -964,43 +974,51 @@ exports.updatePassword = async (req, res) => {
       else {
         // If the passwords don't match return error
         errors.password = "The passwords don't match";
+        data = userDb; //set data to the database user data
+
         return res.render("pages/registry.twig", {
+          errors: { password: "The passwords are not correct" },
+          openDialog: "updatePassword",
           transaction: "update",
           data,
-          errors,
-
         });
+
+
+
       }
     }
     else {
       // If the password is incorrect return error
       errors.password = "Incorrect password";
       return res.render("pages/registry.twig", {
-        data,
-        transaction: "update",
         errors,
-
+        data,
+        openDialog: "updatePassword",
+        transaction: "update",
       });
 
     }
 
   }
   catch (error) {
+
     // Custom validation extension
     if (error.details) {
+      errors.password = error.details;
       return res.render("pages/registry.twig", {
-        errors: error.details,
+        errors,
         data,
+        openDialog: "updatePassword",
         transaction: "update",
       });
     }
 
     // Unknown error
-    errors.connection = "An unexpected error occurred.";
-
+    errors.password = "An unexpected error occurred.";
     return res.render("pages/registry.twig", {
       errors,
       data,
+      openDialog: "updatePassword",
       transaction: "update"
     });
   }
@@ -1010,10 +1028,7 @@ async function generateTokenLink(user) {
 
   //Create token and hash it
   const token = crypto.randomBytes(32).toString("hex");
-  const tokenHash = crypto
-    .createHash("sha256")
-    .update(token)
-    .digest("hex");
+  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
 
   //Get the exipry time now + 30 minutes  
   const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
@@ -1029,8 +1044,8 @@ async function generateTokenLink(user) {
   });
 
   //Return the reset password link with token to be sent in an email
-  return `https://john-thompson.ri7.tech/resetForgottenPassword?token=${token}`;
-  //return `http://localhost:3000/resetForgottenPassword?token=${token}`;
+  // return `https://john-thompson.ri7.tech/resetForgottenPassword?token=${token}`;
+  return `http://localhost:3000/resetForgottenPassword?token=${token}`;
 }
 
 
@@ -1039,21 +1054,28 @@ exports.resetPassword = async (req, res) => {
   const errors = {};  //Safer to create errors{} each time, no errors from other controllers
 
   let data = req.body;
- 
+
   // Get email either from the user forggeting their password or an administrator demand to reset a user's password
-  const userEmail = data.email; 
+  const userEmail = data.email;
 
   try {
 
-    if (data.email){
+    if (data.email) {
       //Find the user whos password is to be changed using the email address
       data = await prisma.utilisateur.findUnique({
         where: {
-          email : data.email,
+          email: data.email,
         }
       })
 
-     
+      /**** CHECK IF A USER FOUND ****/
+      if (!data) {
+        errors.connection = "Email address not found";
+        return res.render("pages/connect.twig", {
+          errors,
+        });
+      }
+
       /********** DELETE ANY EXISTING RESET PASSWORD TOKENS **********************/
 
       await prisma.passwordResetToken.delete({
@@ -1069,14 +1091,14 @@ exports.resetPassword = async (req, res) => {
 
 
       /********** SEND EMAIL TO RESET PASSWORD **********************/
-    
+
       //This is the email content to, subject, text, html
       await sendEmailConfirmAccount(
         data.email,
         "Demand to reset password",
         "",
         `
-              <h1>BACKtoBTYE</h1>
+              <h1>BACKtoBYTE</h1>
               <p>
                 Hello <b>${data.pseudo}</b>
               </p>
@@ -1101,66 +1123,81 @@ exports.resetPassword = async (req, res) => {
 
       //Test if the session user is NULL, then the user is not an administrator
       if (req.session.user == null) {
-          //If they are not an adminastrator go to the connect screen with a message email sent
-          errors.connection = "A reset email has been sent";
+        //If they are not an adminastrator go to the connect screen with a message email sent
+        errors.connection = "A reset email has been sent";
         return res.render("pages/connect.twig", {
           errors,
         });
-        }
-        else{
-            //Go to the connect screen
-            res.redirect("/connect")
-        }
-      
+      }
+      else {
+        //Go to the connect screen
+        res.redirect("/connect")
+      }
+
     }
-    else{
+    else {
       /*The email is empty, then it can only be a user asking to reset their password 
          as the administrator option can not be sent without something in the email field*/
-        errors.connection = "An email address is required";
-        return res.render("pages/connect.twig", {
-          errors,
-        });
-      
-    }  
+      errors.connection = "An email address is required";
+      return res.render("pages/connect.twig", {
+        errors,
+      });
+
+    }
 
   } catch (error) {
 
-     errors.connection = "An unexpected error occurred while resetting the password.";
+    errors.connection = "An unexpected error occurred while resetting the password.";
     return res.render("pages/connect.twig", {
-          errors,
-        });
+      errors,
+    });
   }
 
 }
 
 
 exports.resetForgottenPassword = async (req, res) => {
-  const receivedTokenHash = crypto
-    .createHash("sha256")
-    .update(req.query.token)
-    .digest("hex");
 
-  //Find the token if it exists and it has not expired
-  const tokenUser = await prisma.passwordResetToken.findFirst({
-    where: {
-      token: receivedTokenHash,
-      expiresAt: { gt: new Date() }
+  const errors = {};
+
+  try {
+    const receivedTokenHash = crypto
+      .createHash("sha256")
+      .update(req.query.token)
+      .digest("hex");
+
+    //Find the token if it exists and it has not expired
+    const tokenUser = await prisma.passwordResetToken.findFirst({
+      where: {
+        token: receivedTokenHash,
+        expiresAt: { gt: new Date() }
+      }
+    });
+
+    if (!tokenUser) {
+      //Invalid token screen
+      errors.link = "Please make a new password reset request.";
+      return res.render("pages/tokenInvalid.twig", {
+        errors,
+      });
     }
-  });
 
-  if (!tokenUser) {
-    //return res.status(400).json({ message: "Invalid or expired token" });
-    //Invalid token go to HOME
-    return res.redirect("/home");
+    res.render("pages/forgottenPassword.twig", {
+      title: "Password Update",
+      error: null,
+      tokenUser,
+    });
   }
+  catch (error) {
+    console.error("Password reset token lookup failed:", error);
 
-  res.render("pages/forgottenPassword.twig", {
-    title: "Password Update",
-    error: null,
-    tokenUser,
-  });
+    // Generic error
+    errors.link = "An unexpected error occurred. Please try again later."
+    res.status(500).render("pages/tokenInvalid.twig", {
+      errors,
+    });
+  }
 };
-
 
 
 exports.userLogout = async (req, res) => {

@@ -3,7 +3,7 @@
 {% endblock %}
 
 <div id="formDiv">
-
+	
 	<form id="registrationForm" action="{{ transaction ? '/updateUserInfo/' ~ data.id : '/register' }}" method="post">
 		<input type="text" id="backupId" name= "backupId" value="{{data.id}}" hidden>
 		<div id="profileContainer">
@@ -26,9 +26,7 @@
 		{% if duplicateUser %}
 			<p class="error errP">{{ duplicateUser }}</p>
 		{% endif %}
-		{% if errors.usernameProfile %}
-			<p class="error errP">{{ errors.usernameProfile}}</p>
-		{% endif %}
+	
 
 		<div class="registrationFormInput">
 			<div>

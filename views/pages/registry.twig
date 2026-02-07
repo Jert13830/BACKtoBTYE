@@ -7,25 +7,25 @@
 
 {% block main %}
 	<main>
-    <div id="pageContainer">
-		<section id="registrySection">
-			<div id="registration">
-				{% embed '/partials/window.twig' with {
+		<div id="pageContainer">
+			<section id="registrySection">
+				<div id="registration">
+					{% embed '/partials/window.twig' with {
    					 	windowType: 'mediumWindow',
     					title: 'Registration',
     					showPlus: 0,
 						showClose: 1,
 						pageId: 'registration'
 					} %}
-					{% block content %}
-						{% include '/partials/registrationForm.twig' %}
-					{% endblock %}
-				{% endembed %}
-			</div>
-		</section>
-    </div>
-	<section id="addUserRoleSection">
-		<dialog id="userRoleForm" class="dialog">
+						{% block content %}
+							{% include '/partials/registrationForm.twig' %}
+						{% endblock %}
+					{% endembed %}
+				</div>
+			</section>
+		</div>
+		<section id="addUserRoleSection">
+			<dialog id="userRoleForm" class="dialog">
 				{% embed '/partials/window.twig' with {
    					 	windowType: 'smallWindow',
     					title: 'User Role',
@@ -46,27 +46,43 @@
 					<button class="squareBtnCloseb" type="button">
 						<span class="closeBtnb">×</span>
 					</button>
-					<form id="updatePasswordForm" method="post" action="/updatePassword" >
+					<form id="updatePasswordForm" method="post" action="/updatePassword">
 						<div id="passwordGrid">
 							<div id="updateBarDiv">
-									<input type="text" id="passwordChangeUserId" hidden name="passwordChangeUserId" >
-								
-									<div><input class="updatePasswordText" type="password" id="currentPassword" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" name="currentPassword" placeholder="Current password"> </div>
+								<input type="text" id="passwordChangeUserId" hidden name="passwordChangeUserId" value={{data.passwordChangeUserId}}>
 
-									<div><input class="updatePasswordText" type="password" id="newPassword" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" name="newPassword" placeholder="New password"> </div>
-									
-									<div><input class="updatePasswordText" type="password" id="confirmPassword" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" name="confirmPassword" placeholder="Confirm password"> </div>
-								
-								<div>{% if errors.password %}
-									<p class="errP">{{errors.password}}</p>
-								{% endif %}</div>
-								<div><button id="btnUpdatePassword">Update</button></div>
+								<div><input class="updatePasswordText" type="password" id="currentPassword" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" name="currentPassword" placeholder="Current password">
+								</div>
+
+								<div><input class="updatePasswordText" type="password" id="newPassword" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" name="newPassword" placeholder="New password">
+								</div>
+
+								<div><input class="updatePasswordText" type="password" id="confirmPassword" required pattern="^(?=.*?[0-9])(?=.*?[A-Za-z]).{6,}$" name="confirmPassword" placeholder="Confirm password">
+								</div>
+
+								<div>
+									{% if errors.password %}
+										<p class="errP">{{errors.password}}</p>
+									{% endif %}
+								</div>
+								<div>
+									<button id="btnUpdatePassword">Update</button>
+								</div>
 							</div>
 						</div>
 					</form>
 				</div>
 			</div>
 		</dialog>
+		{% if openDialog == "updatePassword" %}
+			<script>
+				window.addEventListener("DOMContentLoaded", () => {
+				const dialog = document.getElementById("updatePasswordDialog");
+				if (dialog && ! dialog.open) {
+						dialog.showModal();
+					}
+				});
+			</script>
+		{% endif %}
 	</section>
-	</main>
-{% endblock %}
+</main>{% endblock %}

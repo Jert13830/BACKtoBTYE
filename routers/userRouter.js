@@ -20,6 +20,7 @@ userRouter.post("/userLogout", authGuard,userController.userLogout);
 userRouter.post('/connect',userController.connect);
 
 userRouter.get('/register',userController.registration);
+userRouter.get('/newRegister',userController.newRegistration);
 userRouter.post('/register',userController.registerUser);
 
 userRouter.get('/listUserRoles', authGuard,userController.listUserRoles);

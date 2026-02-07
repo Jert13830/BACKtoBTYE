@@ -1,7 +1,7 @@
 {% extends "/layouts/base.twig" %}
 
 {% block style %}
-	<link rel="stylesheet" href="/assets/css/authorised.css">
+	<link rel="stylesheet" href="/assets/css/unauthorised.css">
 	<title>Access Denied</title>
 {% endblock %}
 
@@ -16,7 +16,7 @@
     </p>
 
     {% if errors.authorisation %}
-      <p class="error-message">{{ errors.authorisation }}</p>
+      <p class="errorMessage">{{ errors.authorisation }}</p>
     {% endif %}
 
     <div class="actions">

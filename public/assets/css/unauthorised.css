@@ -9,7 +9,7 @@
   
 }
 
-.error-message {
+.errorMessage {
   color: #b00020;
   margin-top: 12px;
 }
@@ -20,14 +20,20 @@
 
 .btn {
   display: inline-block;
-  padding: 10px 16px;
-  background: #007bff;
-  color: #fff;
+  padding: 0.4rem;
+  font-size: 1rem;
+    background-color: #D3CBCB;
+   color: #3C3C43CC;
+    border: 1px solid #b2afaf;
+    border-radius: 6px;
   text-decoration: none;
-  border-radius: 6px;
   margin: 0 6px;
 }
 
-.btn-secondary {
-  background: #6c757d;
+.btn:hover {
+    background-color: #7c7c7d;
+    color: #fff;
+}
+.tokenErrorContainer{
+  margin-left: 10px;
 }

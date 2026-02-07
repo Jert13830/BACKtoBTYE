@@ -63,7 +63,7 @@
 /* Window Backgrounds*/
 .formBk1 {
     width: 77vw;
-    height: 75vh;
+    height: 73vh;
     background: linear-gradient(to left,
             #F8a51c 0%,
             #f4d03f 20%,
@@ -146,7 +146,7 @@
 
 .formBk2 {
     width: 75vw;
-    height: 72vh;
+    height: 70vh;
 
     border-radius: 10px;
     border: 0;
@@ -355,7 +355,7 @@ img {
 
 /*The Add Computer window is slightly bigger than the Home window*/
 #addComputer .largeWindow {
-    height: 85vh;
+    height: 83vh;
     width: 80vw;
     margin: 10px auto;
 

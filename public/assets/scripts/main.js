@@ -291,6 +291,10 @@ function openUpdatePasswordDialog(button) {
   const updatePasswordDialog = document.querySelector("#updatePasswordDialog");
   const passwordChangeUserId = document.querySelector("#passwordChangeUserId");
 
+  
+
+  saveFormState("#registrationForm","registrationForm");
+
   updatePasswordDialog.showModal();
 
   passwordChangeUserId.value = button.dataset.userId;
@@ -473,7 +477,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-
+//Retore computer form data when loaded
+document.addEventListener("DOMContentLoaded", () => {
+  restoreFormState("#registrationForm","registrationForm");
+});
 
 //Retore software form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
@@ -487,6 +494,8 @@ document.addEventListener("DOMContentLoaded", () => {
 //Retore registration form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
   restoreFormState("#registrationForm", "registrationForm");
+  
+  
 });
 
 function treatImages() {

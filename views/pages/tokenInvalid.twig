@@ -1,0 +1,32 @@
+{% extends "/layouts/base.twig" %}
+
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/unauthorised.css">
+	<title>Link Error</title>
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div class="tokenErrorContainer">
+
+			<h1>⚠️ Link Error</h1>
+
+			<p>
+				This reset link is invalid or has expired.
+			</p>
+
+			{% if errors.link %}
+				<p class="errorMessage">{{ errors.link}}</p>
+			{% endif %}
+
+			<div class="actions">
+				
+					<a href="/" class="btn btn-secondary">Home</a>
+				
+					<a href="/connect" class="btn btn-secondary">Password reset</a>
+				
+			</div>
+
+		</div>
+	</main>
+{% endblock %}
