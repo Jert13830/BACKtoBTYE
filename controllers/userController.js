@@ -186,8 +186,7 @@ exports.registration = async (req, res) => {
 exports.newRegistration = async (req, res) => {
   res.render("pages/registry.twig", {
     title: "Registration",
-
-
+    clearData:   true,
     error: null
   })
 }

@@ -150,6 +150,16 @@ exports.displayAddComputer = (req, res) => {
   })
 }
 
+exports.displayAddComputerUpdate = (req, res) => {
+  const bkgClass = req.query.bg;
+  res.render("pages/addComputer.twig", {
+    title: "Update Computer",
+    error: null,
+    bkgClass,
+    transaction: "update",
+  })
+}
+
 //Get the list of Computer
 exports.listComputer = async (req, res) => {
   try {

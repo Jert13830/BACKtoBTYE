@@ -2,9 +2,15 @@
 	<link rel="stylesheet" href="/assets/css/computerForm.css">
 {% endblock %}
 <div class="formBk1">
-	<div class="formBk2 {{bkgClass}}">
+	<div id="bk2" class="formBk2 {{bkgClass}}">
 		<form id="computerForm" action="{{ transaction == 'update' ? '/updateComputer/' ~ data.id_ordinateur ~ '?bg='~ bkgClass : '/addComputer' }}" method="post">
 			<input type="text" name="id_ordinateur" id="id_ordinateur" hidden value="{{ data.id_ordinateur }}">
+			<script>
+				localStorage.setItem("bg", "{{bkgClass}}");
+				localStorage.setItem("trans", "{{transaction}}");
+			</script>
+			<input type="text" name="fbkg" value = "{{bkgClass}}" >
+			<input type="text" name="trans" value = "{{transaction}}">
 			<input type="text" id="originInput" hidden value="{{ origin|default('computerList')}}">
 			<div id="formDiv">
 				<div id="formLeft">

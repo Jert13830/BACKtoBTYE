@@ -30,8 +30,13 @@
 		{% if errors.userError %}
 				<p>{{errors.userError}}</p>
 		{% endif %}
-		<button type="button" class="btnForm" onclick="window.location.href='/register'">
-			Close
-		</button>
+		<div class="actionBtn">
+		<button type="button" class="btnForm" onclick="window.location.href='/newRegister'">
+				New
+			</button>
+			<button type="button" class="btnForm" onclick="window.location.href='/register'">
+				Close
+			</button>
+		</div>
 	</div>
 </section>

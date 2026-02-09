@@ -223,10 +223,10 @@ if (squareBtnClose || squareBtnCloseb) {
     if (page === 'writeComment') {
       window.location.href = "/displayCommunity"
     }
-if (page === 'forgottenPassword') {
+    if (page === 'forgottenPassword') {
       window.location.href = "/";
     }
-    
+
     if (page === 'about') {
       window.location.href = "/";
     }
@@ -291,9 +291,9 @@ function openUpdatePasswordDialog(button) {
   const updatePasswordDialog = document.querySelector("#updatePasswordDialog");
   const passwordChangeUserId = document.querySelector("#passwordChangeUserId");
 
-  
 
-  saveFormState("#registrationForm","registrationForm");
+
+  saveFormState("#registrationForm", "registrationForm");
 
   updatePasswordDialog.showModal();
 
@@ -475,28 +475,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
   restoreFormState("#computerForm", "computerForm");
 
+
+  //Restore the computer image as the otherwise it is not updated as it is considered already loaded
+  const input = document.querySelector("#computer");
+  const image = document.querySelector("#computerPhoto");
+
+  if (!image) return;
+
+  if (input && input.value.trim()) {
+    image.src = `/assets/images/computers/${input.value}.webp?v=${Date.now()}`; //?v= makes the browser look for the image again
+  } else {
+    image.src = '/assets/images/computers/defaultComputer.webp';
+  }
+
 });
 
-//Retore computer form data when loaded
+//Retore registration form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
-  restoreFormState("#registrationForm","registrationForm");
+  restoreFormState("#registrationForm", "registrationForm");
+
+  //Restore the user image as the otherwise it is not updated as it is considered already loaded  
+  const input = document.querySelector("#usernameProfile");
+  const image = document.querySelector("#profileImage");
+
+  if (!image) return; //Nothing to update
+
+  if (input && input.value.trim()) {
+    image.src = `/assets/images/users/${input.value}.webp?v=${Date.now()}`; //?v= makes the browser look for the image again
+  } else {
+    image.src = '/assets/images/users/defaultUserImage.webp';
+  }
+
 });
+
 
 //Retore software form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
   restoreFormState("#softwareForm", "softwareForm");
+
+  //Restore the software image as the otherwise it is not updated as it is considered already loaded  
+  const input = document.querySelector("#softwareName");
+  const image = document.querySelector("#softwarePhoto");
+
+  if (!image) return; //Nothing to update
+
+  if (input && input.value.trim()) {
+    image.src = `/assets/images/software/${input.value}.webp?v=${Date.now()}`; //?v= makes the browser look for the image again
+  } else {
+    image.src = '/assets/images/software/defaultSoftware.webp';
+  }
 });
 
 //Retore emulator form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
   restoreFormState("#emulatorForm", "emulatorForm");
+
+  //Restore the emulator image as the otherwise it is not updated as it is considered already loaded  
+  const input = document.querySelector("#emulatorName");
+  const image = document.querySelector("#emulatorPhoto");
+
+  if (!image) return; //Nothing to update
+
+  if (input && input.value.trim()) {
+    image.src = `/assets/images/emulator/${input.value}.webp?v=${Date.now()}`; //?v= makes the browser look for the image again
+  } else {
+    image.src = '/assets/images/emulator/defaultEmulator.webp';
+  }
+
 });
+
+/*
 //Retore registration form data when loaded
 document.addEventListener("DOMContentLoaded", () => {
   restoreFormState("#registrationForm", "registrationForm");
   
   
-});
+});*/
 
 function treatImages() {
 
@@ -720,14 +774,14 @@ if (profileContainer) {
 function preLightStars(listId, ratingValue) {
 
   const nList = document.getElementById(listId);
-  
+
   if (!nList) return;
 
   const nEntry = nList.getElementsByTagName("li");
-  const rating = Number(ratingValue) || 0; 
+  const rating = Number(ratingValue) || 0;
 
   for (let i = 0; i < nEntry.length; i++) {
-    if (i < rating) {  
+    if (i < rating) {
       nEntry[i].classList.remove('star-unselected');
       nEntry[i].classList.add('star-selected');
     } else {
@@ -781,7 +835,7 @@ function updateRating(type, rating) {
   const computerId = document.getElementById("id_ordinateur").value;
   const userId = document.getElementById("userId").value;
 
-if (!computerId || !userId) {
+  if (!computerId || !userId) {
     console.error("Missing computerId or userId");
     return;
   }
@@ -793,7 +847,7 @@ if (!computerId || !userId) {
     body: JSON.stringify({
       computerId,
       userId,
-      ratingType: type,      
+      ratingType: type,
       rating
     })
   });
@@ -1210,49 +1264,52 @@ function changeLogo() {
 
 /********  Carousel scroll ******/
 
-function slideRight() {
- slider.scrollBy({
-    left: cardWidth,
-    behavior: "smooth"
+//if there is a carousel on this page
+if (slider) {
+  function slideRight() {
+    slider.scrollBy({
+      left: cardWidth,
+      behavior: "smooth"
+    });
+
+
+  }
+
+  function slideLeft() {
+
+    slider.scrollBy({
+      left: -cardWidth,
+      behavior: "smooth"
+    });
+
+
+  }
+
+  //This is to make the carousel turn automatically
+  document.addEventListener("DOMContentLoaded", () => {
+
+    //set up timer every 3 seconds scrollNext is called
+    let autoScroll = setInterval(scrollNext, intervalTime);
+
+    function scrollNext() {
+      //The images scroll until th last then the counter is reset to zero causing the images to loop
+      if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
+        slider.scrollLeft = 0;
+      } else {
+        slideRight();
+      }
+    }
+
+    //The user clicks on the carousel or moves the mouse off the carousel this starts the loop again
+    slider.addEventListener("mouseenter", () => {
+      clearInterval(autoScroll);
+    });
+
+    slider.addEventListener("mouseleave", () => {
+      autoScroll = setInterval(scrollNext, intervalTime);
+    });
   });
-
-  
 }
-
-function slideLeft() {
-
-  slider.scrollBy({
-    left: -cardWidth,
-    behavior: "smooth"
-  });
-
-
-}
-
-//This is to make the carousel turn automatically
-document.addEventListener("DOMContentLoaded", () => {
-
-  //set up timer every 3 seconds scrollNext is called
-	let autoScroll = setInterval(scrollNext, intervalTime);
-
-	function scrollNext() {
-    //The images scroll until th last then the counter is reset to zero causing the images to loop
-		if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) {
-			slider.scrollLeft = 0;
-		} else {
-			slideRight() ;
-		}
-	}
-
-  //The user clicks on the carousel or moves the mouse off the carousel this starts the loop again
-	slider.addEventListener("mouseenter", () => {
-		clearInterval(autoScroll);
-	});
-
-	slider.addEventListener("mouseleave", () => {
-		autoScroll = setInterval(scrollNext, intervalTime);
-	});
-});
 
 async function loadSystemList() {
 

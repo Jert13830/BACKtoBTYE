@@ -48,14 +48,25 @@
 					<label for="computerManufacturerName">Name :
 					</label>
 					<input type="text" id="computerManufacturerName" name="computerManufacturerName" required minlength="3" maxlength="30">
-					<input type="text" hidden id="updateId" value="">
+					<input type="text" hidden id="updateIdb" value="">
 				</div>
 				<div id="computerManuBtn">
-				<input type="text" hidden id="updateId" value="" name="updateId">
+					<input type="text" hidden id="updateId" value="" name="updateId">
 					<button class="btnForm" id="btnAddComputerManu" name="btnAddComputerManu">Add</button>
+					<button type="button" class="btnForm" onclick="showTransValue()">
+						Show trans value
+					</button>
+
+					<script>
+						function showTransValue() {
+							const val = localStorage.getItem("trans");
+							alert(val ?? "trans is not set");
+						}
+					</script>
 					<button type="button" class="btnForm" onclick="window.location.href='/addComputer'">
 						Close
 					</button>
+
 				</div>
 			</div>
 			<p id="computerManufacturerNameErrors"></p>
