@@ -15,7 +15,7 @@ computerRouter.get('/computerList', computerController.displayComputerList);
 computerRouter.get('/listComputer', upload.none(), computerController.listComputer);
 
 computerRouter.get('/addComputer', requireAdmin, computerController.displayAddComputer);
-computerRouter.get('/addComputerUpdate', requireAdmin, computerController.displayAddComputerUpdate);
+computerRouter.get('/addComputerUpdate/:bg', requireAdmin, computerController.displayAddComputerUpdate);
 
 computerRouter.post('/addComputer', requireAdmin, computerController.postComputer);
 

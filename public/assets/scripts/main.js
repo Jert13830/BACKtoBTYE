@@ -363,6 +363,29 @@ function updateManufacturer(button, mode) {
 
 }
 
+
+const closeBtnManu = document.querySelector("#btnCloseComputerManu");
+
+if (!closeBtnManu) {
+    console.log("closeBtnManu not found");
+} else {
+    closeBtnManu.addEventListener("click", () => {
+        alert("I am here");
+
+        const trans = localStorage.getItem("trans");
+        const bg = localStorage.getItem("bg");
+
+        if (trans === "update") {
+            alert("now here");
+            window.location.href = `/addComputerUpdate/${bg}`;
+        } else {
+            alert("no here");
+            window.location.href = '/addComputer';
+        }
+    });
+}
+
+
 // Save form data when opening when navigating to + tasks
 function saveFormState(formSelector, storageKey) {
   const form = document.querySelector(formSelector);

@@ -53,19 +53,8 @@
 				<div id="computerManuBtn">
 					<input type="text" hidden id="updateId" value="" name="updateId">
 					<button class="btnForm" id="btnAddComputerManu" name="btnAddComputerManu">Add</button>
-					<button type="button" class="btnForm" onclick="showTransValue()">
-						Show trans value
-					</button>
 
-					<script>
-						function showTransValue() {
-							const val = localStorage.getItem("trans");
-							alert(val ?? "trans is not set");
-						}
-					</script>
-					<button type="button" class="btnForm" onclick="window.location.href='/addComputer'">
-						Close
-					</button>
+					<button type="button" class="btnForm" id="btnCloseComputerManu">Close</button>
 
 				</div>
 			</div>

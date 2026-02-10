@@ -6,11 +6,13 @@
 		<form id="computerForm" action="{{ transaction == 'update' ? '/updateComputer/' ~ data.id_ordinateur ~ '?bg='~ bkgClass : '/addComputer' }}" method="post">
 			<input type="text" name="id_ordinateur" id="id_ordinateur" hidden value="{{ data.id_ordinateur }}">
 			<script>
-				localStorage.setItem("bg", "{{bkgClass}}");
-				localStorage.setItem("trans", "{{transaction}}");
+				document.addEventListener("DOMContentLoaded", () => {
+					localStorage.setItem("bg", "{{ bkgClass }}");
+					localStorage.setItem("trans", "{{ transaction }}");
+				});
 			</script>
-			<input type="text" name="fbkg" value = "{{bkgClass}}" >
-			<input type="text" name="trans" value = "{{transaction}}">
+			<input type="hidden" name="fbkg" value="{{bkgClass}}">
+			<input type="hidden" name="trans" value="{{transaction}}">
 			<input type="text" id="originInput" hidden value="{{ origin|default('computerList')}}">
 			<div id="formDiv">
 				<div id="formLeft">
@@ -205,7 +207,7 @@
 						<div id="scoringBtn">
 							<div id="rarity">
 								<div>
-								<!-- Prefill the computer rating stars -->
+									<!-- Prefill the computer rating stars -->
 									{% set currentUserScore = null %}
 
 									{% for rar in data.raretes %}
@@ -228,12 +230,12 @@
 									<input hidden name="rarityRating" value="{{ currentUserScore|default(0) }}">
 									<script>
 										document.addEventListener('DOMContentLoaded', function () {
-										if (typeof preLightStars === 'function') {
-											preLightStars("rarityStars", {{ currentUserScore|default(0) }});
-										} else {
-											console.error("preLightStars still not available after DOMContentLoaded");
-										}
-										});
+if (typeof preLightStars === 'function') {
+preLightStars("rarityStars", {{ currentUserScore|default(0) }});
+} else {
+console.error("preLightStars still not available after DOMContentLoaded");
+}
+});
 									</script>
 								</div>
 							</div>
