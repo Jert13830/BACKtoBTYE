@@ -17,7 +17,8 @@
 }
 
 #commentMessage{
-  width:90%
+  width:90%;
+  resize:none;
 }
 
 .btnForm {
