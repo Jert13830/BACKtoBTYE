@@ -211,6 +211,7 @@ img {
 
     border: 0;
     font-size: 14px;
+    resize:none;
 }
 
 #computerInfo::placeholder {
