@@ -1059,7 +1059,7 @@ exports.resetPassword = async (req, res) => {
 
   try {
 
-    console.log("Checking for user");
+    console.error("Checking for user");
     if (data.email) {
       //Find the user whos password is to be changed using the email address
       data = await prisma.utilisateur.findUnique({
@@ -1068,7 +1068,7 @@ exports.resetPassword = async (req, res) => {
         }
       })
 
-      console.log("I have checked user");
+      console.error("I have checked user");
 
       /**** CHECK IF A USER FOUND ****/
       if (!data) {
@@ -1078,7 +1078,7 @@ exports.resetPassword = async (req, res) => {
         });
       }
 
-      console.log("Going to delete token");
+      console.error("Going to delete token");
       /********** DELETE ANY EXISTING RESET PASSWORD TOKENS **********************/
 
       await prisma.passwordResetToken.delete({
@@ -1089,12 +1089,12 @@ exports.resetPassword = async (req, res) => {
 
       /********** CREATE AND GET NEW RESET EMAIL TOKEN AND LINK **********************/
 
-      console.log("Token detailed");
+      console.error("Token detailed");
       const resetLink = await generateTokenLink(data);
 
 
       /********** SEND EMAIL TO RESET PASSWORD **********************/
-      console.log("Going to send email");
+      console.error("Going to send email");
       //This is the email content to, subject, text, html
       await sendEmailConfirmAccount(
         data.email,
@@ -1124,7 +1124,7 @@ exports.resetPassword = async (req, res) => {
       );
       /***********************************************/
 
-      console.log("Mail sent");
+      console.error("Mail sent");
 
       //Test if the session user is NULL, then the user is not an administrator
       if (req.session.user == null) {
@@ -1152,7 +1152,7 @@ exports.resetPassword = async (req, res) => {
 
   } catch (error) {
 
-    console.log("Here is the error : ",error);
+    console.error("Here is the error : ",error);
     errors.connection = "An unexpected error occurred while resetting the password.";
     return res.render("pages/connect.twig", {
       errors,
