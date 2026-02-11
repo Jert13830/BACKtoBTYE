@@ -1146,8 +1146,8 @@ exports.resetPassword = async (req, res) => {
 
   } catch (error) {
 
-    //errors.connection = "An unexpected error occurred while resetting the password.";
-    errors.connection = error.details;
+    
+    errors.connection = "An unexpected boo boo occurred while resetting the password.";
     return res.render("pages/connect.twig", {
       errors,
     });
