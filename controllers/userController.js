@@ -1146,7 +1146,7 @@ exports.resetPassword = async (req, res) => {
 
   } catch (error) {
 
-    errors.connection = "An unexpected blue beard error occurred while resetting the password.";
+    errors.connection = "An unexpected error occurred while resetting the password.";
     return res.render("pages/connect.twig", {
       errors,
     });
