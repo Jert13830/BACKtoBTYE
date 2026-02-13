@@ -151,7 +151,8 @@ exports.displayAddComputer = (req, res) => {
 }
 
 exports.displayAddComputerUpdate = (req, res) => {
-  const bkgClass = req.query.bg;
+  const bkgClass = req.params.bg;
+ 
   res.render("pages/addComputer.twig", {
     title: "Update Computer",
     error: null,

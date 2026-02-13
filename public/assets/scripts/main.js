@@ -364,26 +364,7 @@ function updateManufacturer(button, mode) {
 }
 
 
-const closeBtnManu = document.querySelector("#btnCloseComputerManu");
 
-if (!closeBtnManu) {
-    console.log("closeBtnManu not found");
-} else {
-    closeBtnManu.addEventListener("click", () => {
-        alert("I am here");
-
-        const trans = localStorage.getItem("trans");
-        const bg = localStorage.getItem("bg");
-
-        if (trans === "update") {
-            alert("now here");
-            window.location.href = `/addComputerUpdate/${bg}`;
-        } else {
-            alert("no here");
-            window.location.href = '/addComputer';
-        }
-    });
-}
 
 
 // Save form data when opening when navigating to + tasks
@@ -439,6 +420,7 @@ function restoreFormState(formSelector, storageKey, maxAgeMinutes = 1) {
     if (!el.name || !(el.name in data)) return;
 
     if (el.tagName === "SELECT" && el.multiple) {
+      
       Array.from(el.options).forEach(o => {
         o.selected = data[el.name].includes(o.value);
       });
@@ -1285,6 +1267,7 @@ function changeLogo() {
   }
 }
 
+
 /********  Carousel scroll ******/
 
 //if there is a carousel on this page
@@ -1545,3 +1528,32 @@ function sortPostTableBy(el) {
   }
 }
 
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const btn = document.querySelector("#btnClose");
+
+    if (!btn) return;
+
+    btn.addEventListener("click", function () {
+
+        const mode = btn.dataset.mode;
+        const trans = localStorage.getItem("trans");
+        const bg = localStorage.getItem("bg");
+
+        if (mode === "computer") {
+                window.location.href = "/addComputer";
+
+        } else if (mode === "software") {
+            window.location.href = "/addSoftware";
+
+        } else if (mode === "emulator") {
+            window.location.href = "/addEmulator";
+
+        } else {
+            window.location.href = "/displayCommunity";
+        }
+
+    });
+
+});

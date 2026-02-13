@@ -26,37 +26,37 @@
 							</td>
 						{% endif %}
 						{% if mode != 'category' %}
-						<td>{{manufacturer.nom}}</td>
+							<td>{{manufacturer.nom}}</td>
 						{% else %}
-						<td>{{manufacturer.categorie}}</td>
+							<td>{{manufacturer.categorie}}</td>
 						{% endif %}
 						<td
 							class="role-column">
 							<!-- This deals with the three different updates computers / software / emulators -->
 							<form method="post" action="
-																	{% if mode == 'computer' %}
-																		/updateComputerManufacturerList
-																	{% elseif mode == 'software' %}
-																		/updateSoftwareManufacturerList
-																	{% elseif mode == 'emulator' %}
-																		/updateEmulatorManufacturerList
-																	{% else %}
-																		/updateCategoryList
-																	{% endif %}
-																">
+																										{% if mode == 'computer' %}
+																											/updateComputerManufacturerList
+																										{% elseif mode == 'software' %}
+																											/updateSoftwareManufacturerList
+																										{% elseif mode == 'emulator' %}
+																											/updateEmulatorManufacturerList
+																										{% else %}
+																											/updateCategoryList
+																										{% endif %}
+																									">
 
 								{% if mode == 'computer' %}
 									{% set manufacturerId = manufacturer.id_fab_ordinateur %}
-									
+
 								{% elseif mode == 'software' %}
 									{% set manufacturerId = manufacturer.id_fab_logiciel %}
-									
+
 								{% elseif mode == 'emulator' %}
 									{% set manufacturerId = manufacturer.id_fab_emulateur %}
-									
+
 								{% else %}
 									{% set manufacturerId = manufacturer.id_categorie %}
-									
+
 									{% set manufacturerNom = manufacturer.categorie %}
 								{% endif %}
 
@@ -87,23 +87,23 @@
 
 	<div id="addDiv">
 		<form id="newManufactureForm" name="newManufactureForm" method="post" action="
-																{% if mode == 'computer' %}
-																	/addComputerManufacturer
-																{% elseif mode == 'software' %}
-																	/addSoftwareManufacturer
-																{% elseif mode == 'emulator' %}
-																	/addEmulatorManufacturer
-																{% else %}
-																	/addCategory
-																{% endif %}
-															">
+																				{% if mode == 'computer' %}
+																					/addComputerManufacturer
+																				{% elseif mode == 'software' %}
+																					/addSoftwareManufacturer
+																				{% elseif mode == 'emulator' %}
+																					/addEmulatorManufacturer
+																				{% else %}
+																					/addCategory
+																				{% endif %}
+																			">
 			<div id="formLine">
 				<div id="logoName">
-				{% if mode != 'category' %}
-					<div id="manufacturerLogoImage" onclick="manufacturerLogoClick()">
-						<img id="manuLogo" src="/assets/images/logos/defaultLogo.webp" alt="Computer Manufacturer's logo">
-					</div>
-					<input hidden type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="logoPath" id="logoPath" class="manuImage" hidden>
+					{% if mode != 'category' %}
+						<div id="manufacturerLogoImage" onclick="manufacturerLogoClick()">
+							<img id="manuLogo" src="/assets/images/logos/defaultLogo.webp" alt="Computer Manufacturer's logo">
+						</div>
+						<input hidden type="file" accept="image/jpeg, image/png, image/jpg, image/webp" name="logoPath" id="logoPath" class="manuImage" hidden>
 					{% endif %}
 					<label for="manufacturerName">Name :
 					</label>
@@ -113,17 +113,7 @@
 				<div id="manuBtn">
 					<input type="text" hidden id="updateId" value="" name="updateId">
 					<button class="btnForm" id="btnAddManu" name="btnAddManu">Add</button>
-					<button type="button" class="btnForm" onclick="
-																											{% if mode == 'computer' %}
-																												window.location.href='/addComputer'
-																											{% elseif mode == 'software' %}
-																												window.location.href='/addSoftware'
-																											{% elseif mode == 'emulator' %}
-																												window.location.href='/addEmulator'
-																											{% else %}
-																													window.location.href='/displayCommunity'
-																											{% endif %}
-																										">
+					<button type="button" class="btnForm" id="btnClose" data-mode="{{ mode }}">
 						Close
 					</button>
 				</div>
