@@ -420,7 +420,7 @@ function restoreFormState(formSelector, storageKey, maxAgeMinutes = 1) {
     if (!el.name || !(el.name in data)) return;
 
     if (el.tagName === "SELECT" && el.multiple) {
-      
+
       Array.from(el.options).forEach(o => {
         o.selected = data[el.name].includes(o.value);
       });
@@ -1094,7 +1094,15 @@ function updateManufacturerSelect(manufacturers) {
 
   let previousChoice = ""
   if (manufacturerMode === "computer") {
-    previousChoice = document.querySelector("#previousComputerManufacturer");
+    if (document.querySelector("#fabId").value !== "") {
+      previousChoice = document.querySelector("#fabId");
+      document.addEventListener("DOMContentLoaded", () => {
+
+      });
+    }
+    else {
+      previousChoice = document.querySelector("#previousComputerManufacturer");
+    }
   }
   else if (manufacturerMode === "software") {
     previousChoice = document.querySelector("#previousManufacturer");
@@ -1130,6 +1138,11 @@ function updateManufacturerSelect(manufacturers) {
 
     if (selectedId !== null && String(opt.value) === String(selectedId)) {
       opt.selected = true;
+
+      if (manufacturerMode === "computer") {
+        document.querySelector("#computerManuLogo").src = "/assets/images/logos/" + opt.text + ".webp";
+      }
+
     }
 
     select.appendChild(opt);
@@ -1531,29 +1544,30 @@ function sortPostTableBy(el) {
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const btn = document.querySelector("#btnClose");
+  const btn = document.querySelector("#btnClose");
 
-    if (!btn) return;
+  if (!btn) return;
 
-    btn.addEventListener("click", function () {
+  btn.addEventListener("click", function () {
 
-        const mode = btn.dataset.mode;
-        const trans = localStorage.getItem("trans");
-        const bg = localStorage.getItem("bg");
+    const mode = btn.dataset.mode;
+    const trans = localStorage.getItem("trans");
+    const bg = localStorage.getItem("bg");
 
-        if (mode === "computer") {
-                window.location.href = "/addComputer";
+    if (mode === "computer") {
+      window.location.href = "/addComputer";
 
-        } else if (mode === "software") {
-            window.location.href = "/addSoftware";
+    } else if (mode === "software") {
+      window.location.href = "/addSoftware";
 
-        } else if (mode === "emulator") {
-            window.location.href = "/addEmulator";
+    } else if (mode === "emulator") {
+      window.location.href = "/addEmulator";
 
-        } else {
-            window.location.href = "/displayCommunity";
-        }
+    } else {
+      window.location.href = "/displayCommunity";
+    }
 
-    });
+  });
 
 });
+

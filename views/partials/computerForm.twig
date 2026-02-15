@@ -25,7 +25,7 @@
 							</div>
 							<!-- END OF fomanuLogoHolder -->
 							<div>
-								<input {{ origin ? 'readonly' : '' }} type="text" name="nom" maxlength="12" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (15 max)" title="Enter the computer name, a maximum of 12 characters. The name must be entered before clicking on the photo." required value="{{data.nom|default('') }}"/>
+								<input {{ origin ? 'readonly' : '' }} type="text" name="nom" maxlength="12" id="computer" pattern="^(?=.{1,15}$)[A-Za-z0-9][A-Za-z0-9 ./_+-]*$" placeholder="Computer ID (12 max)" title="Enter the computer name, a maximum of 12 characters. The name must be entered before clicking on the photo." required value="{{data.nom|default('') }}"/>
 							</div>
 						</div>
 						<p id="computerNameErrors">{{errors.computerName}}</p>
@@ -39,12 +39,13 @@
 							</div>
 							<div>
 								<div>
+									<input type="text" hidden name="fabId" id="fabId" value={{data.fabricantId}}>
 									{% if not origin %}
 										<select id="computerManufacturerSelect" name="fabricantId" onchange="changeLogo();" required></select>
 									{% else %}
 										<input id="previousComputerManufacturerName" type="text" {{ origin ? 'readonly' : '' }} {{ origin ? '' : 'hidden' }} value="{{ data.fabricantOrdinateur.nom }}">
 									{% endif %}
-									<input id="previousComputerManufacturer" type="text" hidden value="{{ data.id_fab_ordinateur|default('0') }}">
+									<input id="previousComputerManufacturer" name="previousComputerManufacturer" type="text" hidden value="{{ data.id_fab_ordinateur|default('0') }}">
 									{% if not origin and transaction != 'update' %}
 										<a onclick="saveFormState('#computerForm', 'computerForm'); window.location.href='/showComputerManufacturers'">
 											<span class="plus-label" id="addComputerManu">

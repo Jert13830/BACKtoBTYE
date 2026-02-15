@@ -496,6 +496,7 @@ exports.showUpdateComputer = async (req, res) => {
 
 exports.updateComputer = async (req, res) => {
   const data = req.body;
+
   const computerId = Number(req.params.id);
 
 
