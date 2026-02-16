@@ -188,7 +188,7 @@ img {
 .makerImage img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* The computer name and year (the coloured part) */
