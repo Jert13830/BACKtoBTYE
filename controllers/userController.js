@@ -1076,8 +1076,7 @@ exports.resetPassword = async (req, res) => {
       }
 
       /********** DELETE ANY EXISTING RESET PASSWORD TOKENS **********************/
-
-      await prisma.passwordResetToken.delete({
+      await prisma.passwordResetToken.deleteMany({
         where: {
           utilisateurId: data.id_utilisateur,
         },
@@ -1090,7 +1089,6 @@ exports.resetPassword = async (req, res) => {
 
 
       /********** SEND EMAIL TO RESET PASSWORD **********************/
-
       //This is the email content to, subject, text, html
       await sendEmailConfirmAccount(
         data.email,
