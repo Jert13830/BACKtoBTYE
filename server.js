@@ -16,6 +16,9 @@ const sendMail = require("./routers/mailer");
 
 const app= express();
 
+const path = require("path");
+app.set("views", path.join(__dirname, "views"));
+
 // Holds login status
 app.locals.loginStatus = false;
 
@@ -26,7 +29,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //The public folder is where all paths begin
-app.use(express.static("public"));
+//app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(session({
     //key:'user_id', //makes session unique - needed for creating and distroying cookies
