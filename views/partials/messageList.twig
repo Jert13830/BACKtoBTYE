@@ -49,6 +49,7 @@
 			<a href="/filterPostByCategory/all">All</a>
 			<div id="categoryLoadErrors"></div>
 		</div>
+		{% if user.role == "administrator" %}
 		<div id="addNewCategoryDiv">
 			<a href="/showCategory">
 				<span class="plus-label" id="newPost" name="newPost">
@@ -58,6 +59,7 @@
 			<label class="errNinput" for="newPost">Add category
 			</label>
 		</div>
+		{% endif %}
 	</aside>
 	<section class="softwareListGrid">
 	<div class="table-container" id="postList">

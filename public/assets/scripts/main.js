@@ -653,7 +653,7 @@ function treatImages() {
 
       const value = softwareName.value?.trim();
 
-      if (value) { //Test if a user name has been given
+      if (value) { //Test if a software title has been given
         fileName = value;
         loadImage(files, "Software", fileName, "#softwarePhoto");
       }
@@ -678,7 +678,7 @@ function treatImages() {
 
       const value = emulatorName.value?.trim();
 
-      if (value) { //Test if a user name has been given
+      if (value) { //Test if a emulator title has been given
         fileName = value;
         loadImage(files, "Emulator", fileName, "#emulatorPhoto");
       }
