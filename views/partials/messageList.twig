@@ -25,15 +25,15 @@
 				</div>
 			</div>
 			<div id="newPostDiv">
-			{% if user.role == "administrator" or user.role == "user" %}
-				<a href="/addPost">
-					<span class="plus-label" id="newPost" name="newPost">
-						<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-					</span>
-				</a>
-				<label class="errNinput" for="newPost">Create new post
-				</label>
-			{% endif %}
+				{% if user.role == "administrator" or user.role == "user" %}
+					<a href="/addPost">
+						<span class="plus-label" id="newPost" name="newPost">
+							<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+						</span>
+					</a>
+					<label class="errNinput" for="newPost">Create new post
+					</label>
+				{% endif %}
 			</div>
 		</form>
 		<div>
@@ -50,61 +50,80 @@
 			<div id="categoryLoadErrors"></div>
 		</div>
 		{% if user.role == "administrator" %}
-		<div id="addNewCategoryDiv">
-			<a href="/showCategory">
-				<span class="plus-label" id="newPost" name="newPost">
-					<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
-				</span>
-			</a>
-			<label class="errNinput" for="newPost">Add category
-			</label>
-		</div>
+			<div id="addNewCategoryDiv">
+				<a href="/showCategory">
+					<span class="plus-label" id="newPost" name="newPost">
+						<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewbox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+					</span>
+				</a>
+				<label class="errNinput" for="newPost">Add category
+				</label>
+			</div>
 		{% endif %}
 	</aside>
 	<section class="softwareListGrid">
-	<div class="table-container" id="postList">
-		<table>
-			<thead>
-				<tr>
-					<th><a class="tableHeadLink" onclick="sortPostTableBy('subject')">Subject</a></th>
-					<input type="hidden" id="subjectSort" value="{{ subjectDir|default('') }}">
-					<th><a class="tableHeadLink" onclick="sortPostTableBy('date')">Date</a></th>
-					<input type="hidden" id="dateSort" value="{{ dateDir|default('') }}">
+		<div class="table-container" id="postList">
+			<table>
+				<thead>
+					<tr>
+						<th>
+							<a class="tableHeadLink" onclick="sortPostTableBy('subject')">Subject</a>
+						</th>
+						<input type="hidden" id="subjectSort" value="{{ subjectDir|default('') }}">
+						<th>
+							<a class="tableHeadLink" onclick="sortPostTableBy('date')">Date</a>
+						</th>
+						<input type="hidden" id="dateSort" value="{{ dateDir|default('') }}">
 
-					<th><a class="tableHeadLink" onclick="sortPostTableBy('username')">Username</th>
-					<input type="hidden" id="usernameSort" value="{{ usernameDir|default('') }}">
+						<th>
+							<a class="tableHeadLink" onclick="sortPostTableBy('username')">Username</th>
+							<input type="hidden" id="usernameSort" value="{{ usernameDir|default('') }}">
+						</th>
+						<th>
+							<a class="tableHeadLink" onclick="sortPostTableBy('system')">System</a>
+						</th>
+						<input type="hidden" id="systemSort" value="{{ systemDir|default('') }}">
 
-					<th><a class="tableHeadLink" onclick="sortPostTableBy('system')">System</a></th>
-					<input type="hidden" id="systemSort" value="{{ systemDir|default('') }}">
+						<th>
+							<a class="tableHeadLink" onclick="sortPostTableBy('likes')">Likes</a>
+						</th>
+						<input type="hidden" id="likesSort" value="{{ likesDir|default('') }}">
 
-					<th><a class="tableHeadLink" onclick="sortPostTableBy('likes')">Likes</a></th>
-					<input type="hidden" id="likesSort" value="{{ likesDir|default('') }}">
-
-					<th class="role-column">Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for post in posts%}
-					<tr class="postLine">
-						<td><a href="/readPost/{{ post.id_article }}">{{post.titre}}</a></td>
-						<td><a href="/readPost/{{ post.id_article }}">{{ post.date|date('d/m/Y - H:i') }}</a></td>
-						<td><a href="/readPost/{{ post.id_article }}">{{post.utilisateur.pseudo}}</a></td>
-						<td><a href="/readPost/{{ post.id_article }}">{{post.ordinateur.nom}}</a></td>
-						<td><a href="/readPost/{{ post.id_article }}">{{post.articleLikes|length }}</a></td>
-						<td class="action-column">
-	
-						{% if user.role == "administrator" or user.id == post.utilisateur.id_utilisateur %}
-							<form id="postListform" method="post" action="/updatePostList">
-								<button class="btnForm" id="btnModify" name="buttons" value="modify-{{post.id_article}}">✏️</button>
-								<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{post.id_article}}">🗑️</button>
-							</form>
-						{% endif %}
-						</td>
+						<th class="role-column">Action</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+				</thead>
+				<tbody>
+					{% for post in posts%}
+						<tr class="postLine">
+							<td>
+								<a href="/readPost/{{ post.id_article }}">{{post.titre}}</a>
+							</td>
+							<td>
+								<a href="/readPost/{{ post.id_article }}">{{ post.date|date('d/m/Y - H:i') }}</a>
+							</td>
+							<td>
+								<a href="/readPost/{{ post.id_article }}">{{post.utilisateur.pseudo}}</a>
+							</td>
+							<td>
+								<a href="/readPost/{{ post.id_article }}">{{post.ordinateur.nom}}</a>
+							</td>
+							<td>
+								<a href="/readPost/{{ post.id_article }}">{{post.articleLikes|length }}</a>
+							</td>
+							<td class="action-column">
+
+								{% if user.role == "administrator" or user.id == post.utilisateur.id_utilisateur %}
+									<form id="postListform" method="post" action="/updatePostList">
+										<button class="btnForm" id="btnModify" name="buttons" value="modify-{{post.id_article}}">✏️</button>
+										<button class="btnForm" id="btnDelete" name="buttons" value="delete-{{post.id_article}}">🗑️</button>
+									</form>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 	</section>
 </div>
 
